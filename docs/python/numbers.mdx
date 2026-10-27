@@ -1,0 +1,72 @@
+---
+title: Numbers
+sidebar_label: Numbers
+sidebar_position: 7
+description: Memahami operasi numerik, pembulatan, dan akurasi float.
+---
+
+import PythonPlayground from '@site/src/components/PythonPlayground';
+import QuizCard from '@site/src/components/QuizCard';
+
+# Numbers
+
+**Level:** Beginner | **Learning Path:** Python Programming
+
+Memahami operasi numerik, pembulatan, dan akurasi float.
+
+## Tujuan Pembelajaran
+
+Setelah menyelesaikan materi ini, kamu dapat memahami konsepnya, membaca contoh kode, dan mencoba latihan mandiri.
+
+## Bilangan di Python
+
+`int` menyimpan bilangan bulat; `float` menyimpan bilangan floating-point; `complex` menyimpan bilangan kompleks.
+
+## Pembulatan dan Nilai Absolut
+
+<PythonPlayground initialCode={"x = -7.25\nprint(abs(x))\nprint(round(3.14159, 2))\nprint(divmod(17, 5))"} />
+
+## Ketelitian Floating-Point
+
+Banyak pecahan desimal tidak dapat direpresentasikan secara eksak dalam bentuk biner.
+
+```python
+print(0.1 + 0.2)
+```
+
+Jangan mengandalkan kesamaan persis pada hasil desimal untuk semua perhitungan; gunakan `math.isclose` untuk perbandingan toleransi.
+
+## Library Math
+
+```python
+import math
+print(math.sqrt(81))
+```
+
+## Latihan Interaktif
+
+Ubah starter code lalu klik **Check Answer**. Pemeriksaan latihan ini berbasis output sehingga solusi benar bisa lebih dari satu.
+
+<PythonPlayground
+  initialCode={'nilai = -12\n# Cetak nilai absolut\n'}
+  expectedOutput={'12'}
+  hint={'Gunakan abs().'}
+  solution={'nilai = -12\nprint(abs(nilai))'}
+/>
+
+## Quick Quiz
+
+<QuizCard
+  question='Fungsi abs(-5) menghasilkan?'
+  correctAnswer='B'
+  options={[
+    { id: 'A', text: '-5', explanation: 'abs menghapus tanda negatif.' },
+    { id: 'B', text: '5', explanation: 'Benar.' },
+    { id: 'C', text: '0', explanation: 'Bukan hasil abs.' },
+    { id: 'D', text: 'Error', explanation: 'Integer valid untuk abs.' },
+  ]}
+/>
+
+## Ringkasan
+
+Cobalah kembali contoh kode dengan mengubah nilainya. Catat output dan jelaskan mengapa hasilnya berubah.

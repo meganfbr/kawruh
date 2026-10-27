@@ -1,0 +1,66 @@
+---
+title: Booleans
+sidebar_label: Booleans
+sidebar_position: 8
+description: Memahami ekspresi benar-salah dan truthiness.
+---
+
+import PythonPlayground from '@site/src/components/PythonPlayground';
+import QuizCard from '@site/src/components/QuizCard';
+
+# Booleans
+
+**Level:** Beginner | **Learning Path:** Python Programming
+
+Memahami ekspresi benar-salah dan truthiness.
+
+## Tujuan Pembelajaran
+
+Setelah menyelesaikan materi ini, kamu dapat memahami konsepnya, membaca contoh kode, dan mencoba latihan mandiri.
+
+## Nilai Boolean
+
+Nilai `True` dan `False` sering muncul dari perbandingan.
+
+```python
+print(10 > 5)
+print(10 == 5)
+```
+
+## Truthiness
+
+Python menganggap beberapa nilai sebagai false pada kondisi, contohnya `0`, `""`, `[]`, dan `None`. String `"False"` tetap truthy karena tidak kosong.
+
+<PythonPlayground initialCode={"nilai = 82\nlulus = nilai >= 75\nprint(lulus)\nprint(bool(\"\"))\nprint(bool(\"False\"))"} />
+
+## Kombinasi Kondisi
+
+Gunakan `and`, `or`, dan `not` sesuai maksud aturan bisnis atau filter data.
+
+## Latihan Interaktif
+
+Ubah starter code lalu klik **Check Answer**. Pemeriksaan latihan ini berbasis output sehingga solusi benar bisa lebih dari satu.
+
+<PythonPlayground
+  initialCode={'nilai = 85\n# Cetak apakah nilai minimal 75\n'}
+  expectedOutput={'True'}
+  hint={'Gunakan operator >=.'}
+  solution={'nilai = 85\nprint(nilai >= 75)'}
+/>
+
+## Quick Quiz
+
+<QuizCard
+  question='Hasil bool("False")?'
+  correctAnswer='B'
+  options={[
+    { id: 'A', text: 'False', explanation: 'String ini tidak kosong.' },
+    { id: 'B', text: 'True', explanation: 'Benar, string non-kosong truthy.' },
+    { id: 'C', text: 'None', explanation: 'bool mengembalikan boolean.' },
+    { id: 'D', text: 'Error', explanation: 'String valid untuk bool.' },
+  ]}
+/>
+
+## Ringkasan
+
+Cobalah kembali contoh kode dengan mengubah nilainya. Catat output dan jelaskan mengapa hasilnya berubah.

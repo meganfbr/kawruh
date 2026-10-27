@@ -1,0 +1,73 @@
+---
+title: Functions
+sidebar_label: Functions
+sidebar_position: 15
+description: Membuat fungsi reusable dengan parameter dan return.
+---
+
+import PythonPlayground from '@site/src/components/PythonPlayground';
+import QuizCard from '@site/src/components/QuizCard';
+
+# Functions
+
+**Level:** Beginner | **Learning Path:** Python Programming
+
+Membuat fungsi reusable dengan parameter dan return.
+
+## Tujuan Pembelajaran
+
+Setelah menyelesaikan materi ini, kamu dapat memahami konsepnya, membaca contoh kode, dan mencoba latihan mandiri.
+
+## Membuat Fungsi
+
+Fungsi didefinisikan dengan `def` dan dapat menerima parameter.
+
+```python
+def sapa(nama):
+    return "Halo, " + nama
+```
+
+## Parameter dan Return
+
+<PythonPlayground initialCode={"def rata_rata(a, b):\n    return (a + b) / 2\n\nprint(rata_rata(80, 90))"} />
+
+`return` mengembalikan nilai kepada pemanggil; `print` hanya menampilkan nilai.
+
+## Default Parameter
+
+```python
+def sapa(nama="Teman"):
+    return f"Halo, {nama}"
+```
+
+## Scope
+
+Variabel lokal di dalam fungsi tidak otomatis tersedia di luar fungsi. Hindari memakai mutable default argument seperti `daftar=[]` tanpa memahami konsekuensinya.
+
+## Latihan Interaktif
+
+Ubah starter code lalu klik **Check Answer**. Pemeriksaan latihan ini berbasis output sehingga solusi benar bisa lebih dari satu.
+
+<PythonPlayground
+  initialCode={'def kuadrat(x):\n    # Lengkapi fungsi\n    pass\n\nprint(kuadrat(5))'}
+  expectedOutput={'25'}
+  hint={'Kembalikan x ** 2 melalui return.'}
+  solution={'def kuadrat(x):\n    return x ** 2\n\nprint(kuadrat(5))'}
+/>
+
+## Quick Quiz
+
+<QuizCard
+  question='Apa fungsi return?'
+  correctAnswer='B'
+  options={[
+    { id: 'A', text: 'Menulis ke file', explanation: 'Tidak.' },
+    { id: 'B', text: 'Mengembalikan nilai dari fungsi', explanation: 'Benar.' },
+    { id: 'C', text: 'Selalu mencetak', explanation: 'Itu print.' },
+    { id: 'D', text: 'Mengakhiri program penuh', explanation: 'Tidak selalu.' },
+  ]}
+/>
+
+## Ringkasan
+
+Cobalah kembali contoh kode dengan mengubah nilainya. Catat output dan jelaskan mengapa hasilnya berubah.

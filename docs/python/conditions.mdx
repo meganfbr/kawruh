@@ -1,0 +1,71 @@
+---
+title: Conditions
+sidebar_label: Conditions
+sidebar_position: 13
+description: Mengatur percabangan program dengan if, elif, dan else.
+---
+
+import PythonPlayground from '@site/src/components/PythonPlayground';
+import QuizCard from '@site/src/components/QuizCard';
+
+# Conditions
+
+**Level:** Beginner | **Learning Path:** Python Programming
+
+Mengatur percabangan program dengan if, elif, dan else.
+
+## Tujuan Pembelajaran
+
+Setelah menyelesaikan materi ini, kamu dapat memahami konsepnya, membaca contoh kode, dan mencoba latihan mandiri.
+
+## Percabangan
+
+Python menjalankan blok `if` jika kondisi truthy. Gunakan `elif` untuk kondisi tambahan dan `else` untuk kondisi lain.
+
+```python
+nilai = 80
+if nilai >= 75:
+    print("Lulus")
+else:
+    print("Belum lulus")
+```
+
+## Try It Yourself
+
+<PythonPlayground initialCode={"nilai = 92\nif nilai >= 90:\n    print(\"A\")\nelif nilai >= 75:\n    print(\"B\")\nelse:\n    print(\"C\")"} />
+
+## Indentasi
+
+Indentasi adalah bagian dari sintaks Python. Gunakan empat spasi per level secara konsisten.
+
+## Perbandingan Berantai
+
+`0 <= nilai <= 100` adalah cara ringkas memeriksa rentang nilai.
+
+## Latihan Interaktif
+
+Ubah starter code lalu klik **Check Answer**. Pemeriksaan latihan ini berbasis output sehingga solusi benar bisa lebih dari satu.
+
+<PythonPlayground
+  initialCode={'nilai = 70\n# Cetak Lulus jika nilai minimal 75; selain itu Remedial\n'}
+  expectedOutput={'Remedial'}
+  hint={'Gunakan if nilai >= 75 dan else.'}
+  solution={'nilai = 70\nif nilai >= 75:\n    print("Lulus")\nelse:\n    print("Remedial")'}
+/>
+
+## Quick Quiz
+
+<QuizCard
+  question='Kapan blok else pada if/else dijalankan?'
+  correctAnswer='B'
+  options={[
+    { id: 'A', text: 'Selalu', explanation: 'Tidak.' },
+    { id: 'B', text: 'Jika kondisi if false', explanation: 'Benar.' },
+    { id: 'C', text: 'Hanya jika if true', explanation: 'Sebaliknya.' },
+    { id: 'D', text: 'Tidak pernah', explanation: 'else dapat dijalankan.' },
+  ]}
+/>
+
+## Ringkasan
+
+Cobalah kembali contoh kode dengan mengubah nilainya. Catat output dan jelaskan mengapa hasilnya berubah.

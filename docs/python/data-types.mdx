@@ -1,0 +1,81 @@
+---
+title: Data Types
+sidebar_label: Data Types
+sidebar_position: 4
+description: Memahami jenis nilai Python dan cara mengonversinya.
+---
+
+import PythonPlayground from '@site/src/components/PythonPlayground';
+import QuizCard from '@site/src/components/QuizCard';
+
+# Data Types
+
+**Level:** Beginner | **Learning Path:** Python Programming
+
+Memahami jenis nilai Python dan cara mengonversinya.
+
+## Tujuan Pembelajaran
+
+Setelah menyelesaikan materi ini, kamu dapat memahami konsepnya, membaca contoh kode, dan mencoba latihan mandiri.
+
+## Tipe Data Umum
+
+| Jenis | Contoh | Keterangan |
+| --- | --- | --- |
+| `str` | `"data"` | Teks |
+| `int` | `12` | Bilangan bulat |
+| `float` | `3.5` | Bilangan desimal |
+| `bool` | `True` | Nilai logika |
+| `list` | `[1, 2]` | Koleksi berurutan dan bisa diubah |
+| `tuple` | `(1, 2)` | Koleksi berurutan, tidak bisa diubah elemennya |
+| `set` | `{1, 2}` | Himpunan unik |
+| `dict` | `{"a": 1}` | Pasangan key-value |
+| `NoneType` | `None` | Nilai ketiadaan |
+
+## Pemeriksaan Tipe
+
+<PythonPlayground initialCode={"data = [\"Kawruh\", 20, 3.14, True, None]\nfor nilai in data:\n    print(nilai, type(nilai).__name__)"} />
+
+## Konversi Tipe
+
+```python
+umur_teks = "21"
+umur = int(umur_teks)
+print(umur + 1)
+```
+
+**Output:** `22`.
+
+Konversi tidak selalu berhasil: `int("dua")` akan memunculkan `ValueError`.
+
+## Hubungan dengan Data Science
+
+Saat mengimpor CSV, periksa apakah kolom angka terbaca sebagai string; tipe yang salah dapat mengganggu operasi statistik.
+
+## Latihan Interaktif
+
+Ubah starter code lalu klik **Check Answer**. Pemeriksaan latihan ini berbasis output sehingga solusi benar bisa lebih dari satu.
+
+<PythonPlayground
+  initialCode={'nilai = "90"\n# Ubah nilai menjadi integer dan tambah 10\n'}
+  expectedOutput={'100'}
+  hint={'Gunakan int(nilai), lalu tambah 10.'}
+  solution={'nilai = "90"\nprint(int(nilai) + 10)'}
+/>
+
+## Quick Quiz
+
+<QuizCard
+  question='Apa tipe data 3.14?'
+  correctAnswer='B'
+  options={[
+    { id: 'A', text: 'int', explanation: 'Integer tidak memiliki bagian desimal.' },
+    { id: 'B', text: 'float', explanation: 'Benar.' },
+    { id: 'C', text: 'str', explanation: 'String memerlukan tanda kutip untuk contoh ini.' },
+    { id: 'D', text: 'bool', explanation: 'Bool adalah True atau False.' },
+  ]}
+/>
+
+## Ringkasan
+
+Cobalah kembali contoh kode dengan mengubah nilainya. Catat output dan jelaskan mengapa hasilnya berubah.

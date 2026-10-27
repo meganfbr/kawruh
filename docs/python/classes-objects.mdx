@@ -1,0 +1,57 @@
+---
+title: Classes And Objects
+sidebar_label: Classes And Objects
+sidebar_position: 21
+description: Pengenalan class, object, atribut, dan method.
+---
+
+import PythonPlayground from '@site/src/components/PythonPlayground';
+import QuizCard from '@site/src/components/QuizCard';
+
+# Classes And Objects
+
+**Level:** Intermediate | **Learning Path:** Python Programming
+
+Pengenalan class, object, atribut, dan method.
+
+## Tujuan Pembelajaran
+
+Setelah menyelesaikan materi ini, kamu dapat memahami konsepnya, membaca contoh kode, dan mencoba latihan mandiri.
+
+## Apa Itu Class?
+
+Class adalah cetak biru untuk membuat objek. Objek menyimpan state lewat atribut dan menyediakan perilaku lewat method.
+
+## Contoh Kelas
+
+<PythonPlayground initialCode={"class Mahasiswa:\n    def __init__(self, nama):\n        self.nama = nama\n\n    def sapa(self):\n        return f\"Halo, saya {self.nama}\"\n\nobjek = Mahasiswa(\"Ayu\")\nprint(objek.sapa())"} />
+
+## Penjelasan
+
+| Sintaks | Fungsi |
+| --- | --- |
+| `class` | Mendefinisikan kelas |
+| `__init__` | Menginisialisasi objek baru |
+| `self` | Merujuk pada instance saat method dipanggil |
+| `self.nama` | Menyimpan atribut instance |
+
+## Relevansi ML
+
+Library seperti scikit-learn sering menyediakan objek model dengan method `fit()` dan `predict()`.
+
+## Quick Quiz
+
+<QuizCard
+  question='Apa fungsi self pada method instance?'
+  correctAnswer='A'
+  options={[
+    { id: 'A', text: 'Merujuk instance saat ini', explanation: 'Benar.' },
+    { id: 'B', text: 'Membuat module', explanation: 'Tidak.' },
+    { id: 'C', text: 'Selalu berarti kelas induk', explanation: 'Tidak.' },
+    { id: 'D', text: 'Keyword wajib Python', explanation: 'Ini konvensi parameter, bukan keyword.' },
+  ]}
+/>
+
+## Ringkasan
+
+Cobalah kembali contoh kode dengan mengubah nilainya. Catat output dan jelaskan mengapa hasilnya berubah.

@@ -1,0 +1,68 @@
+---
+title: Tuples
+sidebar_label: Tuples
+sidebar_position: 10
+description: Membuat dan membaca koleksi tuple yang immutable.
+---
+
+import PythonPlayground from '@site/src/components/PythonPlayground';
+import QuizCard from '@site/src/components/QuizCard';
+
+# Tuples
+
+**Level:** Beginner | **Learning Path:** Python Programming
+
+Membuat dan membaca koleksi tuple yang immutable.
+
+## Tujuan Pembelajaran
+
+Setelah menyelesaikan materi ini, kamu dapat memahami konsepnya, membaca contoh kode, dan mencoba latihan mandiri.
+
+## Tuple
+
+Tuple adalah koleksi berurutan; elemennya tidak dapat diganti lewat assignment indeks.
+
+```python
+posisi = (10, 20)
+print(posisi[0])
+```
+
+## Unpacking
+
+<PythonPlayground initialCode={"koordinat = (7, 12)\nx, y = koordinat\nprint(x)\nprint(y)"} />
+
+## Tuple Satu Elemen
+
+Gunakan koma: `item = (5,)`. Tanpa koma, `(5)` hanyalah integer yang diberi tanda kurung.
+
+## Kapan Digunakan?
+
+Tuple berguna untuk pasangan koordinat, nilai return beberapa item, dan struktur berukuran tetap.
+
+## Latihan Interaktif
+
+Ubah starter code lalu klik **Check Answer**. Pemeriksaan latihan ini berbasis output sehingga solusi benar bisa lebih dari satu.
+
+<PythonPlayground
+  initialCode={'data = ("A", 90)\n# Buka tuple menjadi dua variabel dan cetak nilainya\n'}
+  expectedOutput={'A 90'}
+  hint={'Gunakan unpacking: nama, nilai = data.'}
+  solution={'data = ("A", 90)\nnama, nilai = data\nprint(nama, nilai)'}
+/>
+
+## Quick Quiz
+
+<QuizCard
+  question='Mana tuple berisi satu elemen integer?'
+  correctAnswer='B'
+  options={[
+    { id: 'A', text: '(5)', explanation: 'Ini integer 5.' },
+    { id: 'B', text: '(5,)', explanation: 'Benar.' },
+    { id: 'C', text: '[5]', explanation: 'Ini list.' },
+    { id: 'D', text: '{5}', explanation: 'Ini set.' },
+  ]}
+/>
+
+## Ringkasan
+
+Cobalah kembali contoh kode dengan mengubah nilainya. Catat output dan jelaskan mengapa hasilnya berubah.

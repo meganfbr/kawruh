@@ -1,0 +1,66 @@
+---
+title: Sets
+sidebar_label: Sets
+sidebar_position: 11
+description: Mengelola himpunan nilai unik menggunakan set.
+---
+
+import PythonPlayground from '@site/src/components/PythonPlayground';
+import QuizCard from '@site/src/components/QuizCard';
+
+# Sets
+
+**Level:** Beginner | **Learning Path:** Python Programming
+
+Mengelola himpunan nilai unik menggunakan set.
+
+## Tujuan Pembelajaran
+
+Setelah menyelesaikan materi ini, kamu dapat memahami konsepnya, membaca contoh kode, dan mencoba latihan mandiri.
+
+## Set dan Elemen Unik
+
+Set menghapus duplikasi dan tidak menyediakan indeks posisi.
+
+```python
+kelas = {"A", "B", "A"}
+print(len(kelas))
+```
+
+## Operasi Himpunan
+
+<PythonPlayground initialCode={"a = {1, 2, 3}\nb = {3, 4}\nprint(sorted(a | b))\nprint(sorted(a & b))\nprint(sorted(a - b))"} />
+
+`|` berarti union, `&` intersection, dan `-` difference. Contoh memakai `sorted()` agar output terurut saat ditampilkan.
+
+## Set Kosong
+
+Gunakan `set()`, bukan `{}`, karena `{}` membuat dictionary kosong.
+
+## Latihan Interaktif
+
+Ubah starter code lalu klik **Check Answer**. Pemeriksaan latihan ini berbasis output sehingga solusi benar bisa lebih dari satu.
+
+<PythonPlayground
+  initialCode={'angka = [1, 2, 2, 3]\n# Cetak jumlah nilai unik\n'}
+  expectedOutput={'3'}
+  hint={'Buat set dari list lalu gunakan len().'}
+  solution={'angka = [1, 2, 2, 3]\nprint(len(set(angka)))'}
+/>
+
+## Quick Quiz
+
+<QuizCard
+  question='Apa hasil len({1, 1, 2})?'
+  correctAnswer='B'
+  options={[
+    { id: 'A', text: '3', explanation: 'Duplikasi dihitung sekali.' },
+    { id: 'B', text: '2', explanation: 'Benar.' },
+    { id: 'C', text: '1', explanation: 'Ada dua nilai unik.' },
+    { id: 'D', text: 'Error', explanation: 'Literal set ini valid.' },
+  ]}
+/>
+
+## Ringkasan
+
+Cobalah kembali contoh kode dengan mengubah nilainya. Catat output dan jelaskan mengapa hasilnya berubah.

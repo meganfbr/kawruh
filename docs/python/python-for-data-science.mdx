@@ -1,0 +1,74 @@
+---
+title: Python For Data Science
+sidebar_label: Python For Data Science
+sidebar_position: 22
+description: Menyiapkan alur belajar menuju NumPy, pandas, dan Machine Learning.
+---
+
+import PythonPlayground from '@site/src/components/PythonPlayground';
+import QuizCard from '@site/src/components/QuizCard';
+
+# Python For Data Science
+
+**Level:** Intermediate | **Learning Path:** Python Programming
+
+Menyiapkan alur belajar menuju NumPy, pandas, dan Machine Learning.
+
+## Tujuan Pembelajaran
+
+Setelah menyelesaikan materi ini, kamu dapat memahami konsepnya, membaca contoh kode, dan mencoba latihan mandiri.
+
+## Setelah Python Dasar
+
+Kini kamu dapat melanjutkan ke workflow Data Science: mengambil data, membersihkan, memvisualisasikan, membangun model sederhana, dan mengevaluasi hasil.
+
+## Library yang Sering Dipakai
+
+| Library | Kegunaan |
+| --- | --- |
+| NumPy | Array dan operasi numerik |
+| pandas | DataFrame dan preprocessing tabular |
+| Matplotlib | Grafik |
+| scikit-learn | ML klasik, preprocessing, evaluasi |
+| PyTorch / TensorFlow | Deep Learning |
+| librosa | Analisis audio |
+| OpenCV / Pillow | Pengolahan citra |
+
+## Memilih Notebook
+
+- **Colab:** praktis untuk notebook cloud, runtime bergantung ketersediaan.
+- **Kaggle:** cocok untuk eksperimen dengan dataset yang di-host di Kaggle.
+- **Jupyter lokal:** kontrol environment dan file ada di mesin sendiri.
+
+## Contoh Analisis Python Murni
+
+<PythonPlayground initialCode={"nilai = [75, 80, 95]\nrata_rata = sum(nilai) / len(nilai)\nprint(round(rata_rata, 2))"} />
+
+## Checklist Penelitian
+
+1. Periksa sumber dan lisensi dataset.
+2. Pastikan pembagian train/validation/test benar.
+3. Hindari kebocoran data (data leakage).
+4. Tentukan baseline dan metrik sesuai tujuan.
+5. Dokumentasikan preprocessing, seed, dan hasil eksperimen.
+
+## Lanjut Belajar
+
+Buka **Data Analytics**, lalu **Machine Learning** dan **Deep Learning** melalui roadmap Kawruh ketika kontennya sudah tersedia.
+
+## Quick Quiz
+
+<QuizCard
+  question='Kapan imputasi missing value sebaiknya di-fit pada data ML?'
+  correctAnswer='B'
+  options={[
+    { id: 'A', text: 'Sebelum split pada seluruh data', explanation: 'Berisiko leakage.' },
+    { id: 'B', text: 'Hanya berdasarkan training set', explanation: 'Benar; transformasikan validation/test dengan parameter training.' },
+    { id: 'C', text: 'Hanya pada test set', explanation: 'Tidak.' },
+    { id: 'D', text: 'Tidak perlu dipikirkan', explanation: 'Perlu.' },
+  ]}
+/>
+
+## Ringkasan
+
+Cobalah kembali contoh kode dengan mengubah nilainya. Catat output dan jelaskan mengapa hasilnya berubah.

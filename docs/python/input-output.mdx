@@ -1,0 +1,65 @@
+---
+title: Input And Output
+sidebar_label: Input And Output
+sidebar_position: 16
+description: Memahami print, format output, dan input pengguna.
+---
+
+import PythonPlayground from '@site/src/components/PythonPlayground';
+import QuizCard from '@site/src/components/QuizCard';
+
+# Input And Output
+
+**Level:** Beginner | **Learning Path:** Python Programming
+
+Memahami print, format output, dan input pengguna.
+
+## Tujuan Pembelajaran
+
+Setelah menyelesaikan materi ini, kamu dapat memahami konsepnya, membaca contoh kode, dan mencoba latihan mandiri.
+
+## Menampilkan Output
+
+Gunakan `print()` dan f-string untuk menampilkan informasi yang mudah dibaca.
+
+```python
+nama = "Ayu"
+print(f"Halo, {nama}")
+```
+
+## Membaca Input
+
+Pada Python lokal, `input()` membaca teks dari terminal:
+
+```python
+# Cocok dicoba di terminal lokal
+nama = input("Nama: ")
+print(nama)
+```
+
+**Catatan:** Python Playground Kawruh belum menyediakan input interaktif, sehingga contoh `input()` di atas jangan dijalankan di sana sampai fiturnya ditambahkan.
+
+## Pemformatan Angka
+
+<PythonPlayground initialCode={"harga = 12500.5\nprint(f\"Rp{harga:,.2f}\")\nprint(\"A\", \"B\", sep=\" - \")"} />
+
+## Latihan Lokal
+
+Buat program terminal yang meminta nama dan menampilkan pesan sapaan.
+
+## Quick Quiz
+
+<QuizCard
+  question='Tipe nilai yang dikembalikan input() biasanya?'
+  correctAnswer='B'
+  options={[
+    { id: 'A', text: 'int', explanation: 'Perlu konversi sendiri.' },
+    { id: 'B', text: 'str', explanation: 'Benar.' },
+    { id: 'C', text: 'float', explanation: 'Tidak otomatis.' },
+    { id: 'D', text: 'bool', explanation: 'Tidak otomatis.' },
+  ]}
+/>
+
+## Ringkasan
+
+Cobalah kembali contoh kode dengan mengubah nilainya. Catat output dan jelaskan mengapa hasilnya berubah.

@@ -1,0 +1,88 @@
+---
+title: Variables
+sidebar_label: Variables
+sidebar_position: 3
+description: Memahami variabel, assignment, dan aturan penamaan.
+---
+
+import PythonPlayground from '@site/src/components/PythonPlayground';
+import QuizCard from '@site/src/components/QuizCard';
+
+# Variables
+
+**Level:** Beginner | **Learning Path:** Python Programming
+
+Memahami variabel, assignment, dan aturan penamaan.
+
+## Tujuan Pembelajaran
+
+Setelah menyelesaikan materi ini, kamu dapat memahami konsepnya, membaca contoh kode, dan mencoba latihan mandiri.
+
+## Konsep Variabel
+
+Nama variabel mengacu ke suatu objek bernilai. Gunakan operator `=` untuk memberi nilai.
+
+```python
+nama = "Kawruh"
+umur = 20
+print(nama, umur)
+```
+
+<PythonPlayground initialCode={"nama = \"Kawruh\"\numur = 20\nprint(nama)\nprint(umur)"} />
+
+## Aturan Penamaan
+
+- Gunakan huruf, digit, dan underscore; tidak boleh dimulai digit.
+- Hindari spasi dan keyword seperti `class` atau `for`.
+- `nama` berbeda dengan `Nama`.
+- Gunakan `snake_case` agar kode lebih terbaca.
+
+## Mengubah Nilai
+
+```python
+nilai = 80
+nilai = 95
+print(nilai)
+```
+
+**Output:** `95`.
+
+## Penjelasan Kode
+
+| Baris | Arti |
+| --- | --- |
+| `nilai = 80` | Nama `nilai` mengacu ke integer 80 |
+| `nilai = 95` | Nama tersebut sekarang mengacu ke 95 |
+| `print(nilai)` | Mencetak nilai terakhir |
+
+## Kesalahan Umum
+
+`print(Nama)` menghasilkan `NameError` jika yang didefinisikan hanya `nama`.
+
+## Latihan Interaktif
+
+Ubah starter code lalu klik **Check Answer**. Pemeriksaan latihan ini berbasis output sehingga solusi benar bisa lebih dari satu.
+
+<PythonPlayground
+  initialCode={'harga = 45000\njumlah = 3\n# Tampilkan total harga\n'}
+  expectedOutput={'135000'}
+  hint={'Kalikan harga dan jumlah, lalu print hasilnya.'}
+  solution={'harga = 45000\njumlah = 3\nprint(harga * jumlah)'}
+/>
+
+## Quick Quiz
+
+<QuizCard
+  question='Manakah nama variabel yang valid?'
+  correctAnswer='C'
+  options={[
+    { id: 'A', text: '2nilai', explanation: 'Tidak boleh dimulai angka.' },
+    { id: 'B', text: 'nama mahasiswa', explanation: 'Tidak boleh memakai spasi.' },
+    { id: 'C', text: 'nama_mahasiswa', explanation: 'Benar, underscore diperbolehkan.' },
+    { id: 'D', text: 'class', explanation: 'Keyword Python tidak bisa dipakai.' },
+  ]}
+/>
+
+## Ringkasan
+
+Cobalah kembali contoh kode dengan mengubah nilainya. Catat output dan jelaskan mengapa hasilnya berubah.

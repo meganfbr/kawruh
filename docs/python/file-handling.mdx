@@ -1,0 +1,68 @@
+---
+title: File Handling
+sidebar_label: File Handling
+sidebar_position: 19
+description: Membaca dan menulis file dengan context manager.
+---
+
+import PythonPlayground from '@site/src/components/PythonPlayground';
+import QuizCard from '@site/src/components/QuizCard';
+
+# File Handling
+
+**Level:** Intermediate | **Learning Path:** Python Programming
+
+Membaca dan menulis file dengan context manager.
+
+## Tujuan Pembelajaran
+
+Setelah menyelesaikan materi ini, kamu dapat memahami konsepnya, membaca contoh kode, dan mencoba latihan mandiri.
+
+## Membuka File
+
+Gunakan `with open(...)` agar file ditutup otomatis.
+
+```python
+# Jalankan pada Python lokal
+with open("catatan.txt", "w", encoding="utf-8") as file:
+    file.write("Halo Kawruh")
+
+with open("catatan.txt", "r", encoding="utf-8") as file:
+    print(file.read())
+```
+
+**Catatan:** Kode file di atas ditujukan untuk Python lokal. File virtual yang dibuat Pyodide berada di lingkungan browser, bukan otomatis tersimpan di disk perangkat.
+
+## Mode File
+
+| Mode | Keterangan |
+| --- | --- |
+| `r` | Membaca; file harus tersedia |
+| `w` | Menulis; menimpa file bila ada |
+| `a` | Menambahkan ke akhir file |
+| `b` | Mode biner |
+
+## Perkenalan CSV
+
+Untuk file CSV, gunakan modul `csv` atau pandas sesuai kebutuhan analisis.
+
+## Praktik Aman
+
+Jangan menghapus atau menimpa file penting saat bereksperimen. Gunakan folder latihan terpisah.
+
+## Quick Quiz
+
+<QuizCard
+  question='Apa manfaat with open?'
+  correctAnswer='A'
+  options={[
+    { id: 'A', text: 'Menutup file secara otomatis', explanation: 'Benar, melalui context manager.' },
+    { id: 'B', text: 'Mempercepat internet', explanation: 'Tidak.' },
+    { id: 'C', text: 'Menghapus file', explanation: 'Tidak.' },
+    { id: 'D', text: 'Menginstal Python', explanation: 'Tidak.' },
+  ]}
+/>
+
+## Ringkasan
+
+Cobalah kembali contoh kode dengan mengubah nilainya. Catat output dan jelaskan mengapa hasilnya berubah.

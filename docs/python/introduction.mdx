@@ -1,138 +1,85 @@
 ---
 title: Python Introduction
+sidebar_label: Python Introduction
 sidebar_position: 2
-description: Pengenalan bahasa Python dan praktik menjalankan kode pertama.
+description: Mengenal bahasa Python, sintaks dasar, dan program pertama.
 ---
 
-import PythonPlayground from "@site/src/components/PythonPlayground";
+import PythonPlayground from '@site/src/components/PythonPlayground';
+import QuizCard from '@site/src/components/QuizCard';
 
 # Python Introduction
 
-Python adalah bahasa pemrograman tingkat tinggi yang banyak digunakan dalam pengembangan software, analisis data, machine learning, dan artificial intelligence.
+**Level:** Beginner | **Learning Path:** Python Programming
 
-Pada materi ini, kamu akan mengenal Python dan mencoba menjalankan kode pertamamu secara langsung di Kawruh.
+Mengenal bahasa Python, sintaks dasar, dan program pertama.
 
-## Apa itu Python?
+## Tujuan Pembelajaran
 
-Python merupakan bahasa pemrograman yang memiliki sintaks relatif sederhana dan mudah dibaca.
+Setelah menyelesaikan materi ini, kamu dapat memahami konsepnya, membaca contoh kode, dan mencoba latihan mandiri.
 
-Python dapat digunakan untuk berbagai kebutuhan, seperti:
+## Apa Itu Python?
 
-- Web Development
-- Data Analytics
-- Machine Learning
-- Deep Learning
-- Automation
-- Artificial Intelligence
+Python adalah bahasa pemrograman serbaguna yang populer untuk otomasi, aplikasi, analisis data, machine learning, dan AI. Sintaksnya menggunakan indentasi untuk menunjukkan blok kode.
 
-## Mengapa Belajar Python?
-
-Python populer karena:
-
-- Sintaksnya relatif mudah dipahami.
-- Mendukung berbagai paradigma pemrograman.
-- Memiliki ekosistem library yang luas.
-- Banyak digunakan dalam Data Science dan AI.
-- Memiliki komunitas pengembang yang besar.
-
-## Contoh Kode Python
-
-Salah satu fungsi dasar Python adalah `print()`.
-
-Fungsi ini digunakan untuk menampilkan teks atau nilai ke layar.
-
-Contohnya:
+## Program Pertama
 
 ```python
 print("Hello, Kawruh!")
 ```
 
-**Output:**
+**Output yang diharapkan:**
 
 ```text
 Hello, Kawruh!
 ```
 
-## Coba Python Secara Langsung
+<PythonPlayground initialCode={"print(\"Hello, Kawruh!\")\nprint(10 + 5)"} />
 
-Sekarang kamu bisa mencoba kode Python tanpa harus menginstal Python di laptop.
+## Penjelasan Per Baris
 
-Edit kode berikut, kemudian klik **Run Code** untuk menjalankannya.
+| Kode | Arti |
+| --- | --- |
+| `print("Hello, Kawruh!")` | Memanggil fungsi bawaan `print()` untuk menampilkan teks |
+| `print(10 + 5)` | Menghitung penjumlahan dan menampilkannya |
 
-<PythonPlayground initialCode={'print("Hello, Kawruh!")\nprint(10 + 5)'} />
+## Komentar
 
-## Penjelasan Kode
-
-Mari kita pahami kode sebelumnya.
-
-### 1. Fungsi print()
-
-```python
-print("Hello, Kawruh!")
-```
-
-- `print()` adalah fungsi bawaan Python.
-- Teks di dalam tanda kutip disebut string.
-- Python akan menampilkan string tersebut sebagai output.
-
-### 2. Operasi Aritmatika
+Baris yang diawali `#` dipakai sebagai komentar dan tidak dieksekusi.
 
 ```python
-print(10 + 5)
+# Ini komentar
+print("Saya belajar Python")
 ```
 
-- `10` dan `5` merupakan nilai integer.
-- Simbol `+` adalah operator penjumlahan.
-- Python menghitung hasil penjumlahan sebelum menampilkannya.
+## Kesalahan Umum
 
-**Output:**
+Perhatikan kurung tutup, tanda kutip, dan perbedaan kapital pada nama variabel.
 
-```text
-15
-```
+## Latihan Interaktif
 
-## Latihan Python
+Ubah starter code lalu klik **Check Answer**. Pemeriksaan latihan ini berbasis output sehingga solusi benar bisa lebih dari satu.
 
-Sekarang coba lakukan latihan berikut menggunakan Python Playground di atas.
+<PythonPlayground
+  initialCode={'print("Halo, Kawruh")\n# Cetak angka 25 di baris berikutnya\n'}
+  expectedOutput={'Halo, Kawruh\n25'}
+  hint={'Tambahkan print(25) pada baris baru.'}
+  solution={'print("Halo, Kawruh")\nprint(25)'}
+/>
 
-### Latihan 1 — Menampilkan Teks
+## Quick Quiz
 
-Ubah kode agar menampilkan:
+<QuizCard
+  question='Apa fungsi print()?'
+  correctAnswer='B'
+  options={[
+    { id: 'A', text: 'Mencetak ke printer fisik', explanation: 'Tidak selalu; print() menulis ke keluaran standar.' },
+    { id: 'B', text: 'Menampilkan nilai ke output', explanation: 'Benar.' },
+    { id: 'C', text: 'Menyimpan file', explanation: 'Gunakan mekanisme file untuk itu.' },
+    { id: 'D', text: 'Mengubah string menjadi angka', explanation: 'Gunakan int() atau float() jika sesuai.' },
+  ]}
+/>
 
-```text
-Saya sedang belajar Python di Kawruh
-```
+## Ringkasan
 
-### Latihan 2 — Operasi Matematika
-
-Buat kode Python untuk menghitung:
-
-```text
-25 + 15
-```
-
-Tampilkan hasilnya menggunakan fungsi `print()`.
-
-### Latihan 3 — Mengenal Variabel
-
-Coba jalankan kode berikut:
-
-```python
-nama = "Kawruh"
-tahun = 2026
-
-print(nama)
-print(tahun)
-```
-
-Amati hasilnya.
-
-:::tip Tips Belajar
-Kamu tidak perlu langsung menghafal semua sintaks Python.
-
-Fokuslah memahami konsep, mencoba contoh kode, dan mengamati output yang dihasilkan.
-:::
-
-## Selanjutnya
-
-Setelah memahami cara menjalankan kode Python, kamu bisa melanjutkan ke materi **Python Variables** untuk mempelajari cara menyimpan dan menggunakan data.
+Cobalah kembali contoh kode dengan mengubah nilainya. Catat output dan jelaskan mengapa hasilnya berubah.

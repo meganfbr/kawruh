@@ -1,0 +1,73 @@
+---
+title: Modules
+sidebar_label: Modules
+sidebar_position: 18
+description: Mengimpor modul Python dan memahami struktur package.
+---
+
+import PythonPlayground from '@site/src/components/PythonPlayground';
+import QuizCard from '@site/src/components/QuizCard';
+
+# Modules
+
+**Level:** Intermediate | **Learning Path:** Python Programming
+
+Mengimpor modul Python dan memahami struktur package.
+
+## Tujuan Pembelajaran
+
+Setelah menyelesaikan materi ini, kamu dapat memahami konsepnya, membaca contoh kode, dan mencoba latihan mandiri.
+
+## Apa Itu Module?
+
+Module adalah berkas Python yang berisi fungsi, kelas, atau variabel. Import membantu menggunakan kembali kode.
+
+```python
+import math
+print(math.sqrt(16))
+```
+
+## Bentuk Import
+
+```python
+from statistics import mean
+print(mean([80, 90, 100]))
+```
+
+<PythonPlayground initialCode={"import math\nfrom statistics import mean\nprint(math.pi)\nprint(mean([10, 20, 30]))"} />
+
+## Pahami Namespace
+
+`math.sqrt` menjelaskan asal fungsi dengan jelas. Hindari `from module import *` pada project besar.
+
+## Library untuk Data Science
+
+Perkenalan: NumPy, pandas, Matplotlib, scikit-learn, TensorFlow, dan PyTorch. Instal hanya yang dibutuhkan sesuai environment.
+
+## Latihan Interaktif
+
+Ubah starter code lalu klik **Check Answer**. Pemeriksaan latihan ini berbasis output sehingga solusi benar bisa lebih dari satu.
+
+<PythonPlayground
+  initialCode={'import math\n# Cetak akar kuadrat dari 81 sebagai float\n'}
+  expectedOutput={'9.0'}
+  hint={'Gunakan math.sqrt(81).'}
+  solution={'import math\nprint(math.sqrt(81))'}
+/>
+
+## Quick Quiz
+
+<QuizCard
+  question='Import apa untuk fungsi sqrt dari math?'
+  correctAnswer='B'
+  options={[
+    { id: 'A', text: 'import sqrt', explanation: 'Belum tentu ada modul sqrt.' },
+    { id: 'B', text: 'import math', explanation: 'Benar, gunakan math.sqrt.' },
+    { id: 'C', text: 'import python', explanation: 'Bukan modul.' },
+    { id: 'D', text: 'load math', explanation: 'Bukan sintaks Python.' },
+  ]}
+/>
+
+## Ringkasan
+
+Cobalah kembali contoh kode dengan mengubah nilainya. Catat output dan jelaskan mengapa hasilnya berubah.

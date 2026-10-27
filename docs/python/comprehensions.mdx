@@ -1,0 +1,67 @@
+---
+title: Comprehensions
+sidebar_label: Comprehensions
+sidebar_position: 20
+description: Menulis list dan dictionary comprehension yang mudah dibaca.
+---
+
+import PythonPlayground from '@site/src/components/PythonPlayground';
+import QuizCard from '@site/src/components/QuizCard';
+
+# Comprehensions
+
+**Level:** Intermediate | **Learning Path:** Python Programming
+
+Menulis list dan dictionary comprehension yang mudah dibaca.
+
+## Tujuan Pembelajaran
+
+Setelah menyelesaikan materi ini, kamu dapat memahami konsepnya, membaca contoh kode, dan mencoba latihan mandiri.
+
+## List Comprehension
+
+Comprehension mengubah iterable menjadi koleksi baru secara ringkas.
+
+```python
+kuadrat = [x ** 2 for x in range(5)]
+```
+
+## Filter dalam Comprehension
+
+<PythonPlayground initialCode={"angka = [1, 2, 3, 4, 5, 6]\ngenap = [n for n in angka if n % 2 == 0]\nprint(genap)"} />
+
+## Dictionary Comprehension
+
+```python
+kuadrat = {n: n ** 2 for n in range(3)}
+```
+
+Utamakan kejelasan. Jika expression terlalu rumit, gunakan loop biasa.
+
+## Latihan Interaktif
+
+Ubah starter code lalu klik **Check Answer**. Pemeriksaan latihan ini berbasis output sehingga solusi benar bisa lebih dari satu.
+
+<PythonPlayground
+  initialCode={'angka = [1, 2, 3]\n# Tampilkan list setiap angka kali 3\n'}
+  expectedOutput={'[3, 6, 9]'}
+  hint={'Gunakan [x * 3 for x in angka].'}
+  solution={'angka = [1, 2, 3]\nprint([x * 3 for x in angka])'}
+/>
+
+## Quick Quiz
+
+<QuizCard
+  question='Apa hasil [x*2 for x in [1,2]]?'
+  correctAnswer='B'
+  options={[
+    { id: 'A', text: '[1, 2]', explanation: 'Belum dikali dua.' },
+    { id: 'B', text: '[2, 4]', explanation: 'Benar.' },
+    { id: 'C', text: '[2, 2]', explanation: 'Tidak.' },
+    { id: 'D', text: 'Error', explanation: 'Valid.' },
+  ]}
+/>
+
+## Ringkasan
+
+Cobalah kembali contoh kode dengan mengubah nilainya. Catat output dan jelaskan mengapa hasilnya berubah.

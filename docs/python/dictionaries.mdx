@@ -1,0 +1,64 @@
+---
+title: Dictionaries
+sidebar_label: Dictionaries
+sidebar_position: 12
+description: Menyimpan data berstruktur key-value dengan dictionary.
+---
+
+import PythonPlayground from '@site/src/components/PythonPlayground';
+import QuizCard from '@site/src/components/QuizCard';
+
+# Dictionaries
+
+**Level:** Beginner | **Learning Path:** Python Programming
+
+Menyimpan data berstruktur key-value dengan dictionary.
+
+## Tujuan Pembelajaran
+
+Setelah menyelesaikan materi ini, kamu dapat memahami konsepnya, membaca contoh kode, dan mencoba latihan mandiri.
+
+## Dictionary
+
+Dictionary menghubungkan key dengan value. Key harus hashable dan unik dalam satu dictionary.
+
+```python
+mahasiswa = {"nama": "Ayu", "nilai": 90}
+print(mahasiswa["nama"])
+```
+
+## Membaca dan Mengubah
+
+<PythonPlayground initialCode={"mahasiswa = {\"nama\": \"Ayu\", \"nilai\": 90}\nprint(mahasiswa.get(\"jurusan\", \"Belum diisi\"))\nmahasiswa[\"nilai\"] = 95\nfor k, v in mahasiswa.items():\n    print(k, v)"} />
+
+## Dictionary dalam Data Science
+
+Satu record data dapat direpresentasikan sebagai dictionary, misalnya metadata gambar atau konfigurasi pelatihan.
+
+## Latihan Interaktif
+
+Ubah starter code lalu klik **Check Answer**. Pemeriksaan latihan ini berbasis output sehingga solusi benar bisa lebih dari satu.
+
+<PythonPlayground
+  initialCode={'data = {"jumlah": 3, "harga": 10000}\n# Cetak total\n'}
+  expectedOutput={'30000'}
+  hint={'Ambil data["jumlah"] dan data["harga"].'}
+  solution={'data = {"jumlah": 3, "harga": 10000}\nprint(data["jumlah"] * data["harga"])'}
+/>
+
+## Quick Quiz
+
+<QuizCard
+  question='Apa keuntungan get("x", 0) jika key tidak ada?'
+  correctAnswer='B'
+  options={[
+    { id: 'A', text: 'Memunculkan KeyError', explanation: 'get dapat memberikan default.' },
+    { id: 'B', text: 'Mengembalikan 0', explanation: 'Benar.' },
+    { id: 'C', text: 'Menghapus key', explanation: 'Tidak.' },
+    { id: 'D', text: 'Menambah key', explanation: 'get tidak menambah key.' },
+  ]}
+/>
+
+## Ringkasan
+
+Cobalah kembali contoh kode dengan mengubah nilainya. Catat output dan jelaskan mengapa hasilnya berubah.

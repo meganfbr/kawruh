@@ -1,0 +1,63 @@
+---
+title: Exceptions
+sidebar_label: Exceptions
+sidebar_position: 17
+description: Menangani kesalahan runtime dengan try dan except.
+---
+
+import PythonPlayground from '@site/src/components/PythonPlayground';
+import QuizCard from '@site/src/components/QuizCard';
+
+# Exceptions
+
+**Level:** Intermediate | **Learning Path:** Python Programming
+
+Menangani kesalahan runtime dengan try dan except.
+
+## Tujuan Pembelajaran
+
+Setelah menyelesaikan materi ini, kamu dapat memahami konsepnya, membaca contoh kode, dan mencoba latihan mandiri.
+
+## Apa Itu Exception?
+
+Exception memberi tahu bahwa operasi gagal, seperti membagi dengan nol atau mengonversi string yang bukan angka.
+
+## Try / Except
+
+<PythonPlayground initialCode={"teks = \"dua\"\ntry:\n    angka = int(teks)\nexcept ValueError:\n    print(\"Masukkan angka yang valid\")"} />
+
+## Else dan Finally
+
+`else` dijalankan jika blok `try` tidak menghasilkan exception; `finally` dijalankan saat keluar dari struktur try, termasuk pada umumnya ketika terjadi exception.
+
+## Praktik Baik
+
+Tangani exception spesifik (`ValueError`, `KeyError`) daripada menangkap semua error tanpa alasan.
+
+## Latihan Interaktif
+
+Ubah starter code lalu klik **Check Answer**. Pemeriksaan latihan ini berbasis output sehingga solusi benar bisa lebih dari satu.
+
+<PythonPlayground
+  initialCode={'teks = "abc"\n# Tangani ValueError dan cetak Tidak valid\n'}
+  expectedOutput={'Tidak valid'}
+  hint={'Gunakan try, except ValueError.'}
+  solution={'teks = "abc"\ntry:\n    int(teks)\nexcept ValueError:\n    print("Tidak valid")'}
+/>
+
+## Quick Quiz
+
+<QuizCard
+  question='Error apa saat int("abc")?'
+  correctAnswer='A'
+  options={[
+    { id: 'A', text: 'ValueError', explanation: 'Benar.' },
+    { id: 'B', text: 'KeyError', explanation: 'Terkait akses key.' },
+    { id: 'C', text: 'IndexError', explanation: 'Terkait indeks.' },
+    { id: 'D', text: 'TypeError', explanation: 'Bukan kasus ini.' },
+  ]}
+/>
+
+## Ringkasan
+
+Cobalah kembali contoh kode dengan mengubah nilainya. Catat output dan jelaskan mengapa hasilnya berubah.

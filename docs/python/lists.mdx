@@ -1,0 +1,67 @@
+---
+title: Lists
+sidebar_label: Lists
+sidebar_position: 9
+description: Mengolah kumpulan data berurutan yang dapat dimodifikasi.
+---
+
+import PythonPlayground from '@site/src/components/PythonPlayground';
+import QuizCard from '@site/src/components/QuizCard';
+
+# Lists
+
+**Level:** Beginner | **Learning Path:** Python Programming
+
+Mengolah kumpulan data berurutan yang dapat dimodifikasi.
+
+## Tujuan Pembelajaran
+
+Setelah menyelesaikan materi ini, kamu dapat memahami konsepnya, membaca contoh kode, dan mencoba latihan mandiri.
+
+## Membuat List
+
+List mempertahankan urutan dan mendukung elemen berulang.
+
+```python
+nilai = [80, 85, 90]
+```
+
+## Index, Slicing, dan Append
+
+<PythonPlayground initialCode={"nilai = [80, 85, 90]\nprint(nilai[0])\nnilai.append(95)\nprint(nilai)\nprint(nilai[1:3])"} />
+
+## Mengubah dan Menghapus
+
+Gunakan `nilai[0] = 100`, `remove`, atau `pop` sesuai kebutuhan. `len` menghitung banyak elemen.
+
+## Hubungan dengan Dataset
+
+List cocok untuk menyimpan nilai sementara; untuk analisis tabular berskala lebih besar, gunakan pandas sesuai jenis datanya.
+
+## Latihan Interaktif
+
+Ubah starter code lalu klik **Check Answer**. Pemeriksaan latihan ini berbasis output sehingga solusi benar bisa lebih dari satu.
+
+<PythonPlayground
+  initialCode={'data = [1, 2, 3]\n# Tambahkan 4 kemudian cetak panjang list\n'}
+  expectedOutput={'4'}
+  hint={'Gunakan append(4) dan len(data).'}
+  solution={'data = [1, 2, 3]\ndata.append(4)\nprint(len(data))'}
+/>
+
+## Quick Quiz
+
+<QuizCard
+  question='Bagaimana menambah item di akhir list?'
+  correctAnswer='A'
+  options={[
+    { id: 'A', text: 'append()', explanation: 'Benar.' },
+    { id: 'B', text: 'add()', explanation: 'Ini method set, bukan list.' },
+    { id: 'C', text: 'push()', explanation: 'Bukan method bawaan list.' },
+    { id: 'D', text: 'insert_end()', explanation: 'Bukan method list.' },
+  ]}
+/>
+
+## Ringkasan
+
+Cobalah kembali contoh kode dengan mengubah nilainya. Catat output dan jelaskan mengapa hasilnya berubah.

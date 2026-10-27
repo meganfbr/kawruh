@@ -1,0 +1,297 @@
+---
+title: Python Operators
+sidebar_label: Operators
+sidebar_position: 5
+description: Pelajari operator aritmatika, assignment, perbandingan, logika, membership, identity, dan prioritas operasi Python melalui contoh dan latihan interaktif.
+---
+
+import PythonPlayground from '@site/src/components/PythonPlayground';
+import QuizCard from '@site/src/components/QuizCard';
+import Admonition from '@theme/Admonition';
+
+# Python Operators
+
+**Level:** Beginner | **Estimasi belajar:** 30–40 menit | **Prasyarat:** Variables dan Data Types
+
+Pada materi sebelumnya, kita sudah mengenal variabel dan tipe data. Sekarang kita belajar **operator**, yaitu simbol atau kata khusus yang dipakai Python untuk menghitung, membandingkan, memperbarui nilai, dan menggabungkan kondisi.
+
+## Tujuan Pembelajaran
+
+Setelah menyelesaikan halaman ini, kamu dapat:
+
+- Membedakan operator aritmatika, assignment, perbandingan, dan logika.
+- Memahami perbedaan `=`, `==`, dan `is`.
+- Menggunakan `in` untuk memeriksa keanggotaan data.
+- Memahami prioritas operasi dan penggunaan tanda kurung.
+- Menerapkan operator untuk menghitung nilai dan memfilter data sederhana.
+
+## 1. Apa Itu Operator?
+
+Perhatikan ekspresi berikut:
+
+```python
+harga = 15000
+jumlah = 3
+total = harga * jumlah
+print(total)
+```
+
+Tanda `*` adalah **operator perkalian**. `harga` dan `jumlah` disebut **operand**, yaitu nilai yang diproses operator. Hasil ekspresinya disimpan pada variabel `total`.
+
+| Bagian | Fungsi |
+| --- | --- |
+| `harga` dan `jumlah` | Operand |
+| `*` | Operator perkalian |
+| `harga * jumlah` | Ekspresi yang menghasilkan nilai |
+| `total = ...` | Assignment: menyimpan hasil ke variabel |
+
+<PythonPlayground initialCode={'harga = 15000\njumlah = 3\ntotal = harga * jumlah\nprint(total)'} />
+
+**Output yang diharapkan:** `45000`.
+
+## 2. Arithmetic Operators — Operator Aritmatika
+
+Operator aritmatika digunakan untuk perhitungan matematika.
+
+| Operator | Arti | Contoh | Hasil |
+| --- | --- | --- | --- |
+| `+` | Penjumlahan | `7 + 3` | `10` |
+| `-` | Pengurangan | `7 - 3` | `4` |
+| `*` | Perkalian | `7 * 3` | `21` |
+| `/` | Pembagian biasa | `7 / 2` | `3.5` |
+| `//` | Pembagian floor | `7 // 2` | `3` |
+| `%` | Sisa pembagian (modulo) | `7 % 2` | `1` |
+| `**` | Pangkat | `2 ** 3` | `8` |
+
+### Try It Yourself
+
+<PythonPlayground initialCode={'a = 7\nb = 2\n\nprint("Penjumlahan:", a + b)\nprint("Pembagian:", a / b)\nprint("Floor division:", a // b)\nprint("Modulo:", a % b)\nprint("Pangkat:", a ** b)'} />
+
+### Memahami `/`, `//`, dan `%`
+
+Tiga operator ini sering tertukar:
+
+- `7 / 2` menghasilkan `3.5` karena pembagian biasa menghasilkan bilangan desimal.
+- `7 // 2` menghasilkan `3` karena hasilnya **dibulatkan ke bawah** (*floor*).
+- `7 % 2` menghasilkan `1` karena sisa pembagian 7 oleh 2 adalah 1.
+
+<Admonition type="info" title="Perhatikan Bilangan Negatif">
+
+`-7 // 2` menghasilkan `-4`, bukan `-3`, karena floor division membulatkan ke arah negatif tak hingga, bukan sekadar membuang angka desimal.
+
+</Admonition>
+
+### Contoh Praktis: Genap atau Ganjil
+
+Angka genap mempunyai sisa 0 ketika dibagi 2.
+
+<PythonPlayground initialCode={'angka = 18\nprint("Apakah genap?", angka % 2 == 0)'} />
+
+## 3. Assignment Operators — Memperbarui Nilai
+
+Tanda `=` digunakan untuk **memberikan nilai ke variabel**, bukan membandingkan dua nilai.
+
+```python
+skor = 10
+skor = skor + 5
+print(skor)
+```
+
+Penulisan `skor = skor + 5` dapat disingkat menjadi `skor += 5`.
+
+| Operator | Contoh | Setara dengan |
+| --- | --- | --- |
+| `=` | `x = 5` | Memberi nilai 5 ke `x` |
+| `+=` | `x += 2` | `x = x + 2` |
+| `-=` | `x -= 2` | `x = x - 2` |
+| `*=` | `x *= 2` | `x = x * 2` |
+| `/=` | `x /= 2` | `x = x / 2` |
+| `//=` | `x //= 2` | `x = x // 2` |
+| `%=` | `x %= 2` | `x = x % 2` |
+| `**=` | `x **= 2` | `x = x ** 2` |
+
+<PythonPlayground initialCode={'skor = 10\nprint("Awal:", skor)\nskor += 5\nprint("Setelah bonus:", skor)\nskor *= 2\nprint("Setelah dikali dua:", skor)'} />
+
+## 4. Comparison Operators — Membandingkan Nilai
+
+Operator perbandingan menghasilkan nilai boolean: `True` atau `False`.
+
+| Operator | Arti | Contoh |
+| --- | --- | --- |
+| `==` | Sama dengan | `5 == 5` → `True` |
+| `!=` | Tidak sama dengan | `5 != 3` → `True` |
+| `>` | Lebih besar | `5 > 3` → `True` |
+| `<` | Lebih kecil | `5 < 3` → `False` |
+| `>=` | Lebih besar atau sama dengan | `5 >= 5` → `True` |
+| `<=` | Lebih kecil atau sama dengan | `3 <= 5` → `True` |
+
+<PythonPlayground initialCode={'nilai = 82\nprint("Lulus:", nilai >= 75)\nprint("Nilai sempurna:", nilai == 100)\nprint("Perlu remedial:", nilai < 75)'} />
+
+<Admonition type="warning" title="Kesalahan yang Sering Terjadi">
+
+`=` digunakan untuk assignment, sedangkan `==` untuk mengecek kesamaan. Misalnya, `nilai = 75` memberikan nilai, sedangkan `nilai == 75` menghasilkan `True` atau `False`.
+
+</Admonition>
+
+## 5. Logical Operators — Menggabungkan Kondisi
+
+Tiga operator logika Python adalah `and`, `or`, dan `not`.
+
+| Operator | Hasil benar ketika... | Contoh |
+| --- | --- | --- |
+| `and` | Kedua kondisi benar | `True and False` → `False` |
+| `or` | Minimal satu kondisi benar | `True or False` → `True` |
+| `not` | Membalik kondisi | `not True` → `False` |
+
+### Studi Kasus: Seleksi Kelulusan
+
+Seorang peserta lulus jika nilai teori **minimal 75** dan nilai praktik **minimal 70**.
+
+<PythonPlayground initialCode={'nilai_teori = 82\nnilai_praktik = 74\n\nlulus = nilai_teori >= 75 and nilai_praktik >= 70\nprint("Status lulus:", lulus)'} />
+
+**Penjelasan kode:**
+
+1. `nilai_teori >= 75` diperiksa terlebih dahulu.
+2. `nilai_praktik >= 70` juga diperiksa.
+3. `and` mengembalikan `True` jika keduanya benar.
+4. `print()` menampilkan hasil pemeriksaan.
+
+Cobalah ubah `nilai_praktik` menjadi `60`, lalu jalankan kembali.
+
+<Admonition type="info" title="Fakta Penting">
+
+Dalam contoh boolean di atas, `and`, `or`, dan `not` terlihat menghasilkan `True` atau `False`. Namun, pada Python, `and` dan `or` juga bisa mengembalikan nilai operand secara langsung, misalnya `"" or "Belum diisi"` menghasilkan string `"Belum diisi"`.
+
+</Admonition>
+
+## 6. Membership Operators — Memeriksa Keanggotaan
+
+Gunakan `in` untuk mengetahui apakah suatu nilai terdapat di sebuah kumpulan data, dan `not in` untuk kebalikannya.
+
+<PythonPlayground initialCode={'kelas = ["Normal", "Fracture", "Other"]\n\nprint("Normal" in kelas)\nprint("Tumor" not in kelas)'} />
+
+Operator keanggotaan berguna saat memvalidasi label kategori atau mengecek keberadaan nilai.
+
+## 7. Identity Operators — `is` dan `is not`
+
+Operator `is` memeriksa **apakah dua nama mengacu pada objek yang sama**, bukan apakah isinya sama. Untuk membandingkan nilai, biasanya gunakan `==`.
+
+<PythonPlayground initialCode={'a = [1, 2, 3]\nb = [1, 2, 3]\nc = a\n\nprint("a == b:", a == b)\nprint("a is b:", a is b)\nprint("a is c:", a is c)'} />
+
+Hasilnya: `a == b` adalah `True`, `a is b` adalah `False`, dan `a is c` adalah `True`.
+
+<Admonition type="tip" title="Kapan `is` Digunakan?">
+
+Salah satu penggunaan yang tepat adalah mengecek nilai `None`, misalnya `if data is None:`. Untuk membandingkan angka, teks, atau isi list, gunakan `==`.
+
+</Admonition>
+
+## 8. Urutan Operasi — Operator Precedence
+
+Python tidak selalu memproses ekspresi dari kiri ke kanan. Operasi perkalian memiliki prioritas lebih tinggi daripada penjumlahan.
+
+```python
+hasil = 2 + 3 * 4
+print(hasil)  # 14
+```
+
+Jika ingin penjumlahan dikerjakan terlebih dahulu, gunakan tanda kurung:
+
+```python
+hasil = (2 + 3) * 4
+print(hasil)  # 20
+```
+
+<PythonPlayground initialCode={'print(2 + 3 * 4)\nprint((2 + 3) * 4)\nprint(10 > 5 and 3 < 4)'} />
+
+**Tips:** Gunakan tanda kurung saat ekspresi mulai kompleks, supaya maksud perhitungan mudah dipahami orang lain.
+
+## 9. Operator dalam Data Science
+
+Bayangkan kamu punya nilai akurasi prediksi model. Kita ingin memeriksa apakah model melewati target evaluasi minimal 80%.
+
+<PythonPlayground initialCode={'akurasi = 0.84\ntarget = 0.80\n\nmemenuhi_target = akurasi >= target\nprint("Memenuhi target:", memenuhi_target)\nprint("Akurasi (%):", akurasi * 100)'} />
+
+Di sini kita menggabungkan operator perbandingan (`>=`) dan perkalian (`*`). Teknik seperti ini sering dipakai saat mengevaluasi hasil analisis data atau membuat kondisi pada preprocessing.
+
+## 10. Common Mistakes
+
+| Kesalahan | Mengapa bermasalah? | Solusi |
+| --- | --- | --- |
+| Memakai `=` untuk perbandingan | `=` berarti assignment | Gunakan `==` |
+| Menganggap `7 / 2` menghasilkan `3` | `/` menghasilkan pembagian biasa | Gunakan `//` bila butuh floor division |
+| Menulis `2 ^ 3` untuk pangkat | `^` adalah bitwise XOR | Gunakan `2 ** 3` |
+| Menggunakan `is` untuk membandingkan isi | `is` mengecek identitas objek | Gunakan `==` |
+| Membagi dengan nol | Memicu `ZeroDivisionError` | Pastikan penyebut tidak nol |
+
+## 11. Latihan Interaktif
+
+### Latihan 1 — Hitung Diskon
+
+Sebuah barang berharga Rp120.000 mendapatkan diskon 25%. Buat variabel `harga`, `diskon`, dan `harga_akhir`. Tampilkan **harga akhir** tanpa format mata uang.
+
+<PythonPlayground
+  initialCode={'harga = 120000\ndiskon = 25\n\n# Hitung harga setelah diskon\n'}
+  expectedOutput="90000.0"
+  hint="Harga akhir = harga - (harga * diskon / 100)."
+  solution={'harga = 120000\ndiskon = 25\nharga_akhir = harga - (harga * diskon / 100)\nprint(harga_akhir)'}
+/>
+
+### Latihan 2 — Cek Kelulusan
+
+Seorang siswa dinyatakan lulus jika nilai teori minimal 75 **dan** praktik minimal 70. Gunakan dua variabel yang sudah tersedia dan tampilkan nilai boolean hasilnya.
+
+<PythonPlayground
+  initialCode={'teori = 80\npraktik = 65\n\n# Periksa kelulusan menggunakan and\n'}
+  expectedOutput="False"
+  hint="Gabungkan dua ekspresi perbandingan menggunakan and."
+  solution={'teori = 80\npraktik = 65\nlulus = teori >= 75 and praktik >= 70\nprint(lulus)'}
+/>
+
+### Latihan 3 — Sisa Pembagian
+
+Tampilkan sisa pembagian `29` dengan `6`.
+
+<PythonPlayground
+  initialCode={'angka = 29\npembagi = 6\n\n# Tampilkan sisa pembagian\n'}
+  expectedOutput="5"
+  hint="Operator % menghasilkan sisa pembagian."
+  solution={'angka = 29\npembagi = 6\nprint(angka % pembagi)'}
+/>
+
+<Admonition type="info" title="Bagaimana Check Answer Bekerja?">
+
+Pada versi Kawruh saat ini, jawaban diperiksa berdasarkan **output**. Jadi, kode yang langsung mencetak hasil akhir juga dapat dinilai benar. Nantinya kita bisa meningkatkan evaluasi dengan beberapa test case untuk memeriksa logika program.
+
+</Admonition>
+
+## 12. Quick Quiz
+
+<QuizCard
+  question="Operator yang digunakan untuk memeriksa apakah dua nilai sama adalah..."
+  correctAnswer="B"
+  options={[
+    { id: 'A', text: '=', explanation: '= digunakan untuk assignment, bukan membandingkan nilai.' },
+    { id: 'B', text: '==', explanation: 'Benar! == digunakan untuk membandingkan kesamaan nilai.' },
+    { id: 'C', text: 'is', explanation: 'is mengecek identitas objek, bukan kesamaan nilai.' },
+    { id: 'D', text: '!=', explanation: '!= digunakan untuk memeriksa ketidaksamaan nilai.' },
+  ]}
+/>
+
+## 13. Ringkasan
+
+Sekarang kamu sudah memahami bahwa:
+
+- **Aritmatika** dipakai untuk menghitung.
+- **Assignment** dipakai untuk memberi atau memperbarui nilai.
+- **Perbandingan** dipakai untuk menghasilkan kondisi benar atau salah.
+- **Logika** dipakai untuk menggabungkan kondisi.
+- **Membership** dipakai untuk memeriksa keanggotaan data.
+- **Identity** dipakai untuk memeriksa apakah dua referensi menunjuk objek yang sama.
+- **Prioritas operator** memengaruhi urutan evaluasi ekspresi.
+
+<Admonition type="tip" title="Materi Selesai">
+
+Selanjutnya, pelajari **Python Strings** untuk memahami cara menyimpan, menggabungkan, memotong, dan memproses teks dalam Python.
+
+</Admonition>

@@ -1,0 +1,105 @@
+
+.quiz {
+    margin: 24px 0;
+    padding: 24px;
+    border: 1px solid var(--ifm-color-emphasis-200);
+    border-radius: 16px;
+    background: var(--ifm-background-surface-color);
+  }
+  
+  .header {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 18px;
+    color: var(--ifm-color-primary);
+    font-size: 13px;
+    font-weight: 700;
+  }
+  
+  .quiz h3 {
+    font-size: 19px;
+    margin-bottom: 20px;
+  }
+  
+  .options {
+    display: grid;
+    gap: 10px;
+  }
+  
+  .option {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    padding: 14px;
+    border: 1px solid var(--ifm-color-emphasis-300);
+    border-radius: 10px;
+    background: var(--ifm-background-color);
+    color: var(--ifm-font-color-base);
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  
+  .option:hover {
+    border-color: var(--ifm-color-primary);
+  }
+  
+  .option:focus-visible,
+  .retry:focus-visible {
+    outline: 2px solid var(--ifm-color-primary);
+    outline-offset: 3px;
+  }
+  
+  .optionId {
+    font-weight: 700;
+    min-width: 25px;
+  }
+  
+  .option svg {
+    margin-left: auto;
+    flex-shrink: 0;
+  }
+  
+  .correct {
+    border-color: #16a34a;
+    background: rgba(22, 163, 74, 0.1);
+  }
+  
+  .incorrect {
+    border-color: #dc2626;
+    background: rgba(220, 38, 38, 0.08);
+  }
+  
+  .feedback {
+    margin-top: 18px;
+    padding: 16px;
+    border: 1px solid var(--ifm-color-emphasis-300);
+    border-radius: 10px;
+  }
+  
+  .feedback p {
+    margin: 10px 0 14px;
+  }
+  
+  .retry {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    border: 1px solid var(--ifm-color-primary);
+    border-radius: 8px;
+    background: transparent;
+    color: var(--ifm-color-primary);
+    padding: 9px 14px;
+    cursor: pointer;
+    font-weight: 600;
+  }
+  
+  @media (max-width: 600px) {
+    .quiz {
+      padding: 16px;
+    }
+  }
+  

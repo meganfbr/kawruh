@@ -1,0 +1,75 @@
+---
+title: Strings
+sidebar_label: Strings
+sidebar_position: 6
+description: Mengolah teks dengan indexing, slicing, dan method string.
+---
+
+import PythonPlayground from '@site/src/components/PythonPlayground';
+import QuizCard from '@site/src/components/QuizCard';
+
+# Strings
+
+**Level:** Beginner | **Learning Path:** Python Programming
+
+Mengolah teks dengan indexing, slicing, dan method string.
+
+## Tujuan Pembelajaran
+
+Setelah menyelesaikan materi ini, kamu dapat memahami konsepnya, membaca contoh kode, dan mencoba latihan mandiri.
+
+## String dan Index
+
+String adalah urutan karakter. Indeks dimulai dari nol; indeks negatif dihitung dari belakang.
+
+```python
+kata = "Kawruh"
+print(kata[0])
+print(kata[-1])
+```
+
+## Slicing dan Method
+
+`teks[start:stop]` mengambil karakter hingga sebelum posisi `stop`.
+
+<PythonPlayground initialCode={"kata = \"Kawruh Python\"\nprint(kata[:6])\nprint(kata.upper())\nprint(kata.lower())\nprint(kata.replace(\"Python\", \"AI\"))"} />
+
+## f-string
+
+```python
+nama = "Ayu"
+nilai = 90
+print(f"{nama} memperoleh nilai {nilai}")
+```
+
+## Membersihkan String
+
+`strip()` menghapus whitespace tepi, `split()` memecah menjadi bagian, dan `join()` menggabungkan iterable string.
+
+## Latihan Interaktif
+
+Ubah starter code lalu klik **Check Answer**. Pemeriksaan latihan ini berbasis output sehingga solusi benar bisa lebih dari satu.
+
+<PythonPlayground
+  initialCode={'teks = "  kawruh  "\n# Cetak teks tanpa spasi tepi dan huruf besar\n'}
+  expectedOutput={'KAWRUH'}
+  hint={'Gabungkan strip() dan upper().'}
+  solution={'teks = "  kawruh  "\nprint(teks.strip().upper())'}
+/>
+
+## Quick Quiz
+
+<QuizCard
+  question='Hasil "Python"[0] adalah?'
+  correctAnswer='A'
+  options={[
+    { id: 'A', text: 'P', explanation: 'Benar.' },
+    { id: 'B', text: 'y', explanation: 'Ini indeks 1.' },
+    { id: 'C', text: 'n', explanation: 'Ini indeks terakhir.' },
+    { id: 'D', text: '0', explanation: 'Indeks bukan karakter output.' },
+  ]}
+/>
+
+## Ringkasan
+
+Cobalah kembali contoh kode dengan mengubah nilainya. Catat output dan jelaskan mengapa hasilnya berubah.

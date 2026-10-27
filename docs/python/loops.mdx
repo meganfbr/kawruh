@@ -1,0 +1,72 @@
+---
+title: Loops
+sidebar_label: Loops
+sidebar_position: 14
+description: Mengulang pekerjaan menggunakan for, while, dan range.
+---
+
+import PythonPlayground from '@site/src/components/PythonPlayground';
+import QuizCard from '@site/src/components/QuizCard';
+
+# Loops
+
+**Level:** Beginner | **Learning Path:** Python Programming
+
+Mengulang pekerjaan menggunakan for, while, dan range.
+
+## Tujuan Pembelajaran
+
+Setelah menyelesaikan materi ini, kamu dapat memahami konsepnya, membaca contoh kode, dan mencoba latihan mandiri.
+
+## For Loop
+
+Gunakan `for` untuk mengambil elemen dari iterable satu per satu.
+
+```python
+for angka in range(3):
+    print(angka)
+```
+
+**Output:** 0, 1, 2 pada baris terpisah.
+
+## While Loop
+
+`while` mengulang selama kondisi masih true. Pastikan kondisi akhirnya dapat berhenti.
+
+<PythonPlayground initialCode={"total = 0\nfor angka in [1, 2, 3, 4]:\n    total += angka\nprint(total)"} />
+
+## Break dan Continue
+
+`break` menghentikan loop; `continue` melewati sisa iterasi saat ini.
+
+## Hindari Infinite Loop
+
+Jangan menjalankan `while True` tanpa kondisi berhenti di playground.
+
+## Latihan Interaktif
+
+Ubah starter code lalu klik **Check Answer**. Pemeriksaan latihan ini berbasis output sehingga solusi benar bisa lebih dari satu.
+
+<PythonPlayground
+  initialCode={'nilai = [10, 20, 30]\n# Cetak jumlahnya menggunakan sum\n'}
+  expectedOutput={'60'}
+  hint={'Gunakan sum(nilai).'}
+  solution={'nilai = [10, 20, 30]\nprint(sum(nilai))'}
+/>
+
+## Quick Quiz
+
+<QuizCard
+  question='Apa output list(range(3))?'
+  correctAnswer='B'
+  options={[
+    { id: 'A', text: '[1, 2, 3]', explanation: 'range mulai dari 0.' },
+    { id: 'B', text: '[0, 1, 2]', explanation: 'Benar.' },
+    { id: 'C', text: '[0, 1, 2, 3]', explanation: 'Batas atas eksklusif.' },
+    { id: 'D', text: '3', explanation: 'Bukan list.' },
+  ]}
+/>
+
+## Ringkasan
+
+Cobalah kembali contoh kode dengan mengubah nilainya. Catat output dan jelaskan mengapa hasilnya berubah.
