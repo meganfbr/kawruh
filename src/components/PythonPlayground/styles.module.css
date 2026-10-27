@@ -1,0 +1,151 @@
+
+.playground {
+  border: 1px solid var(--ifm-color-emphasis-200);
+  border-radius: 14px;
+  overflow: hidden;
+  margin: 24px 0;
+  background: #0b1830;
+  color: #e2e8f0;
+}
+
+.header,
+.editorHeader,
+.outputTitle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.header {
+  padding: 16px 20px;
+  font-weight: 700;
+  border-bottom: 1px solid #223753;
+}
+
+.language {
+  font-size: 12px;
+  color: #67e8f9;
+  background: #103454;
+  padding: 4px 10px;
+  border-radius: 6px;
+}
+
+.editorHeader {
+  padding: 10px 16px;
+  color: #94a3b8;
+  font-size: 13px;
+}
+
+.editorHeader button {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  background: transparent;
+  border: 0;
+  color: #cbd5e1;
+  cursor: pointer;
+}
+
+.editor {
+  display: block;
+  width: 100%;
+  min-height: 190px;
+  padding: 18px;
+  resize: vertical;
+  border: 0;
+  outline: 0;
+  background: #071326;
+  color: #e2e8f0;
+  font-family: Consolas, 'Courier New', monospace;
+  font-size: 14px;
+  line-height: 1.8;
+  tab-size: 4;
+}
+
+.editor:focus {
+  box-shadow: inset 0 0 0 2px #38bdf8;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 15px;
+}
+
+.actions button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.runButton {
+  border: none;
+  color: #ffffff;
+  background: #0284c7;
+}
+
+.runButton:hover {
+  background: #0369a1;
+}
+
+.runButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.resetButton {
+  color: #e2e8f0;
+  background: transparent;
+  border: 1px solid #415674;
+}
+
+.resetButton:hover {
+  background: #18314e;
+}
+
+.output {
+  padding: 18px;
+  border-top: 1px solid #223753;
+}
+
+.outputTitle {
+  justify-content: flex-start;
+  gap: 8px;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+.output pre {
+  margin: 0;
+  padding: 14px;
+  min-height: 65px;
+  max-height: 320px;
+  overflow: auto;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  border-radius: 8px;
+  background: #06101f;
+  color: #a5f3fc;
+  font-family: Consolas, 'Courier New', monospace;
+  font-size: 13px;
+}
+
+@media (max-width: 600px) {
+  .header {
+    padding: 14px;
+  }
+
+  .editor {
+    font-size: 13px;
+  }
+
+  .actions button {
+    flex: 1;
+  }
+}

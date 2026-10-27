@@ -1,0 +1,89 @@
+
+/* Kawruh Global Theme */
+
+:root {
+  --ifm-color-primary: #0284c7;
+  --ifm-color-primary-dark: #0276b3;
+  --ifm-color-primary-darker: #026fa9;
+  --ifm-color-primary-darkest: #025c8b;
+  --ifm-color-primary-light: #0e95d8;
+  --ifm-color-primary-lighter: #19a0e2;
+  --ifm-color-primary-lightest: #38bdf8;
+
+  --ifm-background-color: #f8fafc;
+  --ifm-background-surface-color: #ffffff;
+  --ifm-font-color-base: #0f172a;
+
+  --ifm-navbar-background-color: #ffffff;
+  --ifm-footer-background-color: #07162e;
+
+  --ifm-font-family-base:
+    'Inter', system-ui, -apple-system, sans-serif;
+
+  --ifm-code-font-size: 95%;
+  --ifm-global-radius: 10px;
+}
+
+[data-theme='dark'] {
+  --ifm-color-primary: #38bdf8;
+  --ifm-color-primary-dark: #1caef5;
+  --ifm-color-primary-darker: #0da5f0;
+  --ifm-color-primary-darkest: #0284c7;
+  --ifm-color-primary-light: #58c8fa;
+  --ifm-color-primary-lighter: #6bcdfb;
+  --ifm-color-primary-lightest: #a5e4fd;
+
+  --ifm-background-color: #071326;
+  --ifm-background-surface-color: #0c1c34;
+  --ifm-font-color-base: #e2e8f0;
+
+  --ifm-navbar-background-color: #09182f;
+  --ifm-footer-background-color: #050e1e;
+}
+
+.navbar {
+  border-bottom: 1px solid var(--ifm-color-emphasis-200);
+  box-shadow: none;
+}
+
+.navbar__title {
+  font-weight: 800;
+  letter-spacing: -0.5px;
+}
+
+.navbar__link {
+  font-weight: 500;
+}
+
+.navbar__link:hover,
+.navbar__link--active {
+  color: var(--ifm-color-primary);
+}
+
+.footer {
+  color: #cbd5e1;
+}
+
+.footer__title {
+  color: #ffffff;
+}
+
+.footer__link-item {
+  color: #94a3b8;
+}
+
+.footer__link-item:hover {
+  color: #38bdf8;
+}
+
+.theme-doc-sidebar-menu {
+  font-size: 14px;
+}
+
+.theme-doc-sidebar-item-link-level-1 {
+  font-weight: 600;
+}
+
+.theme-code-block {
+  border-radius: 12px;
+}

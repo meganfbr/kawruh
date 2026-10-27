@@ -1,0 +1,10 @@
+node_modules/
+build/
+.docusaurus/
+.cache/
+.env
+.env.*
+!.env.example
+
+# Local audit reports
+audit-report.json
