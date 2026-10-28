@@ -1,0 +1,104 @@
+---
+title: Environment Setup
+sidebar_label: Environment Setup
+sidebar_position: 3
+description: Menyiapkan Python, Jupyter atau Colab, dan library Data Analytics.
+---
+
+import QuizCard from '@site/src/components/QuizCard';
+
+# Environment Setup
+
+**Level:** Beginner | **Estimasi:** 20–30 menit
+
+Materi Data Analytics nantinya menggunakan NumPy, pandas, dan Matplotlib. Untuk itu, kamu bisa memilih lingkungan belajar yang sesuai dengan perangkatmu.
+
+## 1. Pilih Lingkungan Belajar
+
+| Opsi | Cocok Untuk | Kebutuhan |
+| --- | --- | --- |
+| Google Colab | Pemula, laptop sederhana | Akun Google dan internet |
+| JupyterLab | Belajar lokal dan eksplorasi notebook | Python serta ruang penyimpanan |
+| VS Code | Project yang berkembang menjadi aplikasi | Python dan ekstensi Python/Jupyter |
+
+**Catatan:** angka kebutuhan RAM bergantung pada ukuran dataset dan program. Untuk awal, dataset CSV berukuran kecil jauh lebih nyaman digunakan daripada data jutaan baris.
+
+## 2. Setup Lokal Menggunakan Virtual Environment
+
+Buka terminal di folder project latihanmu, lalu jalankan:
+
+```powershell
+python --version
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+python -m pip install --upgrade pip
+python -m pip install numpy pandas matplotlib jupyterlab
+```
+
+Perintah aktivasi di atas khusus **Windows PowerShell**. Jika kebijakan eksekusi PowerShell memblokir aktivasi, kamu tetap dapat menjalankan interpreter langsung melalui `.venv\Scripts\python.exe` tanpa mengubah kebijakan sistem.
+
+Setelah library selesai terpasang, jalankan:
+
+```powershell
+python -m jupyter lab
+```
+
+## 3. Alternatif Google Colab
+
+Buka [Google Colab](https://colab.research.google.com/), pilih notebook baru, kemudian jalankan sel berikut:
+
+```python
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+
+print("NumPy:", np.__version__)
+print("pandas:", pd.__version__)
+```
+
+Colab biasanya sudah memiliki paket umum tersebut, tetapi versi yang tersedia dapat berubah. Jika import gagal, periksa pesan error dan instal paket yang diperlukan.
+
+## 4. Kenapa Tidak Langsung Menggunakan Kawruh Playground?
+
+Python Playground Kawruh menggunakan **Pyodide di browser**. Kode Python bawaan seperti `sum()` umumnya dapat berjalan, tetapi library tambahan seperti NumPy, pandas, dan Matplotlib membutuhkan proses pemuatan paket dan pengujian kompatibilitas tersendiri.
+
+**Untuk tahap pertama**, jalankan contoh NumPy/pandas melalui Colab atau Jupyter. Jangan berasumsi fitur Run Code Kawruh sudah mendukung semua library itu.
+
+## 5. Cek Instalasi
+
+Jalankan kode berikut di Colab atau notebook lokal:
+
+```python
+import numpy as np
+import pandas as pd
+
+angka = np.array([2, 4, 6])
+print(angka.mean())
+print(pd.DataFrame({"angka": angka}))
+```
+
+Jika berjalan tanpa error, lingkungan belajarmu sudah siap untuk materi dasar berikutnya.
+
+## 6. Common Mistakes
+
+- Menjalankan `pip install` di interpreter Python yang berbeda dari kernel notebook.
+- Memberikan file berisi kredensial atau data sensitif ke notebook publik.
+- Mengira runtime Colab bersifat permanen; file sementara dapat hilang ketika sesi berakhir.
+- Menginstal seluruh library Machine Learning padahal belum diperlukan.
+
+## 7. Quick Quiz
+
+<QuizCard
+  question="Mengapa virtual environment bermanfaat untuk project Python?"
+  correctAnswer="B"
+  options={[
+    {id: 'A', text: 'Menambah RAM komputer', explanation: 'Virtual environment tidak menambah RAM.'},
+    {id: 'B', text: 'Memisahkan dependensi antarproject', explanation: 'Benar. Ini membantu mencegah konflik versi paket.'},
+    {id: 'C', text: 'Mempercepat internet', explanation: 'Kecepatan internet tidak berubah.'},
+    {id: 'D', text: 'Menghilangkan seluruh error', explanation: 'Virtual environment tidak mencegah semua jenis error.'},
+  ]}
+/>
+
+## Ringkasan
+
+Pilih Colab jika ingin mulai cepat, atau Jupyter/VS Code jika ingin bekerja secara lokal. Materi berikutnya memperkenalkan array NumPy.

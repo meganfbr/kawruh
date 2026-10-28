@@ -1,0 +1,152 @@
+---
+title: Data Visualization
+sidebar_label: Data Visualization
+sidebar_position: 13
+description: Memilih grafik data yang tepat menggunakan Matplotlib dan Seaborn.
+---
+
+import PythonPlayground from '@site/src/components/PythonPlayground';
+import QuizCard from '@site/src/components/QuizCard';
+import Admonition from '@theme/Admonition';
+
+# Data Visualization
+
+**Level:** Beginner | **Estimasi belajar:** 35–45 menit
+
+Visualisasi data membantu kita memahami pola lebih cepat dan mengomunikasikan hasil analisis secara jelas. **Grafik yang baik dipilih berdasarkan pertanyaan dan jenis datanya**, bukan semata-mata karena terlihat menarik.
+
+## Tujuan Pembelajaran
+
+- Memilih bar chart, line chart, histogram, boxplot, dan scatter plot.
+- Membuat grafik sederhana menggunakan Matplotlib dan Seaborn.
+- Menulis judul, label sumbu, dan skala yang tidak menyesatkan.
+- Menjelaskan temuan berdasarkan grafik dengan hati-hati.
+
+## 1. Pilih grafik yang sesuai
+
+| Pertanyaan | Grafik yang cocok | Catatan |
+| --- | --- | --- |
+| Kategori mana paling banyak? | Bar chart | Bandingkan nilai per kategori |
+| Bagaimana penjualan berubah per hari? | Line chart | Data harus memiliki urutan waktu yang bermakna |
+| Bagaimana distribusi nilai? | Histogram | Bentuk dipengaruhi jumlah bin |
+| Adakah kandidat outlier? | Boxplot | Pertimbangkan konteks data |
+| Apakah dua angka berhubungan? | Scatter plot | Hubungan tidak membuktikan sebab-akibat |
+
+## 2. Menyiapkan data
+
+Kode visualisasi di bawah dijalankan menggunakan **Colab atau Jupyter**, yang telah memiliki atau dapat dipasang library `matplotlib`, `pandas`, dan `seaborn`.
+
+```python
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+data = pd.DataFrame({
+    "hari": ["Sen", "Sel", "Rab", "Kam", "Jum"],
+    "penjualan": [120000, 150000, 130000, 180000, 170000],
+    "transaksi": [12, 15, 13, 18, 17],
+})
+```
+
+## 3. Bar chart untuk perbandingan
+
+```python
+plt.figure(figsize=(7, 4))
+plt.bar(data["hari"], data["penjualan"])
+plt.title("Penjualan Kantin per Hari")
+plt.xlabel("Hari")
+plt.ylabel("Penjualan (Rp)")
+plt.tight_layout()
+plt.show()
+```
+
+Bar chart membantu membandingkan nilai antarhari. Untuk grafik batang, titik awal sumbu nilai umumnya **nol**, agar perbedaan visual tidak dilebih-lebihkan.
+
+## 4. Line chart untuk perubahan berurutan
+
+```python
+plt.figure(figsize=(7, 4))
+plt.plot(data["hari"], data["penjualan"], marker="o")
+plt.title("Tren Penjualan Selama Lima Hari")
+plt.xlabel("Hari")
+plt.ylabel("Penjualan (Rp)")
+plt.tight_layout()
+plt.show()
+```
+
+Line chart cocok di sini karena data mengikuti urutan hari. Jangan memakai line chart untuk kategori yang tidak memiliki urutan alami seolah-olah ada kontinuitas.
+
+## 5. Histogram dan boxplot
+
+```python
+nilai = [65, 68, 70, 71, 72, 73, 75, 76, 80, 95]
+
+plt.hist(nilai, bins=5, edgecolor="black")
+plt.title("Distribusi Nilai")
+plt.xlabel("Nilai")
+plt.ylabel("Frekuensi")
+plt.show()
+
+sns.boxplot(x=nilai)
+plt.title("Sebaran Nilai")
+plt.show()
+```
+
+Histogram menunjukkan frekuensi dalam interval (*bin*), sedangkan boxplot menampilkan median, kuartil, serta titik yang mungkin dianggap ekstrem berdasarkan aturan plot.
+
+## 6. Scatter plot
+
+```python
+plt.scatter(data["transaksi"], data["penjualan"])
+plt.title("Jumlah Transaksi vs Penjualan")
+plt.xlabel("Jumlah Transaksi")
+plt.ylabel("Penjualan (Rp)")
+plt.tight_layout()
+plt.show()
+```
+
+Jika titik-titik terlihat memiliki tren, artinya ada indikasi hubungan dalam sampel—bukan bukti bahwa satu variabel menyebabkan yang lain.
+
+## 7. Prinsip visualisasi yang bertanggung jawab
+
+- Tuliskan judul yang menerangkan isi grafik, bukan kesimpulan yang belum didukung.
+- Cantumkan satuan dan label sumbu.
+- Gunakan skala konsisten dan hindari efek 3D yang mendistorsi angka.
+- Perhatikan aksesibilitas: jangan mengandalkan warna saja untuk membedakan informasi.
+- Jangan menyembunyikan kategori atau rentang data tanpa alasan yang jelas.
+
+<Admonition type="tip" title="Pilih Grafik dari Pertanyaannya">
+
+Bila ingin membandingkan kategori, mulailah dari bar chart. Bila ingin melihat bentuk distribusi, pertimbangkan histogram. Bila ingin melihat dua variabel numerik, gunakan scatter plot.
+
+</Admonition>
+
+## 8. Latihan Interaktif — Menemukan Hari Terbesar
+
+Sebelum menggambar grafik, kita perlu memahami data. Temukan nama hari dengan penjualan tertinggi. Cetak nama harinya saja.
+
+<PythonPlayground
+  initialCode={'hari = ["Sen", "Sel", "Rab", "Kam", "Jum"]\npenjualan = [120000, 150000, 130000, 180000, 170000]\n\n# Cetak hari dengan penjualan paling tinggi'}
+  expectedOutput="Kam"
+  hint="Gunakan max(penjualan), cari posisinya dengan index(), lalu ambil hari pada posisi yang sama."
+  solution={'hari = ["Sen", "Sel", "Rab", "Kam", "Jum"]\npenjualan = [120000, 150000, 130000, 180000, 170000]\nposisi = penjualan.index(max(penjualan))\nprint(hari[posisi])'}
+/>
+
+## 9. Quick Quiz
+
+<QuizCard
+  question="Kita ingin membandingkan jumlah transaksi per kategori produk. Grafik apa yang paling sesuai?"
+  correctAnswer="C"
+  options={[
+    { id: 'A', text: 'Scatter plot', explanation: 'Scatter plot umumnya dipakai untuk dua variabel numerik.' },
+    { id: 'B', text: 'Line chart', explanation: 'Line chart lebih cocok untuk data yang berurutan, seperti waktu.' },
+    { id: 'C', text: 'Bar chart', explanation: 'Benar. Bar chart membantu membandingkan banyaknya transaksi antar kategori.' },
+    { id: 'D', text: 'Histogram', explanation: 'Histogram membantu mengamati distribusi nilai numerik.' },
+  ]}
+/>
+
+## 10. Ringkasan
+
+Gunakan grafik yang sesuai dengan jenis data dan tujuan analisis. Selalu periksa label, satuan, skala, dan interpretasi agar visualisasi membantu pembaca, bukan menyesatkan.
+
+**Materi berikutnya:** Data Analytics Mini Project.

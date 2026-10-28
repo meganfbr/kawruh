@@ -1,0 +1,126 @@
+---
+title: NumPy Introduction
+sidebar_label: NumPy Introduction
+sidebar_position: 4
+description: Memulai analisis numerik menggunakan array NumPy.
+---
+
+import PythonPlayground from '@site/src/components/PythonPlayground';
+import QuizCard from '@site/src/components/QuizCard';
+
+# NumPy Introduction
+
+**Level:** Beginner | **Prasyarat:** List, Loops, Environment Setup | **Estimasi:** 30 menit
+
+**NumPy** adalah library Python untuk komputasi numerik. Struktur data utamanya, `ndarray`, memungkinkan operasi terhadap banyak elemen array dengan sintaks yang ringkas.
+
+## Tujuan Pembelajaran
+
+Kamu dapat menjelaskan perbedaan list dan array, membuat array sederhana, membaca `shape` dan `dtype`, serta menghitung statistik dasar.
+
+## 1. Mengapa NumPy?
+
+List bawaan Python berguna untuk berbagai tipe data. NumPy dirancang untuk array numerik yang homogen dan operasi vektorisasi. Namun, NumPy tidak otomatis lebih baik untuk setiap tugas; keunggulannya terasa pada komputasi array numerik yang sesuai.
+
+## 2. Membuat Array
+
+Jalankan contoh berikut di **Google Colab atau Jupyter**, bukan di Python Playground Kawruh untuk saat ini.
+
+```python
+import numpy as np
+
+nilai = np.array([80, 85, 90, 95])
+
+print(nilai)
+print(nilai.shape)
+print(nilai.dtype)
+```
+
+### Penjelasan Baris per Baris
+
+| Kode | Penjelasan |
+| --- | --- |
+| `import numpy as np` | Memberi alias pendek untuk NumPy |
+| `np.array([...])` | Mengubah kumpulan nilai menjadi ndarray |
+| `.shape` | Menunjukkan ukuran setiap dimensi, contoh `(4,)` |
+| `.dtype` | Menunjukkan tipe elemen array; hasil spesifik bergantung lingkungan |
+
+## 3. Operasi Vektorisasi
+
+```python
+import numpy as np
+
+nilai = np.array([80, 85, 90, 95])
+
+print(nilai + 5)
+print(nilai * 2)
+print(nilai.mean())
+```
+
+Dengan NumPy, penambahan `5` diterapkan ke setiap elemen. Sebaliknya, `list_python + [5]` akan menambahkan elemen baru ke akhir list, bukan menambahkan lima ke semua elemennya.
+
+## 4. Try It Yourself — Bandingkan dengan Python Bawaan
+
+Contoh berikut **aman untuk Kawruh Playground** karena tidak memerlukan library eksternal.
+
+<PythonPlayground
+  initialCode={'nilai = [80, 85, 90, 95]\n\nnaik_lima = [x + 5 for x in nilai]\nprint(naik_lima)\nprint(sum(nilai) / len(nilai))'}
+/>
+
+Output:
+
+```text
+[85, 90, 95, 100]
+87.5
+```
+
+## 5. Array Dua Dimensi
+
+```python
+import numpy as np
+
+matriks = np.array([
+    [1, 2, 3],
+    [4, 5, 6],
+])
+
+print(matriks.shape)  # (2, 3)
+print(matriks[0, 1])  # 2
+```
+
+`shape (2, 3)` berarti dua baris dan tiga kolom. NumPy menggunakan indeks berbasis nol.
+
+## 6. Common Mistakes
+
+- Mengira penjumlahan dua list sama dengan penjumlahan dua array.
+- Menyamakan `shape` dan `size`: `shape` adalah ukuran per dimensi; `size` jumlah keseluruhan elemen.
+- Menganggap `.dtype` selalu `int64`; hasilnya bisa berbeda bergantung platform dan data.
+- Melakukan pembagian oleh nol tanpa memeriksa hasil atau peringatan.
+
+## 7. Latihan Interaktif — Persiapan Sebelum NumPy
+
+Diberikan empat nilai. Cetak rata-ratanya tanpa library eksternal.
+
+<PythonPlayground
+  initialCode={'nilai = [70, 80, 90, 100]\n\n# Hitung dan cetak rata-rata'}
+  expectedOutput="85.0"
+  hint="Gunakan sum(nilai) / len(nilai)."
+  solution={'nilai = [70, 80, 90, 100]\nprint(sum(nilai) / len(nilai))'}
+/>
+
+## 8. Quick Quiz
+
+<QuizCard
+  question="Apa arti shape (2, 3) pada array dua dimensi?"
+  correctAnswer="B"
+  options={[
+    {id: 'A', text: 'Dua kolom, tiga baris', explanation: 'Urutan shape array dua dimensi adalah (baris, kolom).'},
+    {id: 'B', text: 'Dua baris, tiga kolom', explanation: 'Benar. Dimensi pertama menyatakan baris, kedua kolom.'},
+    {id: 'C', text: 'Lima elemen', explanation: 'Array berukuran 2 × 3 memiliki enam elemen.'},
+    {id: 'D', text: 'Tipe data float', explanation: 'Shape menjelaskan ukuran dimensi, bukan dtype.'},
+  ]}
+/>
+
+## Ringkasan
+
+NumPy menyediakan `ndarray` dan operasi vektorisasi untuk mengolah angka. Selanjutnya kita akan mendalami indexing, slicing, broadcasting, dan statistik array.

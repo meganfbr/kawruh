@@ -1,0 +1,94 @@
+---
+title: Data Analytics Workflow
+sidebar_label: Data Analytics Workflow
+sidebar_position: 2
+description: Alur kerja proyek analisis data dari pertanyaan hingga rekomendasi.
+---
+
+import PythonPlayground from '@site/src/components/PythonPlayground';
+import QuizCard from '@site/src/components/QuizCard';
+
+# Data Analytics Workflow
+
+**Level:** Beginner | **Estimasi:** 25 menit
+
+Dalam proyek nyata, seorang analis tidak langsung membuat grafik. Pertama-tama, ia perlu memahami masalah, sumber data, dan cara menilai keberhasilan analisis.
+
+## Tujuan Pembelajaran
+
+Kamu akan belajar merumuskan pertanyaan yang terukur, meninjau kualitas data, memilih analisis yang sesuai, dan mengkomunikasikan temuan secara bertanggung jawab.
+
+## 1. Studi Kasus: Penjualan Kantin
+
+Misalkan kita mempunyai data sederhana berikut.
+
+| Produk | Harga | Jumlah Terjual |
+| --- | ---: | ---: |
+| Roti | 8000 | 12 |
+| Susu | 10000 | 8 |
+| Air Mineral | 5000 | 15 |
+
+**Pertanyaan analisis:** produk mana yang menghasilkan total pendapatan terbesar?
+
+## 2. Tahapan Workflow
+
+1. **Business understanding:** Tentukan pertanyaan, pengguna hasil analisis, dan ukuran keberhasilan.
+2. **Data collection:** Catat sumber data, periode pengamatan, dan izin penggunaan.
+3. **Data validation:** Periksa tipe data, rentang nilai, duplikat, dan data hilang.
+4. **Data cleaning:** Perbaiki kesalahan yang dapat dibuktikan; dokumentasikan perubahan.
+5. **Exploratory Data Analysis (EDA):** Lihat distribusi, tren, dan perbandingan.
+6. **Communication:** Buat ringkasan dan visualisasi yang sesuai audiens.
+
+## 3. Try It Yourself — Hitung Revenue
+
+Revenue pada contoh sederhana ini dihitung dengan `harga * jumlah`, belum memperhitungkan diskon atau pengembalian.
+
+<PythonPlayground
+  initialCode={'produk = ["Roti", "Susu", "Air Mineral"]\nharga = [8000, 10000, 5000]\njumlah = [12, 8, 15]\n\nfor i in range(len(produk)):\n    pendapatan = harga[i] * jumlah[i]\n    print(produk[i], pendapatan)'}
+/>
+
+Output:
+
+```text
+Roti 96000
+Susu 80000
+Air Mineral 75000
+```
+
+### Penjelasan Kode
+
+- Tiga list berisi produk, harga, dan jumlah pada indeks yang sama.
+- `range(len(produk))` menghasilkan indeks dari 0 sampai 2.
+- Penggunaan list paralel cukup untuk ilustrasi. Pada proyek nyata, struktur tabel seperti DataFrame lebih aman dan mudah dibaca.
+
+## 4. Periksa Kualitas Data
+
+Sebelum menjumlahkan transaksi, selalu tanyakan: apakah jumlah negatif mungkin muncul karena retur? Apakah harga dalam satuan rupiah? Apakah produk tercatat dua kali? Menghapus data begitu saja dapat menghasilkan kesimpulan yang bias.
+
+## 5. Latihan Interaktif
+
+Hitung total revenue dari tiga produk. Tampilkan angkanya saja.
+
+<PythonPlayground
+  initialCode={'harga = [8000, 10000, 5000]\njumlah = [12, 8, 15]\n\n# Hitung seluruh pendapatan dan print totalnya'}
+  expectedOutput="251000"
+  hint="Kalikan harga dan jumlah untuk tiap indeks, lalu jumlahkan hasilnya."
+  solution={'harga = [8000, 10000, 5000]\njumlah = [12, 8, 15]\ntotal = sum(harga[i] * jumlah[i] for i in range(len(harga)))\nprint(total)'}
+/>
+
+## 6. Quick Quiz
+
+<QuizCard
+  question="Apa langkah paling tepat sebelum membersihkan nilai yang dianggap salah?"
+  correctAnswer="C"
+  options={[
+    {id: 'A', text: 'Menghapus seluruh baris', explanation: 'Menghapus tanpa memeriksa konteks dapat membuang data valid.'},
+    {id: 'B', text: 'Membuat visualisasi dulu', explanation: 'Visualisasi berguna, tetapi keputusan pembersihan harus berdasarkan pemahaman data.'},
+    {id: 'C', text: 'Memeriksa definisi data dan aturan bisnis', explanation: 'Benar. Validasi konteks membantu membedakan kesalahan dan nilai yang memang valid.'},
+    {id: 'D', text: 'Mengganti semua nilai menjadi nol', explanation: 'Mengganti data sembarangan akan menyesatkan analisis.'},
+  ]}
+/>
+
+## Ringkasan
+
+Workflow yang baik menghubungkan pertanyaan, kualitas data, metode analisis, dan keputusan. Berikutnya, kita siapkan lingkungan kerja Data Analytics.

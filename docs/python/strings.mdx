@@ -1,75 +1,339 @@
 ---
-title: Strings
+title: Python Strings
 sidebar_label: Strings
 sidebar_position: 6
-description: Mengolah teks dengan indexing, slicing, dan method string.
+description: Pelajari String Python mulai dari indexing, slicing, methods, formatting, hingga text cleaning, dengan playground dan kuis interaktif.
 ---
 
 import PythonPlayground from '@site/src/components/PythonPlayground';
 import QuizCard from '@site/src/components/QuizCard';
+import Admonition from '@theme/Admonition';
 
-# Strings
+# Python Strings
 
-**Level:** Beginner | **Learning Path:** Python Programming
+**Level:** Beginner | **Estimasi belajar:** 35–45 menit | **Prasyarat:** Variables dan Data Types
 
-Mengolah teks dengan indexing, slicing, dan method string.
+Setiap kali kamu mengolah nama, pesan, email, judul artikel, atau label pada dataset, kamu sedang bekerja dengan **String**. Di Python, String adalah rangkaian karakter yang disimpan sebagai tipe data `str`.
 
 ## Tujuan Pembelajaran
 
-Setelah menyelesaikan materi ini, kamu dapat memahami konsepnya, membaca contoh kode, dan mencoba latihan mandiri.
+Setelah menyelesaikan materi ini, kamu dapat:
 
-## String dan Index
+- Membuat String dan membedakannya dari tipe data numerik.
+- Mengambil karakter menggunakan **indexing** dan sebagian teks menggunakan **slicing**.
+- Memakai String methods seperti `lower()`, `upper()`, `strip()`, dan `replace()`.
+- Menggabungkan String serta membuat teks dinamis menggunakan **f-string**.
+- Memahami karakter khusus, sifat *immutable*, dan kesalahan yang umum terjadi.
+- Membersihkan teks sederhana sebelum digunakan dalam analisis data.
 
-String adalah urutan karakter. Indeks dimulai dari nol; indeks negatif dihitung dari belakang.
+## 1. Apa Itu String?
 
-```python
-kata = "Kawruh"
-print(kata[0])
-print(kata[-1])
-```
-
-## Slicing dan Method
-
-`teks[start:stop]` mengambil karakter hingga sebelum posisi `stop`.
-
-<PythonPlayground initialCode={"kata = \"Kawruh Python\"\nprint(kata[:6])\nprint(kata.upper())\nprint(kata.lower())\nprint(kata.replace(\"Python\", \"AI\"))"} />
-
-## f-string
+String adalah tipe data untuk menyimpan teks. Dalam Python, kamu dapat menulisnya menggunakan tanda kutip satu (`'...'`) atau dua (`"..."`).
 
 ```python
-nama = "Ayu"
-nilai = 90
-print(f"{nama} memperoleh nilai {nilai}")
+nama = "Kawruh"
+bahasa = 'Python'
+jumlah = "100"
 ```
 
-## Membersihkan String
+Ketiganya merupakan String, termasuk `"100"` karena ditulis di dalam tanda kutip. Sementara itu, `100` tanpa tanda kutip adalah integer.
 
-`strip()` menghapus whitespace tepi, `split()` memecah menjadi bagian, dan `join()` menggabungkan iterable string.
+| Nilai | Tipe data | Penggunaan |
+| --- | --- | --- |
+| `"Kawruh"` | `str` | Nama aplikasi |
+| `'Python'` | `str` | Nama bahasa pemrograman |
+| `"100"` | `str` | Angka yang masih disimpan sebagai teks |
+| `100` | `int` | Angka untuk perhitungan |
 
-## Latihan Interaktif
-
-Ubah starter code lalu klik **Check Answer**. Pemeriksaan latihan ini berbasis output sehingga solusi benar bisa lebih dari satu.
+### Try It Yourself
 
 <PythonPlayground
-  initialCode={'teks = "  kawruh  "\n# Cetak teks tanpa spasi tepi dan huruf besar\n'}
-  expectedOutput={'KAWRUH'}
-  hint={'Gabungkan strip() dan upper().'}
-  solution={'teks = "  kawruh  "\nprint(teks.strip().upper())'}
+  initialCode={"nama = \"Kawruh\"\nbahasa = 'Python'\nangka_teks = \"100\"\n\nprint(nama)\nprint(type(bahasa).__name__)\nprint(type(angka_teks).__name__)"}
 />
 
-## Quick Quiz
+**Perhatikan:** `type(...).__name__` menampilkan nama tipe datanya saja, misalnya `str`.
+
+## 2. String Indexing — Mengambil Satu Karakter
+
+Setiap karakter pada String mempunyai **indeks**. Indeks pertama bernilai **0**, bukan 1.
+
+Misalnya, untuk String `"Kawruh"`:
+
+| Karakter | K | a | w | r | u | h |
+| --- | --- | --- | --- | --- | --- | --- |
+| Indeks positif | 0 | 1 | 2 | 3 | 4 | 5 |
+| Indeks negatif | -6 | -5 | -4 | -3 | -2 | -1 |
+
+Gunakan kurung siku `[]` setelah variabel untuk mengambil karakter.
+
+<PythonPlayground
+  initialCode={"kata = \"Kawruh\"\n\nprint(kata[0])\nprint(kata[2])\nprint(kata[-1])"}
+/>
+
+**Output yang diharapkan:** `K`, `w`, dan `h` pada baris berbeda.
+
+<Admonition type="warning" title="Kesalahan Umum">
+
+Jika panjang String adalah 6, indeks positif yang valid adalah `0` sampai `5`. Menulis `kata[6]` menghasilkan `IndexError`.
+
+</Admonition>
+
+## 3. String Slicing — Mengambil Sebagian Teks
+
+**Slicing** memungkinkan kamu mengambil beberapa karakter sekaligus.
+
+```python
+teks[start:stop:step]
+```
+
+- `start`: indeks awal, **ikut diambil**.
+- `stop`: indeks akhir, **tidak ikut diambil**.
+- `step`: jarak lompatan karakter; opsional.
+
+Jika `start` dikosongkan, Python memulai dari awal. Jika `stop` dikosongkan, Python mengambil sampai akhir.
+
+<PythonPlayground
+  initialCode={"teks = \"Kawruh Python\"\n\nprint(teks[0:6])\nprint(teks[7:])\nprint(teks[:6])\nprint(teks[::2])"}
+/>
+
+| Ekspresi | Hasil | Penjelasan |
+| --- | --- | --- |
+| `teks[0:6]` | `Kawruh` | Ambil indeks 0 hingga sebelum 6 |
+| `teks[7:]` | `Python` | Ambil dari indeks 7 sampai akhir |
+| `teks[:6]` | `Kawruh` | Ambil dari awal sampai sebelum 6 |
+| `teks[::2]` | `Kwu yhn` | Ambil setiap dua karakter |
+
+## 4. String Length — Menghitung Banyak Karakter
+
+Gunakan `len()` untuk menghitung panjang String. **Spasi dan tanda baca juga dihitung**.
+
+<PythonPlayground
+  initialCode={"nama = \"Kawruh\"\npesan = \"Halo Python!\"\n\nprint(len(nama))\nprint(len(pesan))"}
+/>
+
+**Output:** `6` dan `12`. String `"Halo Python!"` terdiri dari 12 karakter termasuk spasi dan tanda seru.
+
+## 5. Mengubah Huruf Besar dan Kecil
+
+String mempunyai banyak *method*, yaitu fungsi yang dipanggil melalui objek String menggunakan tanda titik.
+
+| Method | Fungsi | Contoh hasil |
+| --- | --- | --- |
+| `upper()` | Mengubah menjadi huruf besar | `"AI"` |
+| `lower()` | Mengubah menjadi huruf kecil | `"python"` |
+| `title()` | Mengawali setiap kata dengan huruf besar | `"Data Science"` |
+| `capitalize()` | Membesarkan huruf awal teks | `"Kawruh python"` |
+
+<PythonPlayground
+  initialCode={"teks = \"kawruh PYTHON\"\n\nprint(teks.upper())\nprint(teks.lower())\nprint(teks.title())\nprint(teks.capitalize())"}
+/>
+
+<Admonition type="info" title="Mengapa Berguna untuk Dataset?">
+
+Kategori `"Normal"`, `"NORMAL"`, dan `"normal"` dapat diperlakukan sebagai label yang berbeda. Mengubah teks menjadi huruf kecil membantu melakukan standardisasi sederhana.
+
+</Admonition>
+
+## 6. Membersihkan Spasi dengan strip()
+
+Teks yang berasal dari input pengguna atau file CSV terkadang menyimpan spasi tambahan.
+
+| Method | Fungsi |
+| --- | --- |
+| `strip()` | Menghapus whitespace pada kedua ujung |
+| `lstrip()` | Menghapus whitespace pada ujung kiri |
+| `rstrip()` | Menghapus whitespace pada ujung kanan |
+
+Method ini **tidak menghapus spasi di tengah kata**.
+
+<PythonPlayground
+  initialCode={"kategori = \"  FRACTURE  \"\n\nprint(repr(kategori))\nprint(repr(kategori.strip()))\nprint(kategori.strip().lower())"}
+/>
+
+Fungsi `repr()` dipakai di sini agar spasi di awal dan akhir terlihat jelas pada output. Dengan `strip().lower()`, teks menjadi `fracture`.
+
+## 7. Mengganti dan Mencari Teks
+
+Gunakan `replace()` untuk mengganti teks, `find()` untuk mencari posisi kemunculan pertama, dan operator `in` untuk memeriksa keberadaan substring.
+
+<PythonPlayground
+  initialCode={"pesan = \"Belajar Java di Kawruh\"\n\nprint(pesan.replace(\"Java\", \"Python\"))\nprint(pesan.find(\"Kawruh\"))\nprint(\"Python\" in pesan)"}
+/>
+
+**Penjelasan:** `replace()` mengembalikan String baru, `find()` menghasilkan indeks atau `-1` bila tidak ditemukan, sedangkan `in` menghasilkan `True` atau `False`.
+
+## 8. Split dan Join — Memecah dan Menggabungkan
+
+Method `split()` mengubah teks menjadi list, sedangkan `join()` menggabungkan sekumpulan String menggunakan pemisah tertentu.
+
+<PythonPlayground
+  initialCode={"data = \"Python,SQL,Machine Learning\"\n\nbagian = data.split(\",\")\nprint(bagian)\n\nhasil = \" | \".join(bagian)\nprint(hasil)"}
+/>
+
+Pola ini sering dipakai untuk memproses teks kategori atau data dengan pemisah tertentu. Untuk file CSV sesungguhnya, gunakan pembaca CSV seperti modul `csv` atau library pandas, bukan memecah seluruh baris dengan `split(",")` karena aturan CSV bisa lebih kompleks.
+
+## 9. Menggabungkan String dan f-Strings
+
+Operator `+` dapat menggabungkan String, tetapi untuk membuat kalimat yang memuat nilai variabel, **f-string** biasanya lebih mudah dibaca.
+
+<PythonPlayground
+  initialCode={"nama = \"Kawruh\"\njumlah_materi = 22\n\nprint(\"Belajar di \" + nama)\nprint(f\"{nama} memiliki {jumlah_materi} materi Python.\")"}
+/>
+
+**Catatan:** Jika memakai `+`, String tidak dapat langsung digabungkan dengan integer tanpa konversi. F-string secara otomatis memformat nilai yang disisipkan.
+
+Kita juga bisa mengatur angka desimal:
+
+<PythonPlayground
+  initialCode={"akurasi = 0.95678\nprint(f\"Akurasi model: {akurasi:.2%}\")"}
+/>
+
+Output: `Akurasi model: 95.68%`.
+
+## 10. Escape Characters dan Multiline String
+
+Terkadang kita perlu menampilkan karakter khusus di dalam String.
+
+| Escape sequence | Kegunaan |
+| --- | --- |
+| `\n` | Pindah baris |
+| `\t` | Tab |
+| `\"` | Tanda kutip dua dalam String |
+| `\\` | Karakter backslash |
+
+String multi-baris dapat ditulis menggunakan tiga tanda kutip (`"""..."""` atau `'''...'''`).
+
+<PythonPlayground
+  initialCode={"print(\"Baris pertama\\nBaris kedua\")\nprint(\"Nama\\tNilai\")\nprint(\"Dia berkata: \\\"Halo!\\\"\")"}
+/>
+
+## 11. String Bersifat Immutable
+
+**Immutable** berarti karakter dalam String tidak dapat diubah langsung berdasarkan indeks.
+
+Kode berikut **akan menghasilkan error**:
+
+```python
+kata = "Python"
+kata[0] = "J"  # TypeError
+```
+
+Sebagai gantinya, buat String baru:
+
+<PythonPlayground
+  initialCode={"kata = \"Python\"\nkata_baru = \"J\" + kata[1:]\nprint(kata_baru)"}
+/>
+
+String yang lama tidak berubah; ekspresi tersebut menghasilkan nilai baru `Jython`.
+
+## 12. Common Mistakes — Kesalahan yang Sering Terjadi
+
+| Kesalahan | Mengapa salah? | Cara yang tepat |
+| --- | --- | --- |
+| `"25" + 5` | Tidak bisa langsung menjumlahkan `str` dan `int` | `int("25") + 5` |
+| `"python"[6]` | Indeks melampaui panjang String | Gunakan indeks `0` hingga `5` |
+| `teks.lower` | Belum memanggil method | Gunakan `teks.lower()` |
+| `teks[0] = "A"` | String immutable | Bentuk String baru |
+| `bool("False")` | String tidak kosong bernilai `True` | Bandingkan isi teks secara eksplisit |
+
+<Admonition type="tip" title="Tips Debugging">
+
+Kalau hasil tidak sesuai, periksa tipe data dengan `type()`, isi teks dengan `repr()`, dan panjang teks dengan `len()`. Ketiganya sering membantu menemukan spasi tersembunyi atau tipe data yang keliru.
+
+</Admonition>
+
+## 13. Use Case — Membersihkan Label Dataset
+
+Bayangkan kamu mempunyai label gambar X-Ray yang ditulis tidak konsisten:
+
+```text
+"  Normal  "
+"NORMAL"
+"normal "
+" Fracture "
+```
+
+Untuk tahap awal, kita bisa membersihkan spasi dan menyeragamkan kapitalisasi.
+
+<PythonPlayground
+  initialCode={"label_asli = [\"  Normal  \", \"NORMAL\", \"normal \", \" Fracture \"]\n\nlabel_bersih = [label.strip().lower() for label in label_asli]\n\nprint(label_bersih)\nprint(set(label_bersih))"}
+/>
+
+**Hasil penting:** Setelah dibersihkan, ketiga variasi `Normal` menjadi satu representasi `normal`.
+
+Untuk dataset nyata, normalisasi teks tetap perlu memperhatikan nama kelas resmi dan kemungkinan kesalahan penulisan yang tidak dapat diselesaikan hanya dengan `strip()` serta `lower()`.
+
+## 14. Interactive Coding Exercises
+
+Coba selesaikan sendiri menggunakan editor di bawah. Klik **Check Answer** untuk memeriksa output. Jika buntu, buka **Show Hint**.
+
+### Exercise 01 — Cleaning Text
+
+**Tugas:** Bersihkan teks `"  FRACTURE  "` menjadi `fracture`. Cetak hasilnya saja.
+
+<PythonPlayground
+  initialCode={"kategori = \"  FRACTURE  \"\n\n# Bersihkan spasi di awal/akhir\n# Ubah semua huruf menjadi kecil\n# Tampilkan hasil\n"}
+  expectedOutput={"fracture"}
+  hint={"Gunakan .strip() kemudian .lower(), lalu print()."}
+  solution={"kategori = \"  FRACTURE  \"\nhasil = kategori.strip().lower()\nprint(hasil)"}
+/>
+
+### Exercise 02 — Mengambil Username
+
+**Tugas:** Dari email `"megan@example.com"`, ambil bagian sebelum tanda `@` dan cetak `megan`.
+
+<PythonPlayground
+  initialCode={"email = \"megan@example.com\"\n\n# Ambil username dari email\n"}
+  expectedOutput={"megan"}
+  hint={"Kamu dapat memakai split(\"@\")[0]."}
+  solution={"email = \"megan@example.com\"\nusername = email.split(\"@\")[0]\nprint(username)"}
+/>
+
+### Exercise 03 — Membuat Ringkasan dengan f-String
+
+**Tugas:** Gunakan variabel `nama` dan `skor` untuk mencetak persis `Ayu mendapatkan skor 95`.
+
+<PythonPlayground
+  initialCode={"nama = \"Ayu\"\nskor = 95\n\n# Tampilkan kalimat menggunakan f-string\n"}
+  expectedOutput={"Ayu mendapatkan skor 95"}
+  hint={"Awali String dengan huruf f, lalu tulis variabel di dalam kurung kurawal."}
+  solution={"nama = \"Ayu\"\nskor = 95\nprint(f\"{nama} mendapatkan skor {skor}\")"}
+/>
+
+<Admonition type="info" title="Bagaimana Penilaian Exercise Bekerja?">
+
+Pada versi Kawruh saat ini, tombol **Check Answer** memeriksa kesesuaian output. Jadi kode seperti `print("fracture")` juga bisa dianggap benar pada Exercise 01. Pada peningkatan berikutnya, kita dapat menggunakan beberapa test case agar pemeriksaan lebih kuat.
+
+</Admonition>
+
+## 15. Quick Quiz
+
+**Pilih satu jawaban**, lalu baca pembahasannya.
 
 <QuizCard
-  question='Hasil "Python"[0] adalah?'
-  correctAnswer='A'
+  question="Apa hasil dari teks = 'Kawruh'; print(teks[-1])?"
+  correctAnswer="C"
   options={[
-    { id: 'A', text: 'P', explanation: 'Benar.' },
-    { id: 'B', text: 'y', explanation: 'Ini indeks 1.' },
-    { id: 'C', text: 'n', explanation: 'Ini indeks terakhir.' },
-    { id: 'D', text: '0', explanation: 'Indeks bukan karakter output.' },
+    { id: 'A', text: 'K', explanation: 'K ada di indeks pertama (0), bukan indeks -1.' },
+    { id: 'B', text: 'u', explanation: 'u terletak di indeks -2.' },
+    { id: 'C', text: 'h', explanation: 'Benar! Indeks -1 menunjuk karakter terakhir.' },
+    { id: 'D', text: 'Error', explanation: 'Indeks negatif valid untuk mengakses karakter dari belakang.' },
   ]}
 />
 
-## Ringkasan
+## 16. Ringkasan
 
-Cobalah kembali contoh kode dengan mengubah nilainya. Catat output dan jelaskan mengapa hasilnya berubah.
+Kamu telah mempelajari bahwa:
+
+- String (`str`) digunakan untuk menyimpan teks.
+- Indexing mengambil satu karakter, sedangkan slicing mengambil sebagian teks.
+- Method seperti `lower()`, `strip()`, dan `replace()` membantu mengolah String.
+- f-string memudahkan pembuatan kalimat yang memuat nilai variabel.
+- String bersifat immutable.
+- Membersihkan teks adalah langkah dasar dalam preprocessing data kategorikal.
+
+<Admonition type="tip" title="Materi Selesai">
+
+Selamat! Kamu telah menyelesaikan **Python Strings**. Selanjutnya, lanjutkan ke **Python Numbers** untuk mempelajari bilangan dan operasi numerik secara lebih mendalam.
+
+</Admonition>

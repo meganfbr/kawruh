@@ -1,0 +1,164 @@
+---
+title: NumPy Statistics
+sidebar_label: NumPy Statistics
+sidebar_position: 7
+description: Tutorial interaktif NumPy Statistics untuk pemula di Kawruh.
+---
+
+import PythonPlayground from '@site/src/components/PythonPlayground';
+import QuizCard from '@site/src/components/QuizCard';
+import Admonition from '@theme/Admonition';
+
+# NumPy Statistics
+
+**Level:** Beginner | **Prasyarat:** NumPy Arrays dan Indexing And Slicing | **Estimasi:** 40–50 menit
+
+Statistik deskriptif membantu kita memahami karakteristik dataset sebelum membuat grafik atau model Machine Learning.
+
+## Tujuan Pembelajaran
+
+Kamu mampu menghitung mean, median, minimum, maksimum, varians, standar deviasi, serta menjelaskan perbedaan agregasi keseluruhan dan agregasi per sumbu.
+
+## 1. Dataset Contoh
+
+```python
+import numpy as np
+
+nilai = np.array([70, 80, 85, 90, 95])
+print(nilai)
+```
+
+Contoh ini dapat dijalankan di Google Colab atau Jupyter dengan NumPy. Untuk Playground Kawruh, kita sediakan padanan Python murni pada latihan berikut.
+
+## 2. Mean dan Median
+
+**Mean** adalah jumlah nilai dibagi banyaknya data. **Median** adalah nilai tengah setelah data diurutkan.
+
+```python
+import numpy as np
+
+nilai = np.array([70, 80, 85, 90, 95])
+print('Mean:', np.mean(nilai))       # 84.0
+print('Median:', np.median(nilai))   # 85.0
+```
+
+Jika ada nilai ekstrem, median terkadang lebih representatif untuk menggambarkan pusat data dibanding mean.
+
+## 3. Minimum, Maksimum, dan Rentang
+
+```python
+import numpy as np
+
+nilai = np.array([70, 80, 85, 90, 95])
+print('Min:', np.min(nilai))
+print('Max:', np.max(nilai))
+print('Range:', np.max(nilai) - np.min(nilai))
+```
+
+Rentang (*range*) menunjukkan selisih nilai maksimum dengan minimum, tetapi tidak menjelaskan bagaimana nilai lain tersebar.
+
+## 4. Varians dan Standar Deviasi
+
+Varians mengukur rata-rata kuadrat penyimpangan dari mean. Standar deviasi adalah akar dari varians dan mempunyai satuan yang sama dengan data asli.
+
+```python
+import numpy as np
+
+nilai = np.array([70, 80, 85, 90, 95])
+print('Variance:', np.var(nilai))
+print('Std Dev:', np.std(nilai))
+```
+
+Secara default, `np.var` dan `np.std` memakai `ddof=0` (pembagi N). Untuk perhitungan estimasi varians/standar deviasi sampel yang umum memakai pembagi N−1, tambahkan `ddof=1`.
+
+## 5. Statistik Berdasarkan Axis
+
+```python
+import numpy as np
+
+nilai = np.array([
+    [80, 90, 70],
+    [75, 85, 95],
+])
+
+print(np.mean(nilai))         # rata-rata seluruh nilai
+print(np.mean(nilai, axis=0)) # tiap kolom
+print(np.mean(nilai, axis=1)) # tiap baris
+```
+
+| Parameter | Makna untuk matriks 2D |
+| --- | --- |
+| Tanpa `axis` | Gabungkan seluruh elemen |
+| `axis=0` | Agregasi sepanjang baris → hasil per kolom |
+| `axis=1` | Agregasi sepanjang kolom → hasil per baris |
+
+## 6. Missing Values (`NaN`)
+
+Data nyata kadang memiliki nilai yang hilang. Fungsi standar seperti `np.mean` dapat menghasilkan `nan` jika array mengandung `np.nan`. Untuk mengabaikan nilai hilang dalam perhitungan, gunakan `np.nanmean` saat sesuai.
+
+```python
+import numpy as np
+
+nilai = np.array([80.0, np.nan, 90.0])
+print(np.mean(nilai))     # nan
+print(np.nanmean(nilai))  # 85.0
+```
+
+<Admonition type="info" title="Catatan Analisis Data">
+
+Mengabaikan missing value adalah keputusan analitis. Periksa dulu mengapa nilainya hilang sebelum memilih `nanmean`, imputasi, atau penghapusan data.
+
+</Admonition>
+
+## 7. Try It Yourself — Statistik Tanpa Library Tambahan
+
+<PythonPlayground
+  initialCode={'nilai = [70, 80, 85, 90, 95]\nmean = sum(nilai) / len(nilai)\nprint("Mean:", mean)\nprint("Min:", min(nilai))\nprint("Max:", max(nilai))'}
+/>
+
+Hasil untuk contoh ini adalah mean `84.0`, minimum `70`, dan maksimum `95`.
+
+## 8. Common Mistakes
+
+- Menyamakan mean dengan median.
+- Mengira `axis=0` menghasilkan rata-rata per baris.
+- Melupakan perbedaan `ddof=0` dan `ddof=1`.
+- Mengabaikan missing values tanpa menilai dampaknya.
+- Menafsirkan standar deviasi tinggi sebagai sesuatu yang selalu buruk; maknanya bergantung konteks.
+
+## 9. Latihan Interaktif
+
+### Latihan 1 — Mean Nilai Ujian
+
+<PythonPlayground
+  initialCode={'nilai = [80, 90, 100]\n\n# Tampilkan mean sebagai float\n'}
+  expectedOutput="90.0"
+  hint="Gunakan sum(nilai) dibagi len(nilai)."
+  solution={'nilai = [80, 90, 100]\nprint(sum(nilai) / len(nilai))'}
+/>
+
+### Latihan 2 — Rentang Data
+
+<PythonPlayground
+  initialCode={'nilai = [70, 80, 85, 90, 95]\n\n# Cetak selisih maksimum dan minimum\n'}
+  expectedOutput="25"
+  hint="Kurangkan min(nilai) dari max(nilai)."
+  solution={'nilai = [70, 80, 85, 90, 95]\nprint(max(nilai) - min(nilai))'}
+/>
+
+## 10. Quick Quiz
+
+<QuizCard
+  question="Untuk array 2D, apa fungsi np.mean(data, axis=0)?"
+  correctAnswer="A"
+  options={[
+    {id: 'A', text: 'Menghitung mean setiap kolom', explanation: 'Benar! Axis 0 mereduksi sumbu baris sehingga tersisa satu nilai per kolom.'},
+    {id: 'B', text: 'Menghitung mean setiap baris', explanation: 'Mean per baris menggunakan axis=1.'},
+    {id: 'C', text: 'Mengurutkan array', explanation: 'Mean adalah agregasi, bukan sorting.'},
+    {id: 'D', text: 'Menghapus missing values', explanation: 'Tidak. Missing values perlu penanganan tersendiri.'},
+  ]}
+/>
+
+## 11. Ringkasan
+
+Kamu sudah mempelajari ukuran pemusatan, ukuran sebaran, pengaruh `axis`, dan missing values. Berikutnya, course akan berlanjut ke **pandas Introduction** untuk bekerja dengan tabel dan dataset CSV.

@@ -1,0 +1,130 @@
+---
+title: Linear Regression
+sidebar_label: Linear Regression
+description: Prediksi numerik menggunakan regresi linear dan evaluasi MAE atau RMSE.
+---
+
+import PythonPlayground from '@site/src/components/PythonPlayground';
+import QuizCard from '@site/src/components/QuizCard';
+
+# Linear Regression
+
+**Level:** Beginner–Intermediate | **Course:** Machine Learning
+
+Regresi linear digunakan untuk memprediksi **angka kontinu**, misalnya harga rumah, konsumsi listrik, atau jumlah penjualan. Model mempelajari hubungan antara fitur (X) dan target (y).
+
+## Tujuan Pembelajaran
+
+- Menentukan kapan regresi tepat digunakan.
+- Memahami koefisien, intercept, dan residual.
+- Melatih model menggunakan scikit-learn dan mengevaluasi di data uji.
+
+## 1. Intuisi Regresi Linear
+
+Untuk satu fitur, model dapat dituliskan sebagai `ŷ = w × x + b`. `w` adalah kemiringan/koefisien, `b` adalah intercept, dan `ŷ` merupakan prediksi. **Residual** ialah selisih nilai aktual dengan prediksi.
+
+Misalnya, biaya pengiriman mengikuti pola sederhana Rp5.000 per kilometer ditambah biaya dasar Rp10.000. Rumus ini adalah contoh aturan linear yang sudah diketahui, **bukan hasil model yang dilatih**.
+
+<PythonPlayground
+  initialCode={"jarak_km = 4\nbiaya_dasar = 10000\nbiaya_per_km = 5000\nprediksi = biaya_dasar + biaya_per_km * jarak_km\nprint(prediksi)"}
+/>
+
+### Visual Intuition — Garis Regresi
+
+![Scatter plot data aktual dan garis prediksi linear regression](/img/machine-learning/linear-regression-plot.png)
+
+*Gambar 1. Ilustrasi data sintetis dan sebuah garis prediksi linear. Garis mendekati pola titik-titik, tetapi tidak harus melewati setiap titik.*
+
+**Cara membacanya:** sumbu X adalah fitur, sumbu Y adalah target, titik merupakan nilai aktual, dan garis menunjukkan hasil pendekatan model. Jarak vertikal antara titik dan garis merupakan **residual**. Nilai pada gambar adalah contoh ilustratif, bukan hasil eksperimen notebook pada bagian berikutnya.
+
+## 2. Data dan pembagian train/test
+
+Dalam latihan ML sesungguhnya, `X` berisi fitur berupa tabel 2D dan `y` berisi label angka. Pisahkan data sebelum training. Jangan mengevaluasi model hanya di data yang dipakai untuk melatihnya.
+
+## 3. Contoh scikit-learn (Google Colab / Jupyter)
+
+```python
+import numpy as np
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import mean_absolute_error, root_mean_squared_error
+
+# Dataset demonstrasi buatan, bukan data dunia nyata
+X = np.array([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]).reshape(-1, 1)
+y = np.array([12, 14, 16, 18, 20, 22, 24, 26, 28, 30])
+
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.3, random_state=42
+)
+model = LinearRegression()
+model.fit(X_train, y_train)
+prediksi = model.predict(X_test)
+
+print("Koefisien:", model.coef_)
+print("Intercept:", model.intercept_)
+print("MAE:", mean_absolute_error(y_test, prediksi))
+print("RMSE:", root_mean_squared_error(y_test, prediksi))
+```
+
+> Jalankan contoh scikit-learn di Google Colab/Jupyter. Python Playground Kawruh belum menjamin paket scikit-learn tersedia. Jika versi scikit-learn-mu belum memiliki `root_mean_squared_error`, gunakan `mean_squared_error` kemudian ambil akar kuadratnya.
+
+## 4. Menginterpretasikan metrik
+
+| Metrik | Arti |
+| --- | --- |
+| MAE | Rata-rata nilai absolut selisih prediksi dan target |
+| RMSE | Akar rata-rata kuadrat error; lebih sensitif terhadap error besar |
+| R² | Proporsi variasi target yang dijelaskan model relatif terhadap baseline rata-rata; bisa negatif pada test |
+
+Nilai MAE/RMSE lebih kecil biasanya lebih baik **pada dataset, satuan, dan pembagian data yang sama**.
+
+## 5. Common Mistakes
+
+- Menggunakan regresi linear untuk memprediksi label kategori tanpa memahami tujuan task.
+- Menormalisasi seluruh dataset sebelum train/test split sehingga data test ikut memengaruhi preprocessing.
+- Menganggap hubungan linear selalu menunjukkan hubungan sebab-akibat.
+- Memilih model berdasarkan test set berulang kali.
+
+## 6. Latihan Interaktif
+
+Hitung prediksi jika `x=6`, koefisien `3`, dan intercept `2`.
+
+<PythonPlayground
+  initialCode={"x = 6\nw = 3\nb = 2\n# Cetak hasil prediksi\n"}
+  expectedOutput={"20"}
+  hint={"Gunakan w * x + b."}
+  solution={"x = 6\nw = 3\nb = 2\nprint(w * x + b)"}
+/>
+
+## 7. Quick Quiz
+
+<QuizCard
+  question={"Target mana yang paling cocok untuk regresi linear?"}
+  correctAnswer={"B"}
+  options={[
+  {
+    "id": "A",
+    "text": "Kategori jenis kendaraan",
+    "explanation": "Kategori merupakan klasifikasi."
+  },
+  {
+    "id": "B",
+    "text": "Harga rumah dalam rupiah",
+    "explanation": "Benar, target berupa angka kontinu."
+  },
+  {
+    "id": "C",
+    "text": "Status lulus/tidak",
+    "explanation": "Ini klasifikasi biner."
+  },
+  {
+    "id": "D",
+    "text": "Warna buah",
+    "explanation": "Ini klasifikasi kategori."
+  }
+]}
+/>
+
+## Ringkasan
+
+Regresi linear memprediksi angka, sedangkan MAE dan RMSE mengukur kesalahan numerik pada data yang tidak digunakan untuk training. Lanjutkan ke **Logistic Regression** untuk klasifikasi.

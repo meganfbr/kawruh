@@ -1,0 +1,164 @@
+---
+title: NumPy Arrays
+sidebar_label: NumPy Arrays
+sidebar_position: 5
+description: Tutorial interaktif NumPy Arrays untuk pemula di Kawruh.
+---
+
+import PythonPlayground from '@site/src/components/PythonPlayground';
+import QuizCard from '@site/src/components/QuizCard';
+import Admonition from '@theme/Admonition';
+
+# NumPy Arrays
+
+**Level:** Beginner | **Prasyarat:** NumPy Introduction | **Estimasi:** 35–45 menit
+
+Di materi ini kamu belajar membuat *array* NumPy, memahami bentuk dan ukuran data, serta membedakan operasi array dengan list Python.
+
+## Tujuan Pembelajaran
+
+Setelah menyelesaikan materi, kamu mampu membuat array 1D dan 2D, menjelaskan `ndim`, `shape`, `size`, dan `dtype`, serta menerapkan operasi element-wise.
+
+## 1. Apa Itu `ndarray`?
+
+`ndarray` adalah struktur data utama NumPy untuk menyimpan elemen dalam susunan berdimensi tertentu. Pada kebanyakan kasus, seluruh elemen memiliki satu `dtype` yang sama. Array satu dimensi cocok untuk satu deret angka, sedangkan array dua dimensi cocok untuk tabel numerik.
+
+| Struktur | Contoh | Dimensi |
+| --- | --- | --- |
+| Skalar | `7` | 0 |
+| Array 1D | `[10, 20, 30]` | 1 |
+| Array 2D | `[[1, 2], [3, 4]]` | 2 |
+
+## 2. Membuat Array
+
+Contoh berikut perlu dijalankan di **Google Colab atau Jupyter dengan NumPy terpasang**. Playground Kawruh saat ini belum dijamin mendukung import NumPy.
+
+```python
+import numpy as np
+
+nilai = np.array([75, 85, 90, 95])
+matriks = np.array([[1, 2, 3], [4, 5, 6]])
+
+print(nilai)
+print(matriks)
+```
+
+`np.array()` membuat `ndarray` dari list. List bersarang dengan panjang konsisten dapat membentuk array dua dimensi.
+
+## 3. Membaca Bentuk dan Tipe Data
+
+```python
+import numpy as np
+
+nilai = np.array([[75, 85, 90], [70, 80, 95]])
+
+print('Dimensi:', nilai.ndim)
+print('Shape:', nilai.shape)
+print('Size:', nilai.size)
+print('Dtype:', nilai.dtype)
+```
+
+| Atribut | Makna | Hasil contoh |
+| --- | --- | --- |
+| `ndim` | Jumlah sumbu/dimensi | `2` |
+| `shape` | Jumlah elemen per sumbu | `(2, 3)` |
+| `size` | Total elemen | `6` |
+| `dtype` | Jenis penyimpanan elemen | Bergantung platform, sering `int64` atau `int32` |
+
+<Admonition type="info" title="Ingat Perbedaannya">
+
+`shape` adalah *susunan* ukuran data, sedangkan `size` adalah *total* elemen. Bentuk `(2, 3)` memiliki enam elemen.
+
+</Admonition>
+
+## 4. Array dengan Fungsi Bawaan NumPy
+
+```python
+import numpy as np
+
+print(np.zeros(3))           # tiga angka nol
+print(np.ones((2, 2)))      # matriks 2 x 2
+print(np.arange(0, 6, 2))   # 0, 2, 4
+print(np.linspace(0, 1, 5)) # lima titik dari 0 sampai 1
+```
+
+`arange()` memakai langkah (*step*), sedangkan `linspace()` memakai jumlah titik (*num*).
+
+## 5. Operasi Element-Wise dan Broadcasting
+
+```python
+import numpy as np
+
+nilai = np.array([70, 80, 90])
+print(nilai + 5)
+print(nilai * 2)
+print(nilai >= 80)
+```
+
+Output dari `nilai + 5` adalah `[75 85 95]`: satu angka diterapkan ke seluruh elemen (*broadcasting*). Pada penjumlahan dua array, bentuknya harus cocok atau kompatibel menurut aturan broadcasting NumPy.
+
+### Perbandingan dengan List Python
+
+<PythonPlayground
+  initialCode={'nilai = [70, 80, 90]\nprint([x + 5 for x in nilai])\nprint([x >= 80 for x in nilai])'}
+/>
+
+Contoh Playground di atas meniru operasi element-wise memakai Python murni dan **tidak menjalankan NumPy**.
+
+## 6. Contoh Dunia Nyata: Nilai Mahasiswa
+
+```python
+import numpy as np
+
+nilai = np.array([70, 85, 90, 75])
+print('Rata-rata:', nilai.mean())
+print('Lulus:', nilai >= 75)
+```
+
+Pada analisis data, array numerik membantu menghitung ringkasan dan membuat masker kondisi tanpa menulis perulangan manual untuk setiap angka.
+
+## 7. Common Mistakes
+
+- Menganggap `[1, 2] + [3, 4]` sama dengan penjumlahan array; pada list, hasilnya penggabungan.
+- Menyangka `dtype` selalu sama di semua komputer.
+- Membuat baris array 2D dengan panjang berbeda, lalu mengharapkan matriks numerik biasa.
+- Mengira `shape` sama dengan jumlah seluruh elemen.
+
+## 8. Latihan Interaktif
+
+### Latihan 1 — Menghitung Banyak Data
+
+Diberikan dua baris data masing-masing berisi tiga angka. Cetak jumlah total elemennya memakai Python murni.
+
+<PythonPlayground
+  initialCode={'data = [[10, 20, 30], [40, 50, 60]]\n\n# Hitung total elemen dan tampilkan\n'}
+  expectedOutput="6"
+  hint="Gunakan sum(len(baris) for baris in data)."
+  solution={'data = [[10, 20, 30], [40, 50, 60]]\nprint(sum(len(baris) for baris in data))'}
+/>
+
+### Latihan 2 — Tambahkan Lima
+
+<PythonPlayground
+  initialCode={'nilai = [70, 80, 90]\n\n# Tampilkan list baru setelah setiap angka ditambah 5\n'}
+  expectedOutput="[75, 85, 95]"
+  hint="Gunakan list comprehension: [x + 5 for x in nilai]."
+  solution={'nilai = [70, 80, 90]\nprint([x + 5 for x in nilai])'}
+/>
+
+## 9. Quick Quiz
+
+<QuizCard
+  question="Apa arti shape (2, 3) pada array NumPy?"
+  correctAnswer="B"
+  options={[
+    {id: 'A', text: 'Dua elemen total', explanation: 'Total elemennya adalah 2 x 3 = 6.'},
+    {id: 'B', text: 'Dua baris dan tiga kolom', explanation: 'Benar! Dua dimensi dengan ukuran 2 dan 3.'},
+    {id: 'C', text: 'Tiga baris dan dua kolom', explanation: 'Urutan shape menunjukkan 2 dahulu, lalu 3.'},
+    {id: 'D', text: 'Array bertipe float', explanation: 'Shape tidak menjelaskan dtype.'},
+  ]}
+/>
+
+## 10. Ringkasan
+
+Kamu sudah mengenal `ndarray`, cara membuat array, atribut dasar, dan operasi element-wise. Lanjutkan ke **NumPy Indexing And Slicing** untuk mengambil bagian tertentu dari data.

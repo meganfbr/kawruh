@@ -1,0 +1,98 @@
+---
+title: Train Validation And Test Split
+sidebar_label: Train Validation And Test Split
+description: Memahami pembagian data, generalisasi, leakage dan evaluasi model.
+---
+
+import PythonPlayground from '@site/src/components/PythonPlayground';
+import QuizCard from '@site/src/components/QuizCard';
+
+# Train Validation And Test Split
+
+**Level:** Beginner | **Course:** Machine Learning
+
+## Tujuan Pembelajaran
+
+- Memahami fungsi train, validation, dan test.
+- Mengenali risiko data leakage dan duplikat lintas split.
+- Memahami random, stratified, grouped, dan time-based split secara konseptual.
+
+## 1. Mengapa Harus Dipisahkan?
+
+Model bisa menghafal data yang pernah dilihat. Karena itu, evaluasi harus mengukur perilaku pada data yang tidak digunakan untuk membangun atau memilih model.
+
+| Bagian | Digunakan untuk |
+| --- | --- |
+| Train | Melatih parameter model |
+| Validation | Memilih model, hyperparameter, atau checkpoint |
+| Test | Evaluasi akhir pada data yang belum digunakan untuk keputusan tersebut |
+
+Proporsi seperti 70/15/15 hanyalah contoh, bukan aturan wajib. Pilih ukuran split berdasarkan banyaknya data, domain, dan metode validasi.
+
+## 2. Contoh Split Sederhana
+
+Ini demonstrasi list Python, bukan alternatif lengkap untuk `train_test_split` dari scikit-learn.
+
+<PythonPlayground initialCode={"data = list(range(1, 11))\ntrain = data[:6]\nvalidation = data[6:8]\ntest = data[8:]\nprint(\"Train:\", train)\nprint(\"Validation:\", validation)\nprint(\"Test:\", test)"} />
+
+Pada data nyata, urutan baris tidak selalu boleh langsung dipotong seperti contoh. Dataset yang sudah diurutkan menurut label bisa menghasilkan split tidak representatif.
+
+## 3. Memilih Strategi Split
+
+- **Random split:** cocok untuk sampel independen yang boleh diacak.
+- **Stratified split:** membantu menjaga proporsi kelas pada klasifikasi.
+- **Group split:** mencegah data dari pasien atau subjek yang sama tersebar ke train dan test.
+- **Time-based split:** menguji prediksi masa depan menggunakan data masa lalu.
+
+## 4. Contoh Scikit-learn di Google Colab
+
+Kode berikut membutuhkan `scikit-learn`, sehingga jalankan di Google Colab atau Jupyter sampai runtime Kawruh mendukungnya.
+
+```python
+from sklearn.model_selection import train_test_split
+
+X = [[1], [2], [3], [4], [5], [6], [7], [8]]
+y = [0, 0, 0, 0, 1, 1, 1, 1]
+
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.25, random_state=42, stratify=y
+)
+
+print(len(X_train), len(X_test))
+```
+
+## 5. Data Leakage
+
+Leakage terjadi ketika informasi yang seharusnya tidak tersedia saat prediksi masuk ke proses pelatihan atau evaluasi. Contoh: menghitung rata-rata normalisasi dari seluruh dataset **sebelum** split, lalu memakai nilai itu pada train dan test.
+
+Cara aman: split dahulu, *fit* preprocessing pada train, lalu *transform* validation dan test dengan aturan yang dipelajari dari train.
+
+## Common Mistakes
+
+- Menggunakan data test berkali-kali untuk memilih model terbaik.
+- Menganggap `random_state` menggantikan pencegahan data leakage.
+- Meletakkan pasien yang sama pada split berbeda.
+- Mengacak deret waktu ketika tujuan model adalah prediksi masa depan.
+
+## Latihan Interaktif
+
+Lengkapi kode, jalankan, kemudian gunakan **Check Answer**.
+
+<PythonPlayground
+  initialCode={'data = list(range(10))\ntrain = data[:7]\ntest = data[7:]\n# Cetak jumlah train dan test dengan format 7 3\n'}
+  expectedOutput={'7 3'}
+  hint={'Gunakan print(len(train), len(test)).'}
+  solution={'data = list(range(10))\ntrain = data[:7]\ntest = data[7:]\nprint(len(train), len(test))'}
+/>
+
+## Quick Quiz
+
+<QuizCard
+  question={'Kapan statistik preprocessing seperti mean untuk standardisasi dihitung?'}
+  correctAnswer={'B'}
+  options={[{'id': 'A', 'text': 'Pada seluruh data sebelum split', 'explanation': 'Ini berisiko membocorkan informasi test.'}, {'id': 'B', 'text': 'Pada data train saja', 'explanation': 'Benar. Validation dan test memakai transformasi yang dipelajari dari train.'}, {'id': 'C', 'text': 'Hanya pada test', 'explanation': 'Test tidak boleh menentukan parameter preprocessing training.'}, {'id': 'D', 'text': 'Tidak pernah', 'explanation': 'Standardisasi dapat membutuhkan statistik train.'}]}
+/>
+
+## Ringkasan
+
+Pelajari konsepnya, coba kode, dan periksa kembali apakah kamu dapat menjelaskan hasilnya tanpa melihat jawaban.

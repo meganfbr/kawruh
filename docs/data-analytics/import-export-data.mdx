@@ -1,0 +1,142 @@
+---
+title: Importing And Exporting Data
+sidebar_label: Importing And Exporting Data
+sidebar_position: 10
+description: Materi Importing And Exporting Data Kawruh, lengkap dengan contoh dan latihan.
+---
+
+import PythonPlayground from '@site/src/components/PythonPlayground';
+import QuizCard from '@site/src/components/QuizCard';
+import Admonition from '@theme/Admonition';
+
+# Importing And Exporting Data
+
+**Level:** Beginner | **Estimasi belajar:** 30–45 menit
+
+Analisis data hampir selalu dimulai dari membaca sumber data dan menyimpan hasilnya dengan benar.
+
+## Tujuan Pembelajaran
+
+- Membaca dan menulis CSV menggunakan pandas.
+- Mengenal perbedaan CSV, Excel, dan JSON.
+- Memahami path, delimiter, dan encoding dasar.
+
+## 1. Format data yang umum
+
+| Format | Kegunaan | pandas |
+| --- | --- | --- |
+| CSV | Tabel teks, portabel | `read_csv`, `to_csv` |
+| Excel | Spreadsheet multi-sheet | `read_excel`, `to_excel` |
+| JSON | Data dengan struktur key-value | `read_json`, `to_json` |
+
+## 2. Import file CSV
+
+Siapkan berkas `penjualan.csv` di folder kerja notebook:
+
+```csv
+produk,harga,terjual
+Buku,45000,3
+Pulpen,5000,10
+Tas,120000,2
+```
+
+Lalu jalankan di Colab/Jupyter:
+
+```python
+import pandas as pd
+
+df = pd.read_csv("penjualan.csv")
+print(df.head())
+print(df.info())
+```
+
+**Penjelasan:** `read_csv()` membaca isi file ke DataFrame; `head()` memberi pratinjau. Pastikan file benar-benar tersedia di lokasi notebook.
+
+## 3. Export CSV
+
+```python
+df["total"] = df["harga"] * df["terjual"]
+df.to_csv("penjualan_hasil.csv", index=False)
+```
+
+`index=False` mencegah indeks DataFrame ditulis sebagai kolom tambahan.
+
+## 4. Excel dan JSON
+
+```python
+# Untuk Excel, instal openpyxl jika diperlukan.
+df.to_excel("penjualan.xlsx", index=False)
+
+# JSON dalam format records
+df.to_json("penjualan.json", orient="records", indent=2)
+```
+
+<Admonition type="info" title="Catatan Eksekusi">
+
+Kode file I/O dengan pandas dijalankan di Colab atau Jupyter. Pada Google Colab, file lokal komputer perlu diunggah dahulu atau tersedia melalui penyimpanan yang dipasang.
+
+</Admonition>
+
+## 5. Separator dan masalah umum
+
+```python
+# Jika CSV memakai titik koma
+pd.read_csv("data-semicolon.csv", sep=";")
+
+# Jika encoding UTF-8
+pd.read_csv("penjualan.csv", encoding="utf-8")
+```
+
+Kasus yang sering terjadi: file tidak ditemukan (`FileNotFoundError`), delimiter salah sehingga semua data masuk satu kolom, atau angka dibaca sebagai teks karena format angka tidak konsisten.
+
+## 6. Try It Yourself — membentuk baris CSV
+
+Latihan Python murni ini mengenalkan ide *header* dan data per baris.
+
+<PythonPlayground
+  initialCode={"produk = [\"Buku\", \"Pulpen\"]\nharga = [45000, 5000]\n\nprint(\"produk,harga\")\nfor i in range(len(produk)):\n    print(f\"{produk[i]},{harga[i]}\")"}
+/>
+
+## 7. Latihan — output CSV sederhana
+
+Lengkapi kode sehingga menghasilkan `nama,nilai`, diikuti `Ana,80` dan `Budi,90`.
+
+<PythonPlayground
+  initialCode={"nama = [\"Ana\", \"Budi\"]\nnilai = [80, 90]\n\n# Buat output dalam format CSV sederhana"}
+  expectedOutput={"nama,nilai\nAna,80\nBudi,90"}
+  hint={"Cetak header terlebih dahulu, kemudian gunakan for dan f-string."}
+  solution={"print(\"nama,nilai\")\nfor i in range(len(nama)):\n    print(f\"{nama[i]},{nilai[i]}\")"}
+/>
+
+## 8. Quick Quiz
+
+<QuizCard
+  question={"Mengapa index=False sering dipakai pada to_csv()?"}
+  correctAnswer={"C"}
+  options={[
+  {
+    "id": "A",
+    "text": "Agar data otomatis terenkripsi",
+    "explanation": "Tidak, index=False bukan untuk enkripsi."
+  },
+  {
+    "id": "B",
+    "text": "Agar semua kolom dihapus",
+    "explanation": "Bukan begitu."
+  },
+  {
+    "id": "C",
+    "text": "Agar indeks DataFrame tidak ditulis sebagai kolom tambahan",
+    "explanation": "Benar, itu fungsi index=False."
+  },
+  {
+    "id": "D",
+    "text": "Agar file berubah menjadi Excel",
+    "explanation": "Tidak, format tetap CSV."
+  }
+]}
+/>
+
+## 9. Ringkasan
+
+Kamu sudah mengenal alur import, pemeriksaan data, dan export CSV/Excel/JSON. Setelah data dimuat, langkah penting berikutnya adalah Data Cleaning.

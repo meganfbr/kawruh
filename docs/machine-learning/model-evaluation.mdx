@@ -1,0 +1,136 @@
+---
+title: Model Evaluation
+sidebar_label: Model Evaluation
+description: Evaluasi classification dan regression, confusion matrix, precision, recall, F1, MAE, RMSE.
+---
+
+import PythonPlayground from '@site/src/components/PythonPlayground';
+import QuizCard from '@site/src/components/QuizCard';
+
+# Model Evaluation
+
+**Level:** Beginner–Intermediate | **Course:** Machine Learning
+
+Model Evaluation membantu menjawab: **seberapa baik model bekerja pada data yang belum pernah dipakai untuk training?** Metrik yang tepat bergantung pada masalah, distribusi kelas, serta biaya dari kesalahan prediksi.
+
+## Tujuan Pembelajaran
+
+- Membedakan metrik regresi dan klasifikasi.
+- Menghitung accuracy, precision, recall, dan F1 secara sederhana.
+- Memahami confusion matrix, cross-validation, dan potensi data leakage.
+
+## 1. Metrik regresi vs klasifikasi
+
+| Task | Metrik umum | Tujuan |
+| --- | --- | --- |
+| Regression | MAE, RMSE, R² | Menilai error prediksi numerik |
+| Classification | Accuracy, Precision, Recall, F1 | Menilai klasifikasi dengan jenis kesalahan berbeda |
+
+## 2. Confusion Matrix
+
+Untuk klasifikasi biner dengan kelas positif `1`, kita mengenal **TP** (positif terdeteksi benar), **TN** (negatif terdeteksi benar), **FP** (negatif diprediksi positif), dan **FN** (positif diprediksi negatif).
+
+Rumus dasar:
+
+- Accuracy = `(TP + TN) / (TP + TN + FP + FN)`
+- Precision = `TP / (TP + FP)`
+- Recall = `TP / (TP + FN)`
+- F1 = `2 × precision × recall / (precision + recall)`
+
+Pembagian dengan nol perlu ditangani secara eksplisit ketika menghitung metrik.
+
+### Try It Yourself
+
+<PythonPlayground
+  initialCode={"TP, TN, FP, FN = 8, 10, 2, 4\nprecision = TP / (TP + FP)\nrecall = TP / (TP + FN)\nf1 = 2 * precision * recall / (precision + recall)\nprint(round(precision, 3))\nprint(round(recall, 3))\nprint(round(f1, 3))"}
+/>
+
+### Visual Intuition — Membaca Confusion Matrix
+
+![Confusion matrix ilustratif dengan true negative false positive false negative dan true positive](/img/machine-learning/confusion-matrix.png)
+
+*Gambar 1. Contoh confusion matrix biner untuk 100 sampel. Baris adalah label aktual dan kolom adalah label prediksi.*
+
+**Cara membacanya:** **TN = 40**, **FP = 10**, **FN = 5**, dan **TP = 45**. Dari matriks ini, accuracy = (40 + 45) / 100 = **85%**, precision kelas positif = 45 / (45 + 10) ≈ **81,8%**, dan recall kelas positif = 45 / (45 + 5) = **90%**. Angka adalah ilustrasi, bukan output training kode di bawahnya.
+
+## 3. Evaluasi dengan scikit-learn (Google Colab / Jupyter)
+
+```python
+from sklearn.metrics import (
+    confusion_matrix, classification_report,
+    accuracy_score, precision_score, recall_score, f1_score
+)
+
+y_true = [0, 0, 0, 1, 1, 1, 1, 1]
+y_pred = [0, 0, 1, 0, 1, 1, 1, 1]
+
+print(confusion_matrix(y_true, y_pred))
+print("Accuracy:", accuracy_score(y_true, y_pred))
+print("Precision:", precision_score(y_true, y_pred))
+print("Recall:", recall_score(y_true, y_pred))
+print("F1:", f1_score(y_true, y_pred))
+print(classification_report(y_true, y_pred, zero_division=0))
+```
+
+### Macro, micro, dan weighted F1
+
+Untuk multiclass, *macro* memberikan bobot sama ke setiap kelas, *weighted* memperhatikan jumlah sampel setiap kelas, dan *micro* menghitung agregasi keputusan pada semua kelas. Jika ada ketimpangan kelas, lihat pula nilai per kelas dan confusion matrix.
+
+## 4. Validasi yang benar
+
+- Gunakan train set untuk melatih model.
+- Gunakan validation atau cross-validation untuk memilih konfigurasi.
+- Gunakan test set sebagai evaluasi akhir.
+- Hindari duplikasi atau kebocoran antara split.
+- Gunakan time-based split untuk data urutan waktu ketika sesuai.
+
+## 5. Common Mistakes
+
+- Menganggap 95% accuracy selalu bagus walaupun kelas positif sangat jarang.
+- Menentukan threshold setelah melihat test set berkali-kali.
+- Mencampur `y_true` dengan `y_pred` dalam urutan yang salah.
+- Membandingkan MAE dua model dari target yang berbeda satuannya.
+
+## 6. Latihan Interaktif
+
+Hitung accuracy dari `TP=8`, `TN=10`, `FP=2`, `FN=4`, lalu tampilkan dengan tiga angka desimal.
+
+<PythonPlayground
+  initialCode={"TP, TN, FP, FN = 8, 10, 2, 4\n# Hitung dan cetak accuracy dengan tiga desimal\n"}
+  expectedOutput={"0.75"}
+  hint={"Bagi jumlah prediksi benar dengan seluruh prediksi; gunakan round(..., 3)."}
+  solution={"TP, TN, FP, FN = 8, 10, 2, 4\naccuracy = (TP + TN) / (TP + TN + FP + FN)\nprint(round(accuracy, 3))"}
+/>
+
+## 7. Quick Quiz
+
+<QuizCard
+  question={"Jika tujuan utama adalah mengurangi False Negative kelas positif, metrik mana yang paling terkait?"}
+  correctAnswer={"A"}
+  options={[
+  {
+    "id": "A",
+    "text": "Recall",
+    "explanation": "Benar, recall tinggi berarti lebih sedikit kasus positif yang terlewat, relatif terhadap seluruh positif."
+  },
+  {
+    "id": "B",
+    "text": "RMSE",
+    "explanation": "RMSE untuk regresi."
+  },
+  {
+    "id": "C",
+    "text": "R²",
+    "explanation": "R² untuk regresi."
+  },
+  {
+    "id": "D",
+    "text": "MAE",
+    "explanation": "MAE untuk regresi."
+  }
+]}
+/>
+
+## Ringkasan
+
+Pilih metrik berdasarkan task dan konsekuensi kesalahan. Evaluasi yang adil bergantung pada pemisahan data, preprocessing yang benar, dan test set yang tidak dipakai berulang kali untuk pemilihan model.

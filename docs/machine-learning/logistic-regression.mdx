@@ -1,0 +1,124 @@
+---
+title: Logistic Regression
+sidebar_label: Logistic Regression
+description: Klasifikasi biner dengan probabilitas, threshold, dan LogisticRegression scikit-learn.
+---
+
+import PythonPlayground from '@site/src/components/PythonPlayground';
+import QuizCard from '@site/src/components/QuizCard';
+
+# Logistic Regression
+
+**Level:** Beginner–Intermediate | **Course:** Machine Learning
+
+Walaupun namanya mengandung kata *regression*, **Logistic Regression** biasanya digunakan untuk **klasifikasi**, misalnya memprediksi apakah transaksi berisiko atau tidak.
+
+## Tujuan Pembelajaran
+
+- Menjelaskan probabilitas kelas dan threshold.
+- Memahami sigmoid secara konseptual.
+- Melatih klasifikator dan membaca confusion matrix.
+
+## 1. Dari skor menjadi probabilitas
+
+Untuk klasifikasi biner, skor linear dapat diubah menjadi probabilitas menggunakan fungsi sigmoid: `1 / (1 + exp(-z))`. Nilainya antara 0 dan 1. Threshold 0,5 adalah pilihan umum, **bukan kewajiban**.
+
+<PythonPlayground
+  initialCode={"import math\nz = 2\nprobabilitas = 1 / (1 + math.exp(-z))\nprint(round(probabilitas, 3))\nprint(probabilitas >= 0.5)"}
+/>
+
+### Visual Intuition — Kurva Sigmoid
+
+![Grafik fungsi sigmoid dari skor linear menjadi probabilitas](/img/machine-learning/logistic-sigmoid.png)
+
+*Gambar 1. Fungsi sigmoid mengubah skor linear menjadi nilai antara 0 dan 1. Garis putus-putus menunjukkan threshold ilustratif 0,5.*
+
+**Cara membacanya:** semakin besar skor pada sumbu X, semakin besar probabilitas kelas positif pada sumbu Y. Threshold 0,5 adalah pilihan umum untuk demonstrasi, bukan batas yang selalu optimal untuk semua masalah.
+
+## 2. Mengapa scaling penting?
+
+Karena model sering memakai regularisasi, fitur dengan skala sangat berbeda dapat memengaruhi optimasi. Gunakan `StandardScaler` dalam `Pipeline` agar scaler hanya belajar dari data training.
+
+## 3. Contoh scikit-learn (Google Colab / Jupyter)
+
+```python
+from sklearn.datasets import make_classification
+from sklearn.model_selection import train_test_split
+from sklearn.pipeline import make_pipeline
+from sklearn.preprocessing import StandardScaler
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import classification_report, confusion_matrix
+
+X, y = make_classification(
+    n_samples=300, n_features=5, n_informative=3,
+    n_redundant=0, random_state=42
+)
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, stratify=y, random_state=42
+)
+model = make_pipeline(StandardScaler(), LogisticRegression(max_iter=1000))
+model.fit(X_train, y_train)
+prediksi = model.predict(X_test)
+probabilitas = model.predict_proba(X_test)[:, 1]
+
+print(confusion_matrix(y_test, prediksi))
+print(classification_report(y_test, prediksi, zero_division=0))
+print(probabilitas[:5])
+```
+
+Dataset dihasilkan secara sintetis, bukan data pelanggan asli. Latihan scikit-learn dijalankan di Colab atau Jupyter.
+
+## 4. Threshold dan trade-off
+
+Threshold lebih rendah sering meningkatkan recall kelas positif tetapi juga dapat meningkatkan false positive. Pilih berdasarkan biaya kesalahan dan data validasi, bukan dengan melihat test set berulang kali.
+
+## 5. Common Mistakes
+
+- Menganggap output probabilitas otomatis terkalibrasi dengan sempurna.
+- Menggunakan accuracy sebagai satu-satunya metrik untuk data yang sangat tidak seimbang.
+- Melakukan scaling seluruh dataset sebelum split.
+- Menganggap koefisien model selalu menjelaskan hubungan sebab-akibat.
+
+## 6. Latihan Interaktif
+
+Untuk probabilitas `0.72` dan threshold `0.60`, cetak `1` untuk kelas positif.
+
+<PythonPlayground
+  initialCode={"probabilitas = 0.72\nthreshold = 0.60\n# Cetak kelas prediksi sebagai angka\n"}
+  expectedOutput={"1"}
+  hint={"Ubah hasil perbandingan boolean menjadi integer dengan int()."}
+  solution={"probabilitas = 0.72\nthreshold = 0.60\nprint(int(probabilitas >= threshold))"}
+/>
+
+## 7. Quick Quiz
+
+<QuizCard
+  question={"Apa yang terjadi saat threshold klasifikasi positif diturunkan?"}
+  correctAnswer={"B"}
+  options={[
+  {
+    "id": "A",
+    "text": "Selalu meningkatkan precision",
+    "explanation": "Precision tidak selalu meningkat."
+  },
+  {
+    "id": "B",
+    "text": "Sering meningkatkan recall tetapi bisa meningkatkan false positive",
+    "explanation": "Benar, lebih banyak sampel diprediksi positif."
+  },
+  {
+    "id": "C",
+    "text": "Tidak memengaruhi hasil prediksi",
+    "explanation": "Threshold memengaruhi label hasil klasifikasi."
+  },
+  {
+    "id": "D",
+    "text": "Mengubah semua data menjadi regression",
+    "explanation": "Task tetap klasifikasi."
+  }
+]}
+/>
+
+## Ringkasan
+
+Logistic Regression adalah baseline klasifikasi yang kuat dan relatif mudah diinterpretasi. Evaluasikan probabilitas, threshold, precision, dan recall sesuai tujuan masalah.

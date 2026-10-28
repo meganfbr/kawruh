@@ -1,0 +1,167 @@
+---
+title: Data Cleaning
+sidebar_label: Data Cleaning
+sidebar_position: 11
+description: Materi Data Cleaning Kawruh, lengkap dengan contoh dan latihan.
+---
+
+import PythonPlayground from '@site/src/components/PythonPlayground';
+import QuizCard from '@site/src/components/QuizCard';
+import Admonition from '@theme/Admonition';
+
+# Data Cleaning
+
+**Level:** Beginner | **Estimasi belajar:** 30–45 menit
+
+Data yang bersih membantu menghasilkan analisis yang lebih bisa dipercaya.
+
+## Tujuan Pembelajaran
+
+- Mengenali missing values, duplikat, dan tipe data yang tidak sesuai.
+- Menerapkan `isna`, `dropna`, `fillna`, `drop_duplicates`, dan konversi numerik.
+- Memahami risiko membuang data tanpa alasan yang jelas.
+
+## 1. Mengapa data perlu dibersihkan?
+
+Dataset dari dunia nyata tidak selalu rapi. Ada nilai kosong, baris berulang, tipe data yang tidak cocok, atau penulisan kategori yang berbeda-beda. Data cleaning bertujuan memperbaiki masalah tersebut secara terukur.
+
+## 2. Buat dataset contoh
+
+Kode berikut dijalankan di **Colab atau Jupyter dengan pandas tersedia**:
+
+```python
+import pandas as pd
+
+df = pd.DataFrame({
+    "nama": ["Ana", "Budi", "Budi", "Citra"],
+    "umur": [20, None, None, 22],
+    "nilai": ["85", "90", "90", "tidak ada"],
+})
+print(df)
+```
+
+## 3. Mendeteksi nilai kosong
+
+```python
+print(df.isna().sum())
+print(df.isna().mean() * 100)
+```
+
+`isna().sum()` menghitung jumlah missing value per kolom, sedangkan `isna().mean() * 100` menghitung persentase missing value per kolom.
+
+## 4. Mengisi atau menghapus data kosong
+
+```python
+# Contoh sederhana: imputasi median umur
+median_umur = df["umur"].median()
+df["umur"] = df["umur"].fillna(median_umur)
+
+# Menghapus baris kosong (gunakan hanya bila beralasan)
+# df = df.dropna()
+```
+
+<Admonition type="warning" title="Hindari Data Leakage">
+
+Untuk proyek Machine Learning, nilai imputasi seperti median sebaiknya dihitung dari **data training saja**, kemudian diterapkan juga ke data validasi dan test. Menghitungnya dari seluruh dataset sebelum split bisa menyebabkan data leakage.
+
+</Admonition>
+
+## 5. Mendeteksi duplikat
+
+```python
+print(df.duplicated().sum())
+df = df.drop_duplicates()
+```
+
+Perhatikan: dua transaksi yang kebetulan identik tidak selalu berarti data salah. Evaluasi definisi duplikat berdasarkan konteks bisnis.
+
+## 6. Memperbaiki tipe data
+
+```python
+df["nilai"] = pd.to_numeric(df["nilai"], errors="coerce")
+print(df.dtypes)
+print(df.isna().sum())
+```
+
+`errors="coerce"` mengubah nilai yang tidak bisa diparse menjadi angka menjadi `NaN`, sehingga perlu ditindaklanjuti.
+
+## 7. Menyeragamkan kategori teks
+
+```python
+df["nama"] = df["nama"].str.strip().str.title()
+```
+
+`strip()` menghilangkan spasi di tepi teks, sedangkan `title()` mengubah kapitalisasi setiap kata. Perhatikan aturan khusus pada nama dan kategori domain.
+
+## 8. Try It Yourself — pembersihan teks
+
+Latihan Python murni untuk memahami konsep `strip()` dan `lower()`:
+
+<PythonPlayground
+  initialCode={"kategori = [\" Normal \", \"FRACTURE\", \" normal\"]\n\nfor teks in kategori:\n    print(teks.strip().lower())"}
+/>
+
+## 9. Mini Project — audit kualitas data
+
+```python
+import pandas as pd
+
+df = pd.DataFrame({
+    "kategori": [" Normal ", "normal", None, "Fracture"],
+    "nilai": ["80", "85", "salah", "90"],
+})
+
+print("Missing per kolom:")
+print(df.isna().sum())
+print("Duplikat sebelum cleaning:", df.duplicated().sum())
+
+df["kategori"] = df["kategori"].str.strip().str.lower()
+df["nilai"] = pd.to_numeric(df["nilai"], errors="coerce")
+print(df)
+```
+
+Coba amati perubahan jumlah missing value setelah konversi numerik.
+
+## 10. Latihan — normalisasi label
+
+Cetak seluruh label tanpa spasi pinggir dan dalam huruf kecil, satu baris per label.
+
+<PythonPlayground
+  initialCode={"label = [\" Normal \", \" FRACTURE \", \"normal \"]\n\n# Bersihkan setiap label"}
+  expectedOutput={"normal\nfracture\nnormal"}
+  hint={"Gunakan for, strip(), dan lower()."}
+  solution={"for item in label:\n    print(item.strip().lower())"}
+/>
+
+## 11. Quick Quiz
+
+<QuizCard
+  question={"Apa akibat menggunakan pd.to_numeric(..., errors=\"coerce\") pada teks yang tidak bisa diubah menjadi angka?"}
+  correctAnswer={"B"}
+  options={[
+  {
+    "id": "A",
+    "text": "Selalu menjadi angka nol",
+    "explanation": "Tidak, bukan otomatis nol."
+  },
+  {
+    "id": "B",
+    "text": "Menjadi NaN",
+    "explanation": "Benar. Nilai yang gagal dikonversi menjadi NaN."
+  },
+  {
+    "id": "C",
+    "text": "Baris langsung dihapus",
+    "explanation": "Tidak secara otomatis."
+  },
+  {
+    "id": "D",
+    "text": "Seluruh DataFrame menjadi string",
+    "explanation": "Tidak, hasilnya numerik dengan kemungkinan NaN."
+  }
+]}
+/>
+
+## 12. Ringkasan
+
+Data cleaning tidak hanya menghapus missing value. Kamu perlu memeriksa kualitas, memahami konteks data, menentukan strategi perubahan, dan mencatat keputusan pembersihan agar analisis bisa dipertanggungjawabkan.

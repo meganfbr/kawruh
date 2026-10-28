@@ -1,0 +1,100 @@
+---
+title: Introduction to Data Analytics
+sidebar_label: Introduction to Data Analytics
+sidebar_position: 1
+description: Memahami pengertian, manfaat, jenis, dan tahapan analisis data dari nol.
+---
+
+import PythonPlayground from '@site/src/components/PythonPlayground';
+import QuizCard from '@site/src/components/QuizCard';
+
+# Introduction to Data Analytics
+
+**Level:** Beginner | **Prasyarat:** Python Variables dan Data Types | **Estimasi:** 20–30 menit
+
+Data Analytics adalah proses mengumpulkan, memeriksa, membersihkan, mengolah, dan menginterpretasikan data untuk menjawab pertanyaan serta membantu pengambilan keputusan. Tujuannya bukan sekadar membuat grafik, tetapi menghasilkan **insight**: temuan yang relevan dan dapat ditindaklanjuti.
+
+## Tujuan Pembelajaran
+
+Setelah menyelesaikan materi ini, kamu dapat menjelaskan perbedaan data, informasi, dan insight; mengenali empat jenis analisis; dan menjalankan perhitungan sederhana menggunakan Python.
+
+## 1. Data, Informasi, dan Insight
+
+Bayangkan sebuah toko memiliki catatan transaksi selama seminggu.
+
+| Tahap | Contoh | Makna |
+| --- | --- | --- |
+| Data | `120000`, `95000`, `150000` | Angka transaksi mentah |
+| Informasi | Rata-rata transaksi Rp121.667 | Ringkasan dari data |
+| Insight | Nilai transaksi tinggi pada hari tertentu perlu diteliti | Temuan yang dapat mendukung keputusan |
+
+**Penting:** insight tidak sama dengan dugaan. Sebuah pola perlu diperiksa terhadap data dan konteks bisnis sebelum disimpulkan.
+
+## 2. Empat Jenis Data Analytics
+
+| Jenis | Pertanyaan | Contoh |
+| --- | --- | --- |
+| Descriptive | Apa yang terjadi? | Total penjualan bulan ini |
+| Diagnostic | Mengapa terjadi? | Mengapa penjualan menurun? |
+| Predictive | Apa yang mungkin terjadi? | Perkiraan permintaan minggu depan |
+| Prescriptive | Apa tindakan yang disarankan? | Menentukan jumlah stok berdasarkan prediksi dan biaya |
+
+Predictive analytics menggunakan model dan selalu memiliki ketidakpastian. Prescriptive analytics sering memerlukan aturan bisnis atau optimasi tambahan.
+
+## 3. Alur Kerja Analisis Data
+
+1. **Tentukan pertanyaan.** Misalnya: berapa rata-rata nilai ujian kelas?
+2. **Kumpulkan data.** Dapat berasal dari CSV, database, survei, atau API.
+3. **Periksa kualitasnya.** Cari nilai kosong, duplikat, dan tipe data yang salah.
+4. **Bersihkan dan transformasikan.** Pastikan data layak diolah.
+5. **Analisis dan visualisasikan.** Hitung statistik dan cari pola.
+6. **Komunikasikan hasil.** Sertakan keterbatasan dan rekomendasi.
+
+## 4. Try It Yourself — Analisis Nilai
+
+Contoh ini hanya menggunakan fungsi bawaan Python, jadi bisa dijalankan pada Python Playground Kawruh tanpa NumPy atau pandas.
+
+<PythonPlayground
+  initialCode={'nilai = [80, 90, 75, 95, 85]\n\nrata_rata = sum(nilai) / len(nilai)\nprint("Jumlah data:", len(nilai))\nprint("Rata-rata:", rata_rata)\nprint("Nilai tertinggi:", max(nilai))\nprint("Nilai terendah:", min(nilai))'}
+/>
+
+### Penjelasan Kode
+
+- `nilai` menyimpan lima observasi dalam sebuah list.
+- `sum(nilai)` menjumlahkan nilai, sedangkan `len(nilai)` menghitung banyak observasi.
+- `max()` dan `min()` mengambil nilai terbesar dan terkecil.
+
+## 5. Common Mistakes
+
+- **Menganggap korelasi sebagai sebab-akibat.** Dua variabel yang bergerak bersama belum tentu saling menyebabkan.
+- **Mengabaikan missing values.** Nilai kosong bisa mengubah hasil analisis.
+- **Membuat kesimpulan dari sampel kecil.** Lima nilai dalam contoh ini hanya untuk latihan.
+- **Menggunakan rata-rata tanpa memahami sebaran.** Outlier dapat memengaruhi mean.
+
+## 6. Latihan Interaktif
+
+Tambahkan data baru `70` ke list, kemudian tampilkan jumlah elemen. Output yang diharapkan adalah `6`.
+
+<PythonPlayground
+  initialCode={'nilai = [80, 90, 75, 95, 85]\n\n# Tambahkan angka 70 ke dalam list\n# Tampilkan jumlah elemen'}
+  expectedOutput="6"
+  hint="Gunakan append(70) kemudian print(len(nilai))."
+  solution={'nilai = [80, 90, 75, 95, 85]\nnilai.append(70)\nprint(len(nilai))'}
+/>
+
+## 7. Quick Quiz
+
+<QuizCard
+  question="Analisis yang menjawab pertanyaan 'Apa yang terjadi?' disebut apa?"
+  correctAnswer="A"
+  options={[
+    {id: 'A', text: 'Descriptive Analytics', explanation: 'Benar. Descriptive merangkum kejadian yang sudah terjadi.'},
+    {id: 'B', text: 'Predictive Analytics', explanation: 'Predictive memperkirakan kejadian yang mungkin terjadi.'},
+    {id: 'C', text: 'Prescriptive Analytics', explanation: 'Prescriptive mengusulkan tindakan berdasarkan tujuan dan batasan.'},
+    {id: 'D', text: 'Deployment', explanation: 'Deployment bukan salah satu dari empat jenis analisis ini.'},
+  ]}
+/>
+
+## Ringkasan
+
+Data Analytics mengubah data mentah menjadi informasi dan insight melalui proses terstruktur. Pada materi selanjutnya, kita akan mempelajari **Data Analytics Workflow** secara lebih praktis.

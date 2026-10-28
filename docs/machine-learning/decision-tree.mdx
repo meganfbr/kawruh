@@ -1,0 +1,131 @@
+---
+title: Decision Tree
+sidebar_label: Decision Tree
+description: Memahami Decision Tree, overfitting, depth, dan pemisahan fitur.
+---
+
+import PythonPlayground from '@site/src/components/PythonPlayground';
+import QuizCard from '@site/src/components/QuizCard';
+
+# Decision Tree
+
+**Level:** Beginner–Intermediate | **Course:** Machine Learning
+
+**Decision Tree** adalah algoritma yang membuat prediksi melalui serangkaian pertanyaan atau aturan bercabang. Model bisa dipakai untuk klasifikasi maupun regresi.
+
+## Tujuan Pembelajaran
+
+- Memahami root, node, branch, dan leaf.
+- Mengetahui pengaruh `max_depth` dan `min_samples_leaf`.
+- Melatih serta mengevaluasi pohon keputusan.
+
+## 1. Analogi sederhana
+
+Misalnya kita menilai kelayakan diskon: jika total belanja minimal Rp100.000 dan pelanggan adalah member, maka diskon diberikan. Aturan berikut **hanya ilustrasi**, bukan pohon yang dipelajari dari data.
+
+<PythonPlayground
+  initialCode={"total_belanja = 150000\nmember = True\nif total_belanja >= 100000 and member:\n    print(\"Diskon\")\nelse:\n    print(\"Tanpa diskon\")"}
+/>
+
+## 2. Bagaimana pohon belajar?
+
+Model memilih pemisahan fitur untuk memperbaiki kemurnian label pada cabang-cabangnya, misalnya berdasarkan *Gini impurity* atau entropy untuk klasifikasi. Pohon yang terlalu dalam dapat menghafal noise pada training data.
+
+| Parameter | Pengaruh |
+| --- | --- |
+| `max_depth` | Batas kedalaman pohon |
+| `min_samples_split` | Minimum sampel untuk membagi node |
+| `min_samples_leaf` | Minimum sampel yang harus tersisa di setiap leaf |
+| `random_state` | Membantu reproduksibilitas ketika ada proses acak |
+
+### Visual Intuition — Node dan Leaf
+
+![Diagram decision tree berisi pertanyaan dan hasil prediksi](/img/machine-learning/decision-tree-diagram.png)
+
+*Gambar 1. Pohon keputusan dengan dua pertanyaan dan tiga leaf prediksi.*
+
+**Cara membacanya:** kotak biru adalah **decision node** (pertanyaan kondisi). Panah menunjukkan cabang **Ya/Tidak**, sedangkan kotak hasil merupakan **leaf node**. Contoh ini adalah diagram aturan buatan untuk belajar, bukan pohon dari model yang dilatih.
+
+## 3. Contoh scikit-learn (Google Colab / Jupyter)
+
+```python
+from sklearn.datasets import load_iris
+from sklearn.model_selection import train_test_split
+from sklearn.tree import DecisionTreeClassifier, plot_tree
+from sklearn.metrics import accuracy_score, classification_report
+import matplotlib.pyplot as plt
+
+data = load_iris()
+X_train, X_test, y_train, y_test = train_test_split(
+    data.data, data.target, test_size=0.25,
+    stratify=data.target, random_state=42
+)
+model = DecisionTreeClassifier(
+    max_depth=3, min_samples_leaf=2, random_state=42
+)
+model.fit(X_train, y_train)
+prediksi = model.predict(X_test)
+print("Accuracy:", accuracy_score(y_test, prediksi))
+print(classification_report(y_test, prediksi, zero_division=0))
+
+plt.figure(figsize=(12, 6))
+plot_tree(model, feature_names=data.feature_names,
+          class_names=data.target_names, filled=True)
+plt.show()
+```
+
+`load_iris` merupakan dataset contoh dan digunakan untuk tujuan edukasi.
+
+## 4. Interpretasi dan batasan
+
+Pohon mudah divisualisasikan tetapi keputusan dapat berubah drastis jika data berubah. `feature_importances_` memberikan informasi penggunaan fitur dalam pohon, **bukan bukti kausalitas**.
+
+## 5. Common Mistakes
+
+- Menggunakan pohon tanpa membatasi kompleksitas lalu menyimpulkan dari accuracy training.
+- Membaca fitur penting sebagai penyebab langsung label.
+- Mengevaluasi parameter berdasarkan test data secara berulang.
+
+## 6. Latihan Interaktif
+
+Lengkapi aturan sederhana: cetak `Layak` jika nilai minimal 75.
+
+<PythonPlayground
+  initialCode={"nilai = 82\n# Tampilkan Layak atau Belum Layak\n"}
+  expectedOutput={"Layak"}
+  hint={"Gunakan if nilai >= 75."}
+  solution={"nilai = 82\nif nilai >= 75:\n    print(\"Layak\")\nelse:\n    print(\"Belum Layak\")"}
+/>
+
+## 7. Quick Quiz
+
+<QuizCard
+  question={"Parameter mana yang secara langsung membatasi kedalaman Decision Tree?"}
+  correctAnswer={"B"}
+  options={[
+  {
+    "id": "A",
+    "text": "n_estimators",
+    "explanation": "n_estimators biasanya jumlah pohon pada ensemble."
+  },
+  {
+    "id": "B",
+    "text": "max_depth",
+    "explanation": "Benar, max_depth membatasi kedalaman."
+  },
+  {
+    "id": "C",
+    "text": "learning_rate",
+    "explanation": "learning_rate digunakan di algoritma lain."
+  },
+  {
+    "id": "D",
+    "text": "batch_size",
+    "explanation": "batch_size bukan parameter kedalaman pohon."
+  }
+]}
+/>
+
+## Ringkasan
+
+Decision Tree menghasilkan aturan bercabang. Gunakan validasi dan pembatasan kompleksitas untuk mengurangi overfitting. Berikutnya kita gabungkan banyak pohon melalui Random Forest.

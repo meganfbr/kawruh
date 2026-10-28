@@ -1,0 +1,86 @@
+---
+title: Supervised And Unsupervised Learning
+sidebar_label: Supervised And Unsupervised Learning
+description: Perbedaan supervised dan unsupervised beserta contoh regresi dan clustering.
+---
+
+import PythonPlayground from '@site/src/components/PythonPlayground';
+import QuizCard from '@site/src/components/QuizCard';
+
+# Supervised And Unsupervised Learning
+
+**Level:** Beginner | **Course:** Machine Learning
+
+## Tujuan Pembelajaran
+
+- Membedakan supervised dan unsupervised learning.
+- Menjelaskan klasifikasi, regresi, dan clustering.
+- Memilih pendekatan yang sesuai dengan tujuan dan label data.
+
+## 1. Supervised Learning
+
+Supervised Learning menggunakan contoh input **beserta target**. Tujuannya mempelajari hubungan antara fitur dan target, lalu memprediksi target untuk data baru.
+
+| Tugas | Target | Contoh |
+| --- | --- | --- |
+| Classification | Kategori | Spam atau bukan spam |
+| Regression | Angka kontinu | Harga rumah |
+
+Pada klasifikasi, model dapat menghasilkan probabilitas untuk tiap kelas. Label prediksi dipilih menggunakan aturan tertentu, misalnya kelas dengan probabilitas terbesar.
+
+### Try It Yourself — Menilai Label
+
+Contoh ini menampilkan label asli berdasarkan ambang sederhana. **Belum merupakan training ML**.
+
+<PythonPlayground initialCode={"nilai = [65, 80, 92]\nfor n in nilai:\n    label = \"Lulus\" if n >= 75 else \"Belum Lulus\"\n    print(label)"} />
+
+## 2. Unsupervised Learning
+
+Unsupervised Learning tidak menerima target yang sudah ditentukan untuk setiap contoh. Tujuannya menemukan struktur dalam data, seperti kelompok pelanggan yang memiliki pola serupa.
+
+**Clustering** mengelompokkan objek berdasarkan kemiripan, sementara **dimensionality reduction** berusaha membuat representasi berdimensi lebih sedikit dengan tetap mempertahankan informasi tertentu.
+
+### Contoh Ide Pengelompokan
+
+<PythonPlayground initialCode={"pengeluaran = [20, 80, 25, 90]\nrendah = [x for x in pengeluaran if x < 50]\ntinggi = [x for x in pengeluaran if x >= 50]\nprint(\"Rendah:\", rendah)\nprint(\"Tinggi:\", tinggi)"} />
+
+Contoh di atas adalah pengelompokan dengan aturan manual, **bukan K-Means**. Kita memakainya agar konsep kelompok lebih mudah terlihat.
+
+## 3. Memilih Pendekatan
+
+Jika dataset memiliki label **jenis penyakit** dan tujuannya memprediksi kategori, gunakan klasifikasi supervised. Jika memiliki label **harga rumah**, gunakan regresi supervised. Jika ingin mencari segmen pelanggan tanpa label segmen, clustering dapat menjadi titik awal.
+
+## 4. Tantangan Praktis
+
+- Pada supervised learning, target harus didefinisikan dan diukur dengan benar.
+- Pada clustering, jumlah dan makna kelompok perlu dianalisis; cluster tidak otomatis punya label bisnis.
+- Hasil clustering juga bergantung pada pemilihan fitur dan skala datanya.
+
+## Common Mistakes
+
+- Menganggap semua output berupa angka pasti regresi: angka 0 dan 1 bisa saja kode kelas.
+- Mengira cluster selalu menunjukkan kategori yang benar secara objektif.
+- Mengukur clustering dengan accuracy klasifikasi padahal tidak ada ground truth.
+
+## Latihan Interaktif
+
+Lengkapi kode, jalankan, kemudian gunakan **Check Answer**.
+
+<PythonPlayground
+  initialCode={'angka = [2, 5, 8, 11]\n# Tampilkan jumlah nilai yang lebih besar dari 6\n'}
+  expectedOutput={'2'}
+  hint={'Gunakan sum(1 for x in angka if x > 6).'}
+  solution={'angka = [2, 5, 8, 11]\nprint(sum(1 for x in angka if x > 6))'}
+/>
+
+## Quick Quiz
+
+<QuizCard
+  question={'Dataset memiliki fitur umur dan target harga rumah. Tugas yang paling sesuai?'}
+  correctAnswer={'B'}
+  options={[{'id': 'A', 'text': 'Clustering', 'explanation': 'Clustering biasanya tidak membutuhkan target.'}, {'id': 'B', 'text': 'Regression', 'explanation': 'Benar. Target harga rumah berupa nilai numerik kontinu.'}, {'id': 'C', 'text': 'Classification', 'explanation': 'Classification memprediksi kategori.'}, {'id': 'D', 'text': 'Tidak dapat dianalisis', 'explanation': 'Data berlabel dapat digunakan untuk regresi.'}]}
+/>
+
+## Ringkasan
+
+Pelajari konsepnya, coba kode, dan periksa kembali apakah kamu dapat menjelaskan hasilnya tanpa melihat jawaban.

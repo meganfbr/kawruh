@@ -1,0 +1,92 @@
+---
+title: Introduction to Machine Learning
+sidebar_label: Introduction to Machine Learning
+description: Pengantar Machine Learning, istilah penting dan alur eksperimen.
+---
+
+import PythonPlayground from '@site/src/components/PythonPlayground';
+import QuizCard from '@site/src/components/QuizCard';
+
+# Introduction to Machine Learning
+
+**Level:** Beginner | **Course:** Machine Learning
+
+Machine Learning (ML) adalah pendekatan yang membuat komputer mempelajari pola dari data agar dapat menghasilkan prediksi atau keputusan pada data yang belum pernah dilihat. Berbeda dengan aturan yang seluruhnya ditulis manual, ML membangun model dari contoh.
+
+## Tujuan Pembelajaran
+
+- Menjelaskan perbedaan aturan eksplisit dan model yang dilatih.
+- Mengenali dataset, fitur, target, model, training, dan inference.
+- Memahami bahwa akurasi tinggi pada data latihan tidak otomatis berarti model bagus.
+
+## 1. Contoh Kehidupan Nyata
+
+Misalkan sebuah toko ingin memperkirakan apakah pelanggan akan membeli produk berdasarkan jumlah kunjungan dan total belanja sebelumnya. **Fitur (features)** ialah informasi yang digunakan sebagai input; **target (label)** ialah jawaban yang ingin diprediksi. Dataset berisi banyak baris contoh.
+
+| Istilah | Arti | Contoh |
+| --- | --- | --- |
+| Feature | Kolom masukan | Jumlah kunjungan |
+| Target | Nilai yang dipelajari | Membeli atau tidak |
+| Model | Pola yang dipelajari algoritma | Klasifikator |
+| Training | Proses mempelajari data | Menyesuaikan parameter |
+| Inference | Prediksi pada contoh baru | Prediksi pelanggan baru |
+
+## 2. Aturan Biasa vs Machine Learning
+
+Aturan sederhana dapat ditulis langsung: pelanggan dengan belanja lebih dari 100 dianggap potensial. Aturan ini **bukan model ML terlatih** karena tidak belajar dari data.
+
+<PythonPlayground initialCode={"total_belanja = 125\nif total_belanja > 100:\n    print(\"Potensial\")\nelse:\n    print(\"Perlu promosi\")"} />
+
+Dalam Machine Learning, pola serupa dipelajari dari data historis. Hasilnya tetap perlu dievaluasi pada data terpisah.
+
+## 3. Alur Dasar ML
+
+1. Definisikan masalah dan metrik keberhasilan.
+2. Kumpulkan data dengan izin dan konteks yang sesuai.
+3. Pisahkan data train, validation, dan test sesuai kebutuhan.
+4. Lakukan preprocessing tanpa membocorkan informasi dari test.
+5. Latih model pada train dan pilih pendekatan berdasarkan validation.
+6. Evaluasi sekali pada test yang belum digunakan untuk pemilihan model.
+7. Pantau kinerja setelah digunakan pada data nyata.
+
+## 4. Contoh Konsep Prediksi
+
+Contoh berikut hanya menghitung rata-rata berdasarkan data sejarah. Ini adalah *baseline* sederhana, bukan algoritma ML lengkap, tetapi berguna sebagai pembanding.
+
+<PythonPlayground initialCode={"penjualan = [10, 12, 8, 14]\nprediksi_baseline = sum(penjualan) / len(penjualan)\nprint(prediksi_baseline)"} />
+
+Output `11.0` menjadi patokan sederhana untuk menguji apakah model yang lebih rumit benar-benar lebih baik.
+
+## Common Mistakes
+
+- Mengira nilai training accuracy adalah kualitas model pada data baru.
+- Menggunakan data test untuk memilih hyperparameter.
+- Menganggap korelasi selalu membuktikan sebab-akibat.
+- Mengabaikan asal-usul data, privasi, atau ketimpangan kelas.
+
+## Mini Refleksi
+
+Jika model berhasil mengingat setiap contoh training tetapi gagal pada contoh baru, itu disebut *overfitting*.
+
+## Latihan Interaktif
+
+Lengkapi kode, jalankan, kemudian gunakan **Check Answer**.
+
+<PythonPlayground
+  initialCode={'data = [8, 10, 12]\n# Cetak rata-rata sebagai baseline\n'}
+  expectedOutput={'10.0'}
+  hint={'Gunakan sum(data) / len(data).'}
+  solution={'data = [8, 10, 12]\nprint(sum(data) / len(data))'}
+/>
+
+## Quick Quiz
+
+<QuizCard
+  question={'Dalam Machine Learning, apa fungsi data test?'}
+  correctAnswer={'B'}
+  options={[{'id': 'A', 'text': 'Melatih parameter model', 'explanation': 'Parameter model dipelajari dari data train.'}, {'id': 'B', 'text': 'Menguji generalisasi pada data yang tidak dipakai untuk pelatihan atau pemilihan', 'explanation': 'Benar. Test digunakan untuk evaluasi final.'}, {'id': 'C', 'text': 'Menggantikan semua data train', 'explanation': 'Test tidak menggantikan train.'}, {'id': 'D', 'text': 'Menentukan label secara manual', 'explanation': 'Label berasal dari proses penyiapan data.'}]}
+/>
+
+## Ringkasan
+
+Pelajari konsepnya, coba kode, dan periksa kembali apakah kamu dapat menjelaskan hasilnya tanpa melihat jawaban.

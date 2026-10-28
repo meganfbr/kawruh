@@ -1,0 +1,136 @@
+---
+title: Series And DataFrames
+sidebar_label: Series And DataFrames
+sidebar_position: 9
+description: Materi Series And DataFrames Kawruh, lengkap dengan contoh dan latihan.
+---
+
+import PythonPlayground from '@site/src/components/PythonPlayground';
+import QuizCard from '@site/src/components/QuizCard';
+import Admonition from '@theme/Admonition';
+
+# Series And DataFrames
+
+**Level:** Beginner | **Estimasi belajar:** 30–45 menit
+
+Di materi ini kamu belajar mengambil dan mengolah data dalam bentuk kolom serta baris.
+
+## Tujuan Pembelajaran
+
+- Membedakan `Series` dan `DataFrame`.
+- Memilih kolom dan baris menggunakan `[]`, `.loc[]`, dan `.iloc[]`.
+- Memahami indeks, tipe data, dan operasi kolom.
+
+## 1. Series: satu dimensi
+
+```python
+import pandas as pd
+
+nilai = pd.Series([80, 85, 90], name="nilai")
+print(nilai)
+print(nilai.mean())
+```
+
+Setiap nilai memiliki **indeks**. Secara default, indeksnya dimulai dari `0`, tetapi indeks bisa berupa label lain.
+
+## 2. DataFrame: banyak kolom
+
+```python
+import pandas as pd
+
+df = pd.DataFrame({
+    "nama": ["Ana", "Budi", "Citra"],
+    "nilai": [80, 85, 90],
+    "hadir": [True, True, False],
+})
+print(df)
+```
+
+| Ekspresi | Hasil |
+| --- | --- |
+| `df["nilai"]` | Series satu kolom |
+| `df[["nama", "nilai"]]` | DataFrame dua kolom |
+| `df.iloc[0]` | Baris pertama berdasarkan posisi |
+| `df.loc[0]` | Baris dengan label indeks `0` |
+| `df.shape` | Ukuran tabel, misalnya `(3, 3)` |
+
+## 3. Memilih baris dan kolom
+
+```python
+print(df.loc[1, "nama"])  # Budi, berdasarkan label
+print(df.iloc[1, 1])      # 85, berdasarkan posisi
+print(df[df["nilai"] >= 85])  # Filter baris
+```
+
+<Admonition type="warning" title="loc vs iloc">
+
+`.loc` menggunakan **label**, sedangkan `.iloc` menggunakan **posisi integer**. Jika indeks sebuah DataFrame telah berubah, hasil keduanya bisa berbeda.
+
+</Admonition>
+
+## 4. Membuat kolom baru
+
+```python
+df["lulus"] = df["nilai"] >= 85
+print(df[["nama", "nilai", "lulus"]])
+```
+
+Pada contoh ini, perbandingan menghasilkan Series boolean untuk setiap baris.
+
+## 5. Try It Yourself — filter nilai
+
+Latihan ini memakai list Python murni untuk mempelajari ide filtering.
+
+<PythonPlayground
+  initialCode={"nilai = [80, 85, 90, 70]\n\nfor angka in nilai:\n    if angka >= 85:\n        print(angka)"}
+/>
+
+## 6. Kesalahan Umum
+
+- Mengakses `df["nama", "nilai"]` padahal ingin dua kolom. Gunakan `df[["nama", "nilai"]]`.
+- Menganggap `df.iloc[1]` sama dengan `df.loc[1]` pada semua indeks.
+- Mengubah DataFrame dengan operasi berantai tanpa memahami apakah perubahan tersimpan.
+
+## 7. Latihan — pilih nilai yang lulus
+
+Tampilkan nilai yang minimal `75`, masing-masing pada satu baris.
+
+<PythonPlayground
+  initialCode={"nilai = [60, 75, 90, 70]\n\n# Tampilkan hanya nilai >= 75"}
+  expectedOutput={"75\n90"}
+  hint={"Gunakan for dan if."}
+  solution={"for n in nilai:\n    if n >= 75:\n        print(n)"}
+/>
+
+## 8. Quick Quiz
+
+<QuizCard
+  question={"Apa perbedaan utama .loc dan .iloc?"}
+  correctAnswer={"B"}
+  options={[
+  {
+    "id": "A",
+    "text": "Keduanya hanya menerima nama kolom",
+    "explanation": "Tidak tepat, keduanya juga digunakan untuk memilih baris."
+  },
+  {
+    "id": "B",
+    "text": ".loc memakai label; .iloc memakai posisi",
+    "explanation": "Benar! Itulah perbedaan pentingnya."
+  },
+  {
+    "id": "C",
+    "text": ".iloc hanya untuk string",
+    "explanation": "Tidak. .iloc memakai posisi integer."
+  },
+  {
+    "id": "D",
+    "text": ".loc hanya untuk file CSV",
+    "explanation": "Tidak, .loc digunakan pada objek pandas."
+  }
+]}
+/>
+
+## 9. Ringkasan
+
+Series cocok untuk satu dimensi, DataFrame untuk tabel. Pelajari pemilihan data berbasis label dan posisi sebelum masuk ke proses import/export.

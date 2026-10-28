@@ -1,0 +1,106 @@
+---
+title: Data Preprocessing For Machine Learning
+sidebar_label: Data Preprocessing For Machine Learning
+description: Missing values, encoding, scaling, pipeline dan pencegahan leakage.
+---
+
+import PythonPlayground from '@site/src/components/PythonPlayground';
+import QuizCard from '@site/src/components/QuizCard';
+
+# Data Preprocessing For Machine Learning
+
+**Level:** Beginner | **Course:** Machine Learning
+
+## Tujuan Pembelajaran
+
+- Memahami tipe masalah data sebelum pelatihan model.
+- Membedakan imputasi, encoding, dan scaling.
+- Mengenali prinsip fit pada train, transform pada data lain.
+
+## 1. Apa Itu Preprocessing?
+
+Preprocessing merupakan langkah menyiapkan data sehingga bisa diolah model secara konsisten. Tidak semua model memerlukan langkah yang sama: misalnya, beberapa algoritma sensitif terhadap skala fitur, sedangkan model berbasis pohon biasanya tidak memerlukan standardisasi numerik.
+
+## 2. Missing Values
+
+Nilai kosong bisa muncul karena responden tidak mengisi formulir atau sensor gagal merekam data. Jangan langsung menghapus setiap baris; pertimbangkan makna kosongnya dan potensi bias.
+
+Contoh sederhana menghitung rata-rata nilai yang tersedia:
+
+<PythonPlayground initialCode={"nilai = [80, None, 90, 70]\nvalid = [x for x in nilai if x is not None]\nrata_rata = sum(valid) / len(valid)\nprint(rata_rata)"} />
+
+Pada dataset sungguhan, imputasi median atau modus sering dipakai sesuai jenis kolom. Statistik imputasi hanya dipelajari dari train.
+
+## 3. Encoding Kategori
+
+Banyak algoritma membutuhkan nilai numerik. `OneHotEncoder` dapat mengubah kategori nominal menjadi beberapa kolom indikator; `OrdinalEncoder` menghasilkan kode angka tetapi perlu berhati-hati agar model tidak menafsirkan kode sebagai urutan bermakna.
+
+## 4. Feature Scaling
+
+**Standardization** biasa mengubah data menggunakan rata-rata dan standar deviasi dari train. **Min-Max Scaling** memetakan nilai berdasarkan minimum dan maksimum train. Tidak ada metode yang otomatis terbaik untuk semua masalah.
+
+### Playground — Min-Max Manual
+
+<PythonPlayground initialCode={"nilai = [10, 20, 30]\nminimum = min(nilai)\nmaksimum = max(nilai)\nskala = [(x - minimum) / (maksimum - minimum) for x in nilai]\nprint(skala)"} />
+
+Pada latihan nyata, perhatikan kasus seluruh nilai sama (`maksimum == minimum`) agar pembagian nol tidak terjadi.
+
+## 5. Pipeline Scikit-learn di Colab
+
+Kode ini perlu scikit-learn di Colab/Jupyter, bukan Python Playground default Kawruh.
+
+```python
+from sklearn.pipeline import Pipeline
+from sklearn.impute import SimpleImputer
+from sklearn.preprocessing import StandardScaler
+
+numeric_pipeline = Pipeline([
+    ("imputer", SimpleImputer(strategy="median")),
+    ("scaler", StandardScaler()),
+])
+
+X_train = [[10], [20], [None], [40]]
+X_test = [[15], [None]]
+
+numeric_pipeline.fit(X_train)
+print(numeric_pipeline.transform(X_test))
+```
+
+**Penting:** `fit()` dilakukan pada train saja. `transform()` dapat diterapkan ke validation dan test menggunakan parameter train yang sama.
+
+## 6. Checklist Sebelum Training
+
+- Pastikan fitur tidak memuat jawaban target atau informasi masa depan.
+- Cek missing values, tipe data, kategori baru, dan rentang numerik.
+- Pilih imputasi, encoding, scaling yang sesuai.
+- Gabungkan preprocessing dan estimator dalam pipeline untuk mengurangi risiko leakage.
+- Simpan transformasi agar inferensi memakai aturan yang sama.
+
+## Common Mistakes
+
+- Standardisasi sebelum membagi dataset.
+- Menganggap label encoding ordinal selalu cocok untuk kategori seperti kota.
+- Menghapus seluruh baris kosong tanpa memeriksa dampak sampel.
+
+## Latihan Interaktif
+
+Lengkapi kode, jalankan, kemudian gunakan **Check Answer**.
+
+<PythonPlayground
+  initialCode={'nilai = [10, 20, 30]\n# Normalisasi Min-Max dan cetak nilai terakhir\n'}
+  expectedOutput={'1.0'}
+  hint={'Gunakan (nilai[-1] - min(nilai)) / (max(nilai) - min(nilai)).'}
+  solution={'nilai = [10, 20, 30]\nhasil = (nilai[-1] - min(nilai)) / (max(nilai) - min(nilai))\nprint(hasil)'}
+/>
+
+## Quick Quiz
+
+<QuizCard
+  question={'Apa yang paling tepat untuk mencegah data leakage saat preprocessing?'}
+  correctAnswer={'B'}
+  options={[{'id': 'A', 'text': 'Fit scaler pada train dan test digabung', 'explanation': 'Ini menggunakan informasi test.'}, {'id': 'B', 'text': 'Fit scaler pada train lalu transform validation dan test', 'explanation': 'Benar. Parameter preprocessing diambil hanya dari train.'}, {'id': 'C', 'text': 'Fit scaler hanya pada test', 'explanation': 'Tidak sesuai tujuan evaluasi.'}, {'id': 'D', 'text': 'Tidak membagi dataset', 'explanation': 'Evaluasi pada data terpisah tetap penting.'}]}
+/>
+
+## Ringkasan
+
+Pelajari konsepnya, coba kode, dan periksa kembali apakah kamu dapat menjelaskan hasilnya tanpa melihat jawaban.

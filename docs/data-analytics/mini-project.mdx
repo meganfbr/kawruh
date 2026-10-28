@@ -1,0 +1,179 @@
+---
+title: Data Analytics Mini Project
+sidebar_label: Data Analytics Mini Project
+sidebar_position: 14
+description: Mini project analisis penjualan kantin dari data mentah sampai kesimpulan dan visualisasi.
+---
+
+import PythonPlayground from '@site/src/components/PythonPlayground';
+import QuizCard from '@site/src/components/QuizCard';
+import Admonition from '@theme/Admonition';
+
+# Data Analytics Mini Project — Analisis Penjualan Kantin
+
+**Level:** Beginner | **Estimasi belajar:** 60–90 menit
+
+Selamat! Pada proyek akhir course ini, kita akan menggabungkan **data preparation, EDA, visualisasi, dan komunikasi hasil**. Dataset simulasi dibuat langsung di notebook sehingga latihan dapat dilakukan tanpa file eksternal.
+
+## Tujuan Project
+
+Bayangkan kamu membantu pengelola kantin menjawab tiga pertanyaan:
+
+1. Berapa total pendapatan transaksi yang tercatat?
+2. Produk apa yang menghasilkan pendapatan terbesar?
+3. Bagaimana pola pendapatan dari Senin hingga Jumat?
+
+Hasil akhirnya adalah tabel ringkasan, dua grafik, serta kesimpulan singkat dengan keterbatasan data.
+
+## 1. Siapkan lingkungan
+
+Buka Google Colab atau Jupyter Notebook. Pastikan `pandas` dan `matplotlib` tersedia. Buat notebook dengan judul `Kawruh - Mini Project Analisis Kantin`.
+
+## 2. Buat dataset transaksi
+
+Ketik dan jalankan kode berikut pada satu sel notebook.
+
+```python
+import pandas as pd
+import matplotlib.pyplot as plt
+
+raw = pd.DataFrame({
+    "hari": ["Sen", "Sen", "Sel", "Sel", "Rab", "Rab", "Kam", "Kam", "Jum", "Jum"],
+    "produk": ["Roti", "Susu", "Roti", "Air", "Susu", "Air", "Roti", "Susu", "Air", "Roti"],
+    "jumlah": [3, 2, 4, 5, 3, 4, 6, 3, 8, 4],
+    "harga_satuan": [8000, 12000, 8000, 5000, 12000, 5000, 8000, 12000, 5000, 8000],
+})
+
+print(raw.head())
+print("Ukuran data:", raw.shape)
+```
+
+**Dataset ini sepenuhnya sintetis**, bukan catatan penjualan bisnis nyata. Kita menggunakannya untuk berlatih, bukan mengambil keputusan operasional yang sebenarnya.
+
+## 3. Audit kualitas data
+
+Cek nilai kosong, tipe data, dan duplikasi.
+
+```python
+print(raw.dtypes)
+print(raw.isna().sum())
+print("Duplikasi:", raw.duplicated().sum())
+print("Jumlah tidak valid:", (raw["jumlah"] <= 0).sum())
+print("Harga tidak valid:", (raw["harga_satuan"] < 0).sum())
+```
+
+Pada dataset contoh, tidak ada nilai kosong dan seluruh jumlah barang positif. Untuk data dunia nyata, jangan otomatis menghapus semua duplikasi: dua transaksi yang identik bisa saja terjadi secara sah. Kita perlu ID transaksi untuk membedakannya.
+
+## 4. Hitung pendapatan
+
+```python
+df = raw.copy()
+df["pendapatan"] = df["jumlah"] * df["harga_satuan"]
+
+total_pendapatan = df["pendapatan"].sum()
+print("Total pendapatan: Rp", total_pendapatan)
+```
+
+**Hasil yang diharapkan:** `Total pendapatan: Rp 317000`.
+
+Perhatikan: pendapatan bukan laba. Kita belum mempunyai data biaya bahan baku atau operasional.
+
+## 5. Analisis produk dan hari
+
+```python
+pendapatan_produk = (
+    df.groupby("produk", as_index=False)["pendapatan"]
+      .sum()
+      .sort_values("pendapatan", ascending=False)
+)
+
+urutan_hari = ["Sen", "Sel", "Rab", "Kam", "Jum"]
+pendapatan_harian = (
+    df.groupby("hari")["pendapatan"]
+      .sum()
+      .reindex(urutan_hari)
+)
+
+print(pendapatan_produk)
+print(pendapatan_harian)
+```
+
+Coba baca hasilnya sebelum melihat grafik. Apakah produk dengan jumlah unit terjual terbesar selalu menghasilkan pendapatan terbesar? Tidak selalu—harga per unit juga berperan.
+
+## 6. Visualisasikan hasil
+
+```python
+plt.figure(figsize=(7, 4))
+plt.bar(pendapatan_produk["produk"], pendapatan_produk["pendapatan"])
+plt.title("Pendapatan menurut Produk")
+plt.xlabel("Produk")
+plt.ylabel("Pendapatan (Rp)")
+plt.tight_layout()
+plt.show()
+
+plt.figure(figsize=(7, 4))
+plt.plot(pendapatan_harian.index, pendapatan_harian.values, marker="o")
+plt.title("Pendapatan Kantin per Hari")
+plt.xlabel("Hari")
+plt.ylabel("Pendapatan (Rp)")
+plt.tight_layout()
+plt.show()
+```
+
+**Interpretasi:** grafik batang membandingkan kontribusi produk; grafik garis memperlihatkan perubahan pendapatan sesuai urutan hari. Lima hari terlalu sedikit untuk membuat klaim mengenai tren jangka panjang.
+
+## 7. Ceritakan hasil analisis
+
+Gunakan kerangka berikut pada sel Markdown notebook:
+
+- **Pertanyaan:** apa yang ingin dijawab?
+- **Metode:** pemeriksaan kualitas data, perhitungan pendapatan, agregasi produk/hari, grafik.
+- **Temuan:** total Rp317.000 dan kontribusi per produk/hari berdasarkan hasil kode.
+- **Keterbatasan:** dataset simulasi berukuran kecil; tanpa biaya, margin, atau riwayat mingguan.
+- **Tindak lanjut:** untuk penggunaan nyata, tambahkan tanggal lengkap, ID transaksi, diskon, biaya, dan cakupan periode lebih panjang.
+
+<Admonition type="info" title="Bedakan Pendapatan dan Laba">
+
+Rumus `jumlah × harga_satuan` menghitung pendapatan kotor sebelum biaya dan potongan. Kita belum bisa menghitung keuntungan tanpa data tambahan.
+
+</Admonition>
+
+## 8. Latihan Interaktif — Hitung Pendapatan
+
+Sebelum menggunakan pandas, cek pemahaman operasi dasarnya dengan Python murni. Cetak total pendapatan dua transaksi berikut.
+
+<PythonPlayground
+  initialCode={'jumlah = [3, 2]\nharga_satuan = [8000, 12000]\n\n# Hitung dan cetak total pendapatan'}
+  expectedOutput="48000"
+  hint="Kalikan jumlah dan harga pada indeks yang sama, lalu jumlahkan kedua hasilnya."
+  solution={'jumlah = [3, 2]\nharga_satuan = [8000, 12000]\npendapatan = jumlah[0] * harga_satuan[0] + jumlah[1] * harga_satuan[1]\nprint(pendapatan)'}
+/>
+
+## 9. Tantangan Mandiri
+
+Jika project utama selesai, lanjutkan tiga tantangan berikut di notebook:
+
+1. Buat kolom `harga_setelah_diskon` dengan asumsi diskon 10% untuk produk tertentu dan hitung ulang pendapatan secara konsisten.
+2. Hitung total unit terjual per produk dan bandingkan dengan pendapatan per produk.
+3. Ekspor hasil agregasi menggunakan `pendapatan_produk.to_csv("ringkasan_produk.csv", index=False)`.
+
+**Checklist penyerahan:** satu notebook yang dapat dijalankan ulang dari atas ke bawah, tabel ringkasan, dua grafik berlabel, dan kesimpulan yang menyebutkan keterbatasan dataset.
+
+## 10. Quick Quiz
+
+<QuizCard
+  question="Mengapa kita belum boleh menyebut nilai jumlah × harga sebagai laba bersih?"
+  correctAnswer="B"
+  options={[
+    { id: 'A', text: 'Karena hasilnya selalu negatif', explanation: 'Tidak. Pendapatan bisa bernilai positif.' },
+    { id: 'B', text: 'Karena biaya dan potongan belum diperhitungkan', explanation: 'Benar. Laba memerlukan informasi biaya dan komponen lainnya.' },
+    { id: 'C', text: 'Karena pandas tidak bisa menghitung laba', explanation: 'pandas bisa mengolah data laba jika variabel yang diperlukan tersedia.' },
+    { id: 'D', text: 'Karena grafik garis tidak boleh dipakai', explanation: 'Pemilihan grafik tidak menentukan definisi laba.' },
+  ]}
+/>
+
+## 11. Ringkasan dan Langkah Berikutnya
+
+Kamu sudah berlatih mengubah dataset mentah menjadi informasi yang bisa dijelaskan. Ulangi alur ini pada dataset lain dan dokumentasikan asumsi beserta batasannya.
+
+**Selanjutnya:** Machine Learning Fundamentals — belajar menggunakan data untuk membangun model prediktif secara bertanggung jawab.

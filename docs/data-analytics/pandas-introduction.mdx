@@ -1,0 +1,149 @@
+---
+title: pandas Introduction
+sidebar_label: pandas Introduction
+sidebar_position: 8
+description: Materi pandas Introduction Kawruh, lengkap dengan contoh dan latihan.
+---
+
+import PythonPlayground from '@site/src/components/PythonPlayground';
+import QuizCard from '@site/src/components/QuizCard';
+import Admonition from '@theme/Admonition';
+
+# pandas Introduction
+
+**Level:** Beginner | **Estimasi belajar:** 30–45 menit
+
+Kita mulai dari alasan pandas sangat populer dalam analisis data, lalu membuat tabel sederhana.
+
+## Tujuan Pembelajaran
+
+- Memahami kegunaan pandas untuk mengolah data berbentuk tabel.
+- Membuat `DataFrame`, memeriksa kolom, dan mengambil beberapa baris.
+- Membedakan contoh pandas yang dijalankan di Colab dari latihan Python murni di Kawruh.
+
+## 1. Mengapa pandas?
+
+**pandas** adalah library Python untuk mengolah data terstruktur seperti tabel nilai, catatan transaksi, dan hasil survei. Dua struktur yang sering dipakai adalah **Series** (satu dimensi) dan **DataFrame** (dua dimensi).
+
+| Istilah | Makna sederhana | Contoh |
+| --- | --- | --- |
+| Row/baris | Satu catatan | Satu transaksi |
+| Column/kolom | Satu atribut | `harga`, `jumlah` |
+| DataFrame | Tabel berisi baris dan kolom | Tabel penjualan |
+| Series | Satu kolom berlabel indeks | Kolom harga |
+
+## 2. Instalasi dan import
+
+Di terminal lingkungan Python lokal:
+
+```bash
+python -m pip install pandas
+```
+
+Di Google Colab, coba langsung:
+
+```python
+import pandas as pd
+print(pd.__version__)
+```
+
+<Admonition type="info" title="Tentang Playground Kawruh">
+
+Contoh yang memakai `import pandas` sebaiknya dicoba di Colab/Jupyter dahulu. Python Playground Kawruh belum dipastikan memasang pandas; contoh interaktif di bawah menggunakan Python murni.
+
+</Admonition>
+
+## 3. Membuat DataFrame
+
+```python
+import pandas as pd
+
+penjualan = pd.DataFrame({
+    "produk": ["Buku", "Pulpen", "Tas"],
+    "harga": [45000, 5000, 120000],
+    "terjual": [3, 10, 2],
+})
+print(penjualan)
+```
+
+**Penjelasan:** `pd.DataFrame()` membentuk tabel; setiap kunci dictionary menjadi nama kolom dan daftar nilainya menjadi baris. Semua daftar pada contoh mempunyai panjang sama.
+
+## 4. Mengenal tabel sebelum menganalisis
+
+```python
+print(penjualan.head(2))    # Dua baris pertama
+print(penjualan.shape)      # (jumlah baris, jumlah kolom)
+print(penjualan.columns)    # Nama-nama kolom
+print(penjualan.dtypes)     # Tipe data per kolom
+print(penjualan.info())     # Ringkasan struktur dan nilai non-null
+```
+
+`info()` sudah menampilkan ringkasan, sehingga tidak harus dibungkus `print()`; contoh tersebut memperlihatkan bahwa hasil kembalian `info()` adalah `None`.
+
+## 5. Try It Yourself — konsep kolom
+
+Sebelum menggunakan DataFrame, coba hitung total transaksi dari daftar Python biasa:
+
+<PythonPlayground
+  initialCode={"produk = [\"Buku\", \"Pulpen\", \"Tas\"]\nharga = [45000, 5000, 120000]\nterjual = [3, 10, 2]\n\nfor i in range(len(produk)):\n    print(produk[i], harga[i] * terjual[i])"}
+/>
+
+## 6. Studi Kasus — total penjualan dengan pandas
+
+```python
+penjualan["total"] = penjualan["harga"] * penjualan["terjual"]
+print(penjualan[["produk", "total"]])
+print("Omzet:", penjualan["total"].sum())
+```
+
+Perkalian antar-Series pada baris tersebut dilakukan **element-wise**, yaitu tiap baris `harga` dikalikan `terjual` pada baris yang sama.
+
+## 7. Common Mistakes
+
+- Menulis `import panda` bukan `import pandas as pd`.
+- Menganggap `DataFrame` sama dengan list biasa; keduanya punya kemampuan dan perilaku yang berbeda.
+- Memakai nama kolom salah kapitalisasi: `penjualan["Harga"]` berbeda dari `penjualan["harga"]`.
+
+## 8. Latihan — hitung omzet
+
+Hitung omzet dari harga `[10000, 20000, 15000]` dan jumlah `[2, 1, 3]`, tampilkan total sebagai angka saja.
+
+<PythonPlayground
+  initialCode={"harga = [10000, 20000, 15000]\njumlah = [2, 1, 3]\n\n# Hitung omzet seluruh produk"}
+  expectedOutput={"85000"}
+  hint={"Gunakan sum() bersama perkalian harga dan jumlah untuk setiap indeks."}
+  solution={"total = sum(harga[i] * jumlah[i] for i in range(len(harga)))\nprint(total)"}
+/>
+
+## 9. Quick Quiz
+
+<QuizCard
+  question={"Apa fungsi utama DataFrame pada pandas?"}
+  correctAnswer={"A"}
+  options={[
+  {
+    "id": "A",
+    "text": "Menyimpan data berbentuk tabel",
+    "explanation": "Benar. DataFrame memiliki baris dan kolom."
+  },
+  {
+    "id": "B",
+    "text": "Membuat gambar 3D",
+    "explanation": "Itu bukan fungsi utama DataFrame."
+  },
+  {
+    "id": "C",
+    "text": "Menjalankan server web",
+    "explanation": "Tidak. DataFrame terutama untuk mengolah data tabel."
+  },
+  {
+    "id": "D",
+    "text": "Menghapus seluruh file",
+    "explanation": "Tidak berkaitan dengan konsep DataFrame."
+  }
+]}
+/>
+
+## 10. Ringkasan
+
+pandas membantu membaca, memeriksa, mengolah, dan meringkas data tabular. Berikutnya kita mempelajari Series dan DataFrame lebih mendalam.

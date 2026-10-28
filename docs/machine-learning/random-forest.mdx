@@ -1,0 +1,129 @@
+---
+title: Random Forest
+sidebar_label: Random Forest
+description: Ensemble Decision Trees, bagging, out-of-bag, dan evaluasi klasifikasi.
+---
+
+import PythonPlayground from '@site/src/components/PythonPlayground';
+import QuizCard from '@site/src/components/QuizCard';
+
+# Random Forest
+
+**Level:** Beginner–Intermediate | **Course:** Machine Learning
+
+**Random Forest** adalah metode *ensemble* yang menggabungkan prediksi banyak Decision Tree. Untuk klasifikasi, prediksi biasanya ditentukan melalui suara terbanyak; untuk regresi, rata-rata prediksi pohon.
+
+## Tujuan Pembelajaran
+
+- Memahami ensemble dan bagging.
+- Membedakan Random Forest dari satu Decision Tree.
+- Menggunakan parameter dasar serta mengevaluasi model.
+
+## 1. Mengapa menggabungkan banyak model?
+
+Satu pohon dapat sensitif terhadap perubahan data. Random Forest melatih sejumlah pohon dengan sampel dan pemilihan fitur yang bervariasi, sehingga sering menghasilkan prediksi lebih stabil. Namun, performanya tetap bergantung pada data dan pengaturan model.
+
+### Ilustrasi voting (Python murni)
+
+<PythonPlayground
+  initialCode={"suara_pohon = [1, 0, 1, 1, 0]\nprediksi = max(set(suara_pohon), key=suara_pohon.count)\nprint(prediksi)"}
+/>
+
+Contoh voting tersebut hanya mengilustrasikan penggabungan suara, bukan implementasi Random Forest.
+
+### Visual Intuition — Voting dari Banyak Pohon
+
+![Diagram tiga decision tree yang melakukan voting kelas](/img/machine-learning/random-forest-voting.png)
+
+*Gambar 1. Tiga pohon menghasilkan kelas A, B, dan A sehingga voting mayoritas memilih kelas A.*
+
+**Cara membacanya:** setiap pohon menghasilkan prediksi sendiri; pada **klasifikasi**, Random Forest secara umum menggabungkan prediksi melalui voting kelas, sedangkan pada **regresi** hasil pohon dirata-ratakan. Gambar ini menyederhanakan proses dan tidak menggambarkan detail bootstrap maupun pemilihan fitur.
+
+## 2. Parameter penting
+
+| Parameter | Arti |
+| --- | --- |
+| `n_estimators` | Jumlah pohon yang dilatih |
+| `max_depth` | Batas kedalaman setiap pohon |
+| `max_features` | Banyak fitur yang dipertimbangkan pada setiap split |
+| `min_samples_leaf` | Ukuran minimum leaf |
+| `class_weight` | Pengaturan bobot kelas untuk klasifikasi tidak seimbang |
+
+## 3. Contoh scikit-learn (Google Colab / Jupyter)
+
+```python
+from sklearn.datasets import load_breast_cancer
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import classification_report, confusion_matrix
+
+data = load_breast_cancer()
+X_train, X_test, y_train, y_test = train_test_split(
+    data.data, data.target, test_size=0.2,
+    stratify=data.target, random_state=42
+)
+model = RandomForestClassifier(
+    n_estimators=100, max_depth=6, random_state=42, n_jobs=-1
+)
+model.fit(X_train, y_train)
+y_pred = model.predict(X_test)
+print(confusion_matrix(y_test, y_pred))
+print(classification_report(y_test, y_pred, zero_division=0))
+```
+
+Dataset digunakan sebagai contoh edukasi, bukan untuk membuat keputusan medis. Jalankan latihan scikit-learn di Google Colab/Jupyter.
+
+## 4. Feature Importance dan OOB
+
+Random Forest menyediakan `feature_importances_`, tetapi interpretasinya memiliki bias dan tidak menjamin sebab-akibat. Dengan `bootstrap=True` dan `oob_score=True`, kita juga dapat menghitung penilaian *out-of-bag* pada data pelatihan tertentu; OOB tidak otomatis menggantikan test set independen.
+
+## 5. Common Mistakes
+
+- Berasumsi semakin banyak pohon pasti selalu memperbaiki skor.
+- Menilai model hanya dari accuracy training.
+- Mengabaikan biaya memori dan waktu inference.
+- Menganggap Random Forest pasti lebih baik daripada model sederhana.
+
+## 6. Latihan Interaktif
+
+Hitung kelas mayoritas dari tiga prediksi pohon: `[0, 1, 1]`.
+
+<PythonPlayground
+  initialCode={"prediksi_pohon = [0, 1, 1]\n# Cetak kelas mayoritas\n"}
+  expectedOutput={"1"}
+  hint={"Gunakan count() untuk membandingkan jumlah kelas."}
+  solution={"prediksi_pohon = [0, 1, 1]\nprint(1 if prediksi_pohon.count(1) > prediksi_pohon.count(0) else 0)"}
+/>
+
+## 7. Quick Quiz
+
+<QuizCard
+  question={"Apa ide utama Random Forest?"}
+  correctAnswer={"B"}
+  options={[
+  {
+    "id": "A",
+    "text": "Menggunakan satu aturan tetap",
+    "explanation": "Ini bukan ensemble."
+  },
+  {
+    "id": "B",
+    "text": "Menggabungkan banyak Decision Tree",
+    "explanation": "Benar, Random Forest menggabungkan banyak pohon."
+  },
+  {
+    "id": "C",
+    "text": "Selalu memakai deep neural network",
+    "explanation": "Random Forest bukan neural network."
+  },
+  {
+    "id": "D",
+    "text": "Mengubah setiap fitur menjadi teks",
+    "explanation": "Tidak wajib mengubah fitur menjadi teks."
+  }
+]}
+/>
+
+## Ringkasan
+
+Random Forest mengurangi ketergantungan pada satu pohon, tetapi tetap harus diuji pada data terpisah. Setelah ini pelajari **Model Evaluation** untuk memilih metrik sesuai jenis task.

@@ -1,0 +1,139 @@
+---
+title: Exploratory Data Analysis
+sidebar_label: Exploratory Data Analysis
+sidebar_position: 12
+description: Memahami EDA melalui statistik deskriptif, distribusi, outlier, dan hubungan antarvariabel.
+---
+
+import PythonPlayground from '@site/src/components/PythonPlayground';
+import QuizCard from '@site/src/components/QuizCard';
+import Admonition from '@theme/Admonition';
+
+# Exploratory Data Analysis (EDA)
+
+**Level:** Beginner | **Estimasi belajar:** 35–45 menit
+
+Setelah data dibersihkan, kita perlu mengenal karakteristiknya. Proses memeriksa pola, distribusi, ketidakwajaran, dan hubungan antarkolom ini disebut **Exploratory Data Analysis (EDA)**. EDA membantu kita merumuskan pertanyaan yang lebih baik, tetapi tidak otomatis membuktikan hubungan sebab-akibat.
+
+## Tujuan Pembelajaran
+
+- Menyusun pertanyaan analisis sebelum membuat grafik.
+- Memeriksa dimensi, tipe data, missing values, dan duplikat.
+- Memahami mean, median, distribusi, outlier, dan korelasi.
+- Menafsirkan ringkasan dataset tanpa membuat klaim berlebihan.
+
+## 1. Memulai dari pertanyaan
+
+Bayangkan kita memiliki dataset transaksi kantin. Pertanyaan yang relevan antara lain: berapa nilai transaksi tipikal, produk mana yang paling sering terjual, dan apakah terdapat transaksi yang jauh lebih tinggi dari biasanya?
+
+EDA bukan sekadar menjalankan `describe()`; kita perlu menghubungkan hasilnya dengan pertanyaan yang ingin dijawab.
+
+## 2. Menyiapkan dataset contoh
+
+Jalankan contoh berikut di **Google Colab atau Jupyter** karena memerlukan pandas.
+
+```python
+import pandas as pd
+
+transaksi = pd.DataFrame({
+    "produk": ["Roti", "Susu", "Roti", "Air", "Susu", "Air", "Roti"],
+    "jumlah": [2, 1, 1, 3, 2, 2, 20],
+    "harga_satuan": [8000, 12000, 8000, 5000, 12000, 5000, 8000],
+})
+transaksi["total"] = transaksi["jumlah"] * transaksi["harga_satuan"]
+print(transaksi.head())
+```
+
+Dataset contoh ini **sengaja berisi satu transaksi dengan jumlah 20** untuk membahas kandidat outlier. Nilai yang ekstrem belum tentu merupakan kesalahan.
+
+## 3. Pemeriksaan awal dataset
+
+```python
+print("Ukuran:", transaksi.shape)
+print(transaksi.dtypes)
+print(transaksi.isna().sum())
+print("Duplikat:", transaksi.duplicated().sum())
+print(transaksi.describe())
+```
+
+| Perintah | Kegunaan |
+| --- | --- |
+| `shape` | Jumlah baris dan kolom |
+| `dtypes` | Jenis data tiap kolom |
+| `isna().sum()` | Jumlah nilai kosong per kolom |
+| `duplicated().sum()` | Jumlah baris yang identik dengan baris sebelumnya |
+| `describe()` | Ringkasan statistik kolom numerik |
+
+## 4. Mean vs median
+
+**Mean** adalah rata-rata, sedangkan **median** merupakan nilai tengah setelah data diurutkan. Nilai yang sangat tinggi dapat menarik mean menjauh dari nilai tipikal.
+
+<PythonPlayground
+  initialCode={'nilai = [2, 1, 1, 3, 2, 2, 20]\nmean = sum(nilai) / len(nilai)\nurutan = sorted(nilai)\nmedian = urutan[len(urutan) // 2]\nprint("Mean:", round(mean, 2))\nprint("Median:", median)'}
+/>
+
+Penjelasan: mean jumlah transaksi adalah sekitar `4.43`, sementara median adalah `2`. Nilai `20` berpengaruh besar pada rata-rata.
+
+## 5. Distribusi, kategori, dan outlier
+
+Gunakan `value_counts()` untuk menghitung frekuensi kategori, lalu histogram untuk mengamati distribusi angka.
+
+```python
+print(transaksi["produk"].value_counts())
+print(transaksi["jumlah"].describe())
+
+q1 = transaksi["jumlah"].quantile(0.25)
+q3 = transaksi["jumlah"].quantile(0.75)
+iqr = q3 - q1
+batas_atas = q3 + 1.5 * iqr
+print("Kandidat outlier:")
+print(transaksi[transaksi["jumlah"] > batas_atas])
+```
+
+Metode IQR adalah **aturan praktis untuk menandai kandidat outlier**, bukan perintah otomatis untuk menghapus baris. Verifikasi konteks bisnis terlebih dahulu.
+
+## 6. Hubungan antarvariabel
+
+Korelasi dapat membantu melihat kecenderungan dua variabel numerik bergerak bersama, tetapi **korelasi bukan kausalitas**.
+
+```python
+print(transaksi[["jumlah", "harga_satuan", "total"]].corr())
+```
+
+Perhatikan bahwa kolom `total` dihitung dari dua kolom lain; hubungan statistik yang ditemukan di sini sebagian terjadi karena rumus pembentuknya.
+
+<Admonition type="warning" title="Hindari Kesimpulan Terlalu Cepat">
+
+Grafik atau korelasi saja tidak cukup untuk menyatakan penyebab suatu fenomena. Periksa kualitas data, ukuran sampel, periode pengamatan, dan variabel lain yang mungkin berpengaruh.
+
+</Admonition>
+
+## 7. Latihan Interaktif — Ringkasan Jumlah
+
+Diberikan angka jumlah barang dari tujuh transaksi. Hitung nilai maksimum, minimum, dan rentangnya dalam urutan tiga baris berikut.
+
+<PythonPlayground
+  initialCode={'jumlah = [2, 1, 1, 3, 2, 2, 20]\n\n# Cetak maksimum, minimum, lalu rentang (maksimum - minimum)'}
+  expectedOutput={'20\n1\n19'}
+  hint="Gunakan fungsi max() dan min(). Rentang adalah selisih nilai terbesar dan terkecil."
+  solution={'jumlah = [2, 1, 1, 3, 2, 2, 20]\nprint(max(jumlah))\nprint(min(jumlah))\nprint(max(jumlah) - min(jumlah))'}
+/>
+
+## 8. Quick Quiz
+
+<QuizCard
+  question="Mengapa median dapat lebih representatif daripada mean pada data yang memiliki nilai ekstrem?"
+  correctAnswer="B"
+  options={[
+    { id: 'A', text: 'Karena median selalu lebih besar', explanation: 'Median tidak selalu lebih besar daripada mean.' },
+    { id: 'B', text: 'Karena median lebih tahan terhadap pengaruh nilai ekstrem', explanation: 'Benar. Posisi nilai tengah tidak mudah bergeser akibat satu nilai yang sangat besar.' },
+    { id: 'C', text: 'Karena mean tidak bisa dipakai pada data numerik', explanation: 'Mean justru merupakan ukuran pemusatan numerik yang umum.' },
+    { id: 'D', text: 'Karena median membuktikan sebab-akibat', explanation: 'Ukuran statistik deskriptif tidak membuktikan kausalitas.' },
+  ]}
+/>
+
+## 9. Ringkasan
+
+EDA dimulai dari pertanyaan, lalu pemeriksaan struktur, statistik deskriptif, distribusi, outlier, dan hubungan antarvariabel. Setiap temuan perlu ditafsirkan sesuai konteks.
+
+**Materi berikutnya:** Data Visualization.
