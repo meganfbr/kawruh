@@ -1,0 +1,157 @@
+---
+title: Image Classification Mini Project
+sidebar_label: Image Classification Mini Project
+sidebar_position: 18
+description: Materi interaktif Image Classification Mini Project untuk pembelajar Deep Learning Kawruh.
+---
+
+import PythonPlayground from '@site/src/components/PythonPlayground';
+import QuizCard from '@site/src/components/QuizCard';
+
+# Image Classification Mini Project
+
+**Level:** Beginner–Intermediate | **Prasyarat:** Python, NumPy, dan dasar neural network.
+
+## Tujuan Project
+
+Membangun pipeline CNN sederhana untuk mengklasifikasikan Fashion MNIST ke **10 kelas**, mengevaluasi model pada data test, dan membaca learning curves. Mini project ini memakai **dataset resmi yang otomatis dimuat oleh Keras**, sehingga tidak membutuhkan unduhan dataset manual.
+
+## 1. Alur project
+
+1. Memuat dan membagi data.
+2. Normalisasi dan menambahkan dimensi channel.
+3. Membuat CNN sederhana.
+4. Training dengan validation split dari train.
+5. Mengevaluasi sekali pada data test.
+6. Membuat grafik training dan confusion matrix.
+
+![Evaluasi CNN](/img/deep-learning/cnn-evaluation-example.png)
+
+*Gambar 1. Grafik dan confusion matrix di atas hanya ilustrasi; bukan hasil dari kode training berikut.*
+
+## 2. Kode lengkap (Google Colab)
+
+```python
+import numpy as np
+import tensorflow as tf
+import matplotlib.pyplot as plt
+from sklearn.metrics import confusion_matrix, classification_report
+
+# Reproducibility parsial: beberapa operasi GPU dapat tetap non-deterministik.
+tf.keras.utils.set_random_seed(42)
+
+(x_train, y_train), (x_test, y_test) = tf.keras.datasets.fashion_mnist.load_data()
+x_train = x_train.astype('float32') / 255.0
+x_test = x_test.astype('float32') / 255.0
+x_train = x_train[..., np.newaxis]
+x_test = x_test[..., np.newaxis]
+
+model = tf.keras.Sequential([
+    tf.keras.layers.Input(shape=(28, 28, 1)),
+    tf.keras.layers.Conv2D(32, 3, activation='relu'),
+    tf.keras.layers.MaxPooling2D(2),
+    tf.keras.layers.Conv2D(64, 3, activation='relu'),
+    tf.keras.layers.GlobalAveragePooling2D(),
+    tf.keras.layers.Dense(64, activation='relu'),
+    tf.keras.layers.Dense(10, activation='softmax'),
+])
+
+model.compile(
+    optimizer=tf.keras.optimizers.Adam(learning_rate=1e-3),
+    loss='sparse_categorical_crossentropy',
+    metrics=['accuracy'],
+)
+
+history = model.fit(
+    x_train, y_train,
+    epochs=10,
+    batch_size=64,
+    validation_split=0.1,
+    callbacks=[tf.keras.callbacks.EarlyStopping(
+        monitor='val_loss', patience=3, restore_best_weights=True
+    )],
+    verbose=1,
+)
+
+loss, accuracy = model.evaluate(x_test, y_test, verbose=0)
+print(f'Test accuracy: {accuracy:.4f}')
+
+probs = model.predict(x_test, verbose=0)
+predictions = np.argmax(probs, axis=1)
+print(classification_report(y_test, predictions, digits=3))
+print(confusion_matrix(y_test, predictions))
+
+plt.plot(history.history['accuracy'], label='Train accuracy')
+plt.plot(history.history['val_accuracy'], label='Validation accuracy')
+plt.xlabel('Epoch')
+plt.ylabel('Accuracy')
+plt.legend()
+plt.show()
+
+model.save('kawruh_fashion_mnist_cnn.keras')
+```
+
+**Mengapa tidak ada hasil akurasi tetap di sini?** Karena akurasi harus berasal dari eksekusi sebenarnya di Colab. Model, batch, versi library, dan kondisi training memengaruhi hasil.
+
+## 3. Cara membaca output
+
+- **Training accuracy**: skor pada data pelatihan.
+- **Validation accuracy**: dipakai untuk pemantauan dan pemilihan model.
+- **Test accuracy**: estimasi kinerja pada data yang tidak digunakan untuk training atau pemilihan model.
+- **Confusion matrix**: memperlihatkan pasangan kelas benar dan prediksi; nilainya berasal dari model yang benar-benar dijalankan.
+
+## 4. Common Mistakes
+
+- Menentukan hyperparameter berkali-kali berdasarkan hasil test → kebocoran proses pemilihan model.
+- Menggunakan loss yang tidak sesuai jenis target, misalnya sparse categorical loss untuk label one-hot.
+- Menyebut dataset Fashion MNIST sebagai citra RGB padahal dataset aslinya grayscale satu kanal.
+
+## 5. Playground — estimasi ukuran input
+
+<PythonPlayground
+  initialCode={"jumlah_gambar = 60000\ntinggi = 28\nlebar = 28\nkanal = 1\nprint(jumlah_gambar * tinggi * lebar * kanal)"}
+/>
+
+## 6. Latihan
+
+Untuk gambar grayscale 28 × 28, hitung banyak piksel per gambar.
+
+<PythonPlayground
+  initialCode={"tinggi = 28\nlebar = 28\n# Cetak jumlah piksel\n"}
+  expectedOutput={"784"}
+  hint={"Kalikan tinggi dan lebar."}
+  solution={"tinggi = 28\nlebar = 28\nprint(tinggi * lebar)"}
+/>
+
+## 7. Quick Quiz
+
+<QuizCard
+  question={"Bagian manakah yang benar untuk mengukur performa final setelah training dan pemilihan model?"}
+  correctAnswer={"C"}
+  options={[
+  {
+    "id": "A",
+    "text": "Train saja",
+    "explanation": "Train tidak mengukur generalisasi independen."
+  },
+  {
+    "id": "B",
+    "text": "Validation digunakan untuk training langsung",
+    "explanation": "Validation dipakai untuk memantau dan memilih model, bukan evaluasi final independen."
+  },
+  {
+    "id": "C",
+    "text": "Test yang dijaga terpisah",
+    "explanation": "Benar. Test dijaga terpisah dari training dan tuning."
+  },
+  {
+    "id": "D",
+    "text": "Data augmentasi training",
+    "explanation": "Augmentasi training bukan dataset test independen."
+  }
+]}
+/>
+
+## Ringkasan dan tantangan lanjut
+
+Coba bandingkan model sederhana ini dengan arsitektur transfer learning, **tetapi gunakan split dan metrik evaluasi yang konsisten**. Dokumentasikan preprocessing, jumlah parameter, hasil validation, serta hasil test.

@@ -1,0 +1,177 @@
+---
+title: Fashion MNIST Mini Project
+sidebar_label: Fashion MNIST Mini Project
+description: Mini project klasifikasi gambar dengan Keras di Colab.
+---
+
+import PythonPlayground from '@site/src/components/PythonPlayground';
+import QuizCard from '@site/src/components/QuizCard';
+
+# Fashion MNIST Mini Project
+
+**Level:** Beginner–Intermediate | **Prasyarat:** Python, NumPy dasar, dan Deep Learning Fundamentals.
+
+Mini project ini membangun jaringan Dense untuk mengklasifikasikan gambar pakaian **Fashion MNIST** (28×28 piksel grayscale, 10 kelas). Tujuannya memahami end-to-end training, bukan mengejar akurasi tertinggi.
+
+## Tujuan Pembelajaran
+
+- Memuat dan menormalisasi dataset Fashion MNIST.
+- Membuat model Dense dengan Keras.
+- Memisahkan train, validation, test tanpa menggunakan test untuk tuning.
+- Menilai performa dan membuat prediksi.
+
+## 1. Gambaran Hasil Prediksi
+
+![Ilustrasi prediksi Fashion MNIST](/img/deep-learning/fashion-mnist-prediction.png)
+
+*Diagram hanya ilustrasi probabilitas satu prediksi. Nilai asli muncul setelah menjalankan notebook.*
+
+## 2. Siapkan Google Colab
+
+Buka [Google Colab](https://colab.research.google.com/). Jalankan sel secara berurutan. Dataset Fashion MNIST diunduh saat pertama kali dimuat sehingga membutuhkan internet.
+
+### Sel 1 — Library dan Dataset
+
+```python
+import numpy as np
+import tensorflow as tf
+import matplotlib.pyplot as plt
+
+tf.keras.utils.set_random_seed(42)
+(X_full, y_full), (X_test, y_test) = tf.keras.datasets.fashion_mnist.load_data()
+
+X_full = X_full.astype('float32') / 255.0
+X_test = X_test.astype('float32') / 255.0
+
+# Split dari data train resmi; test resmi tetap dipisahkan.
+X_train, X_val = X_full[:50000], X_full[50000:]
+y_train, y_val = y_full[:50000], y_full[50000:]
+print(X_train.shape, X_val.shape, X_test.shape)
+```
+
+Data ini dinormalisasi dengan membagi 255 karena nilai piksel tersedia dalam rentang 0–255; operasi ini tidak mempelajari statistik dari data test.
+
+### Sel 2 — Susun dan Compile Model
+
+```python
+model = tf.keras.Sequential([
+    tf.keras.Input(shape=(28, 28)),
+    tf.keras.layers.Flatten(),
+    tf.keras.layers.Dense(128, activation='relu'),
+    tf.keras.layers.Dropout(0.2),
+    tf.keras.layers.Dense(10, activation='softmax'),
+])
+model.compile(
+    optimizer='adam',
+    loss='sparse_categorical_crossentropy',
+    metrics=['accuracy'],
+)
+model.summary()
+```
+
+Karena label berbentuk integer 0–9, gunakan `sparse_categorical_crossentropy`. Lapisan `Flatten` meratakan 28×28 piksel menjadi vektor 784 nilai.
+
+### Sel 3 — Training
+
+```python
+stop = tf.keras.callbacks.EarlyStopping(
+    monitor='val_loss', patience=3, restore_best_weights=True,
+)
+history = model.fit(
+    X_train, y_train,
+    validation_data=(X_val, y_val),
+    epochs=15,
+    batch_size=128,
+    callbacks=[stop],
+    verbose=1,
+)
+```
+
+### Sel 4 — Grafik Training
+
+```python
+plt.figure(figsize=(7, 4))
+plt.plot(history.history['loss'], label='Train loss')
+plt.plot(history.history['val_loss'], label='Validation loss')
+plt.xlabel('Epoch')
+plt.ylabel('Loss')
+plt.legend()
+plt.show()
+```
+
+### Sel 5 — Evaluasi dan Prediksi
+
+```python
+test_results = model.evaluate(X_test, y_test, return_dict=True, verbose=0)
+print('Test metrics:', test_results)
+
+class_names = ['T-shirt/top', 'Trouser', 'Pullover', 'Dress', 'Coat',
+               'Sandal', 'Shirt', 'Sneaker', 'Bag', 'Ankle boot']
+probabilities = model.predict(X_test[:1], verbose=0)[0]
+pred_idx = int(np.argmax(probabilities))
+print('Predicted class:', class_names[pred_idx])
+print('True class:', class_names[int(y_test[0])])
+print('Confidence (softmax):', round(float(probabilities[pred_idx]), 4))
+```
+
+Softmax menghasilkan skor yang jumlahnya 1, tetapi angka tersebut **tidak otomatis terkalibrasi** sebagai probabilitas dunia nyata.
+
+### Sel 6 — Simpan Model
+
+```python
+model.save('fashion_mnist_dense.keras')
+```
+
+## 3. Evaluasi Mini Project
+
+Jawab tiga pertanyaan setelah menjalankan notebook: apakah validation loss mulai naik? Seberapa besar selisih train dan validation accuracy? Kelas apa yang sering tertukar? Kamu dapat menambahkan confusion matrix sebagai eksperimen lanjutan.
+
+## 4. Playground — Simulasi Prediksi Tanpa TensorFlow
+
+<PythonPlayground
+  initialCode={"kelas = [\"Shirt\", \"Sneaker\", \"Bag\"]\nskor = [0.1, 0.8, 0.1]\nindex_terbaik = skor.index(max(skor))\nprint(kelas[index_terbaik])"}
+/>
+
+## 5. Latihan Interaktif
+
+Dari skor berikut, cetak indeks kelas dengan skor terbesar.
+
+<PythonPlayground
+  initialCode={"skor = [0.15, 0.2, 0.65]\n# Cari indeks skor terbesar\n"}
+  expectedOutput={"2"}
+  hint={"Gunakan skor.index(max(skor))."}
+  solution={"skor = [0.15, 0.2, 0.65]\nprint(skor.index(max(skor)))"}
+/>
+
+## 6. Quick Quiz
+
+<QuizCard
+  question={"Kenapa memakai sparse_categorical_crossentropy dalam mini project ini?"}
+  correctAnswer="C"
+  options={[
+  {
+    "id": "A",
+    "text": "Karena target berisi teks bebas",
+    "explanation": "Target kelas berupa bilangan integer."
+  },
+  {
+    "id": "B",
+    "text": "Karena hanya ada dua kelas",
+    "explanation": "Fashion MNIST memiliki 10 kelas."
+  },
+  {
+    "id": "C",
+    "text": "Karena label kelas berupa integer 0 sampai 9",
+    "explanation": "Benar; ini format label untuk sparse categorical crossentropy."
+  },
+  {
+    "id": "D",
+    "text": "Karena gambar berwarna RGB",
+    "explanation": "Fashion MNIST menggunakan grayscale."
+  }
+]}
+/>
+
+## Ringkasan
+
+Kamu sudah menyiapkan data, membuat Dense model, training, memplot history, mengevaluasi test, dan menyimpan model. **Langkah berikutnya:** Convolutional Neural Networks dan Computer Vision.

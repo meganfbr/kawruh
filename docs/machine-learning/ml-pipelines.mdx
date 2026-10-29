@@ -1,0 +1,91 @@
+---
+title: Machine Learning Pipelines
+sidebar_label: Machine Learning Pipelines
+description: Menggunakan Pipeline scikit-learn untuk preprocessing dan model.
+---
+
+import PythonPlayground from '@site/src/components/PythonPlayground';
+import QuizCard from '@site/src/components/QuizCard';
+
+# Machine Learning Pipelines
+
+**Level:** Intermediate | **Prasyarat:** Python, pandas, dasar Machine Learning
+
+## Learning Objectives
+
+Mampu menjelaskan fungsi Pipeline, cara mencegah kebocoran preprocessing, serta memahami hubungan Pipeline dengan cross validation.
+
+## 1. Kenapa Perlu Pipeline?
+
+Dalam proyek nyata, data sering memerlukan imputasi dan scaling sebelum masuk ke model. **Pipeline** menggabungkan langkah-langkah ini supaya urutannya konsisten saat training dan prediksi.
+
+![Alur pipeline](/img/machine-learning/ml-pipeline.png)
+
+*Gambar: alur dari data training ke preprocessing dan model. Perhitungan parameter preprocessing hanya boleh menggunakan data train.*
+
+## 2. Contoh Pipeline (Colab/Jupyter)
+
+```python
+from sklearn.datasets import load_iris
+from sklearn.model_selection import train_test_split, cross_val_score
+from sklearn.pipeline import Pipeline
+from sklearn.impute import SimpleImputer
+from sklearn.preprocessing import StandardScaler
+from sklearn.linear_model import LogisticRegression
+
+X, y = load_iris(return_X_y=True)
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, stratify=y, random_state=42
+)
+pipe = Pipeline([
+    ('imputer', SimpleImputer(strategy='median')),
+    ('scaler', StandardScaler()),
+    ('model', LogisticRegression(max_iter=1000)),
+])
+pipe.fit(X_train, y_train)
+print('Test accuracy:', pipe.score(X_test, y_test))
+```
+
+Untuk kolom campuran numerik dan kategori, gunakan `ColumnTransformer` agar strategi scaling dan encoding berbeda sesuai jenis fitur.
+
+## 3. Mengapa Urutan Itu Penting?
+
+Misalnya nilai yang hilang diisi menggunakan rata-rata dari training set. Rata-rata tersebut disimpan saat `fit()` dan dipakai kembali saat `predict()`. Menghitung rata-rata dari keseluruhan dataset sebelum split berisiko menimbulkan **data leakage**.
+
+<PythonPlayground
+  initialCode={"train = [10, 12, 14]\nmean_train = sum(train) / len(train)\nnew_value = 16\nprint(new_value - mean_train)"}
+/>
+
+## 4. Common Mistakes
+
+- Menghitung normalisasi di seluruh dataset sebelum split.
+- Menggunakan `fit_transform` pada test data.
+- Memakai encoder berbeda saat training dan inference.
+- Mengubah urutan kolom input tanpa penanganan yang benar.
+
+## 5. Interactive Exercise
+
+Hitung rata-rata data train dan gunakan untuk memusatkan nilai 20.
+
+<PythonPlayground
+  initialCode={"train_values = [4, 6, 8]\nnew_value = 20\n# Cetak new_value dikurangi rata-rata train"}
+  expectedOutput={"14.0"}
+  hint={"Rata-rata = sum(train_values) / len(train_values)."}
+  solution={"train_values = [4, 6, 8]\nnew_value = 20\nmean_train = sum(train_values) / len(train_values)\nprint(new_value - mean_train)"}
+/>
+
+## 6. Quick Quiz
+
+<QuizCard
+  question={"Saat mengevaluasi Pipeline pada test set, apa yang dilakukan scaler?"}
+  correctAnswer={"B"}
+  options={[
+    {id: "A", text: "fit ulang pada test set", explanation: "Ini akan membuat statistik preprocessing berubah dan mencemari evaluasi."},
+    {id: "B", text: "transform memakai statistik training", explanation: "Benar. Scaler yang sudah fit menerapkan transformasi pada data baru."},
+    {id: "C", text: "Dihapus dari Pipeline", explanation: "Transformasi yang sama tetap diperlukan saat inference."},
+  ]}
+/>
+
+## Summary
+
+Pipeline membantu memastikan preprocessing identik antara pelatihan dan prediksi, serta mengurangi risiko data leakage.

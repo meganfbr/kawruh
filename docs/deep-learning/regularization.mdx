@@ -1,0 +1,113 @@
+---
+title: Regularization And Early Stopping
+sidebar_label: Regularization And Early Stopping
+description: Mencegah overfitting dengan Dropout L2 dan EarlyStopping.
+---
+
+import PythonPlayground from '@site/src/components/PythonPlayground';
+import QuizCard from '@site/src/components/QuizCard';
+
+# Regularization And Early Stopping
+
+**Level:** Beginner–Intermediate | **Prasyarat:** Python, NumPy dasar, dan Deep Learning Fundamentals.
+
+Model yang sangat bagus di data train tetapi buruk pada data baru kemungkinan mengalami **overfitting**. Regularization mengurangi risiko ini dengan membatasi kompleksitas efektif atau mengatur proses training.
+
+## Tujuan Pembelajaran
+
+- Mengenali pola overfitting pada kurva loss.
+- Menggunakan Dropout, L2, dan EarlyStopping.
+- Memahami perbedaan regularization dan data augmentation.
+
+## 1. Visualisasi Overfitting
+
+![Overfitting dan EarlyStopping](/img/deep-learning/regularization-early-stopping.png)
+
+*Kurva simulasi menunjukkan train loss terus turun sementara validation loss mulai naik.*
+
+## 2. Tiga Teknik Penting
+
+| Teknik | Penjelasan |
+| --- | --- |
+| Dropout | Menonaktifkan sebagian aktivasi secara acak saat training |
+| L2 Regularization | Menambahkan penalti nilai bobot ke fungsi objektif |
+| Early Stopping | Menghentikan training saat metrik monitor tak lagi membaik selama sejumlah epoch |
+
+## 3. Contoh Keras di Colab
+
+```python
+import tensorflow as tf
+
+model = tf.keras.Sequential([
+    tf.keras.Input(shape=(20,)),
+    tf.keras.layers.Dense(32, activation='relu', kernel_regularizer=tf.keras.regularizers.l2(1e-4)),
+    tf.keras.layers.Dropout(0.3),
+    tf.keras.layers.Dense(1, activation='sigmoid'),
+])
+model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
+
+callback = tf.keras.callbacks.EarlyStopping(
+    monitor='val_loss', patience=3, restore_best_weights=True,
+)
+# Untuk menjalankan training, siapkan X_train, y_train, X_val, y_val terlebih dahulu.
+# history = model.fit(X_train, y_train, validation_data=(X_val, y_val),
+#                     epochs=50, callbacks=[callback])
+```
+
+`Dropout(0.3)` menjatuhkan sekitar 30% aktivasi pada training (secara stokastik), bukan menghapus neuron permanen.
+
+## 4. Playground — Simulasi Aturan Patience
+
+<PythonPlayground
+  initialCode={"val_loss = [0.7, 0.5, 0.45, 0.48, 0.52]\nterbaik = min(val_loss)\nprint(terbaik)"}
+/>
+
+## 5. Common Mistakes
+
+- Menggunakan EarlyStopping tanpa validation metric yang tersedia.
+- Menganggap Dropout otomatis selalu meningkatkan accuracy.
+- Meningkatkan regularization secara berlebihan sampai model underfitting.
+
+## 6. Latihan Interaktif
+
+Cetak loss validasi paling kecil dari list berikut.
+
+<PythonPlayground
+  initialCode={"val_loss = [0.9, 0.6, 0.4, 0.5]\n# Cari nilai terkecil\n"}
+  expectedOutput={"0.4"}
+  hint={"Gunakan min(val_loss)."}
+  solution={"val_loss = [0.9, 0.6, 0.4, 0.5]\nprint(min(val_loss))"}
+/>
+
+## 7. Quick Quiz
+
+<QuizCard
+  question={"Apa fungsi restore_best_weights=True pada EarlyStopping?"}
+  correctAnswer="A"
+  options={[
+  {
+    "id": "A",
+    "text": "Mengembalikan bobot terbaik berdasarkan metrik monitor",
+    "explanation": "Benar, bobot epoch terbaik dipulihkan saat stop."
+  },
+  {
+    "id": "B",
+    "text": "Selalu memilih epoch terakhir",
+    "explanation": "Justru bukan itu."
+  },
+  {
+    "id": "C",
+    "text": "Menghapus validation data",
+    "explanation": "Tidak mengubah dataset."
+  },
+  {
+    "id": "D",
+    "text": "Mengganti loss ke MSE",
+    "explanation": "Tidak mengubah loss."
+  }
+]}
+/>
+
+## Ringkasan
+
+Regularization membantu generalisasi, tetapi bukan pengganti dataset dan evaluasi yang tepat. **Berikutnya: Mini Project Fashion MNIST.**

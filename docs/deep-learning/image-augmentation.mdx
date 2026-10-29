@@ -1,0 +1,104 @@
+---
+title: Image Augmentation
+sidebar_label: Image Augmentation
+sidebar_position: 16
+description: Materi interaktif Image Augmentation untuk pembelajar Deep Learning Kawruh.
+---
+
+import PythonPlayground from '@site/src/components/PythonPlayground';
+import QuizCard from '@site/src/components/QuizCard';
+
+# Image Augmentation
+
+**Level:** Beginner–Intermediate | **Prasyarat:** Python, NumPy, dan dasar neural network.
+
+## Tujuan Belajar
+
+Membedakan augmentasi dari preprocessing, memilih transformasi yang sesuai, dan menghindari transformasi yang mengubah makna label.
+
+## 1. Apa itu data augmentation?
+
+Augmentation menghasilkan variasi pelatihan dari contoh yang sama, misalnya flip, rotation, translation, zoom, atau perubahan brightness. Tujuannya mengurangi ketergantungan model terhadap posisi dan kondisi tertentu, **bukan menambah data independen baru**.
+
+![Augmentation](/img/deep-learning/image-augmentation.png)
+
+*Gambar 1. Contoh perubahan orientasi pada ilustrasi sintetis; kesesuaian transformasi tergantung tugas.*
+
+## 2. Contoh dengan Keras (Colab)
+
+```python
+import tensorflow as tf
+
+augmentation = tf.keras.Sequential([
+    tf.keras.layers.RandomFlip('horizontal'),
+    tf.keras.layers.RandomRotation(0.05),
+    tf.keras.layers.RandomZoom(0.1),
+])
+
+# Jalankan hanya dalam jalur training, bukan validation/test.
+```
+
+### Memilih augmentasi yang masuk akal
+
+| Tugas | Augmentasi | Hal yang perlu diperhatikan |
+| --- | --- | --- |
+| Foto objek umum | Flip, crop, zoom | Label kelas harus tetap benar |
+| X-ray medis | Rotasi kecil, kontras terbatas | Orientasi/laterality bisa bermakna |
+| OCR karakter | Rotasi kecil | Flip dapat mengubah arti karakter |
+| Semantic segmentation | Transformasi geometri sinkron | Mask harus mengalami transformasi yang sama |
+
+## 3. Common Mistakes
+
+- Menggunakan transformasi acak ke dataset test.
+- Mengubah gambar tetapi tidak mengubah *bounding box* atau mask saat tugas membutuhkan anotasi spasial.
+- Mengasumsikan semua flip aman untuk semua dataset.
+
+## 4. Playground — simulasi probabilitas transformasi
+
+<PythonPlayground
+  initialCode={"import random\nrandom.seed(7)\nfor i in range(5):\n    flip = random.random() < 0.5\n    print(i, flip)"}
+/>
+
+## 5. Latihan
+
+Hitung jumlah contoh yang diberi augmentasi jika 20 dari 100 contoh dipilih.
+
+<PythonPlayground
+  initialCode={"total = 100\nselected = 20\n# Tampilkan persentase yang dipilih"}
+  expectedOutput={"20.0"}
+  hint={"Gunakan selected / total * 100."}
+  solution={"total = 100\nselected = 20\nprint(selected / total * 100)"}
+/>
+
+## 6. Quick Quiz
+
+<QuizCard
+  question={"Untuk segmentasi, apa yang wajib dilakukan saat gambar di-rotate?"}
+  correctAnswer={"B"}
+  options={[
+  {
+    "id": "A",
+    "text": "Mask tetap diam",
+    "explanation": "Anotasi akan tidak sejajar."
+  },
+  {
+    "id": "B",
+    "text": "Mask diputar dengan transformasi geometri yang sama",
+    "explanation": "Benar. Gambar dan mask harus tetap terdaftar secara spasial."
+  },
+  {
+    "id": "C",
+    "text": "Label kelas gambar diacak",
+    "explanation": "Mengacak label merusak supervisi."
+  },
+  {
+    "id": "D",
+    "text": "Hapus seluruh mask",
+    "explanation": "Mask dibutuhkan sebagai target segmentasi."
+  }
+]}
+/>
+
+## Ringkasan
+
+Augmentasi efektif apabila realistis dan mempertahankan arti label. Evaluasi tetap memakai data yang independen.

@@ -1,0 +1,96 @@
+---
+title: Classification Mini Project
+sidebar_label: Classification Mini Project
+description: Mini project klasifikasi Iris end-to-end menggunakan scikit-learn.
+---
+
+import PythonPlayground from '@site/src/components/PythonPlayground';
+import QuizCard from '@site/src/components/QuizCard';
+
+# Classification Mini Project
+
+**Level:** Intermediate | **Prasyarat:** Python, pandas, dasar Machine Learning
+
+## Project Brief
+
+**Tujuan:** membuat model klasifikasi spesies Iris menggunakan data bawaan scikit-learn. Dataset ini hanya contoh pembelajaran, bukan evaluasi produksi.
+
+**Tools:** Google Colab atau Jupyter dengan `scikit-learn`, `pandas` dan `matplotlib` jika ingin menambah eksplorasi. Contoh berikut tidak membutuhkan unduhan CSV.
+
+## 1. Workflow Project
+
+1. Memuat dataset Iris.
+2. Memisahkan train dan test dengan stratification.
+3. Menyusun Pipeline scaling dan Logistic Regression.
+4. Mengukur accuracy serta classification report pada test.
+5. Menganalisis kesalahan dan keterbatasan.
+
+## 2. Notebook Lengkap — Colab/Jupyter
+
+```python
+from sklearn.datasets import load_iris
+from sklearn.model_selection import train_test_split, StratifiedKFold, cross_val_score
+from sklearn.pipeline import make_pipeline
+from sklearn.preprocessing import StandardScaler
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
+
+X, y = load_iris(return_X_y=True)
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42, stratify=y
+)
+model = make_pipeline(StandardScaler(), LogisticRegression(max_iter=1000))
+cv = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)
+cv_scores = cross_val_score(model, X_train, y_train, cv=cv, scoring='accuracy')
+print('CV mean:', cv_scores.mean())
+
+model.fit(X_train, y_train)
+pred = model.predict(X_test)
+print('Test accuracy:', accuracy_score(y_test, pred))
+print('Confusion matrix:')
+print(confusion_matrix(y_test, pred))
+print(classification_report(y_test, pred, zero_division=0))
+```
+
+## 3. Membaca Hasil
+
+Accuracy adalah proporsi prediksi benar. `classification_report` menunjukkan precision, recall, dan F1 per kelas. Confusion matrix memperlihatkan kelas mana yang sering tertukar. Jangan mengklaim suatu skor tertentu sebelum menjalankan kode, karena versi lingkungan dapat memengaruhi hasil kecil.
+
+## 4. Pengecekan Manual Akurasi
+
+Berikut latihan menghitung accuracy tanpa library.
+
+<PythonPlayground
+  initialCode={"y_true = [0, 1, 0, 1, 1]\ny_pred = [0, 1, 1, 1, 0]\ncorrect = sum(a == b for a, b in zip(y_true, y_pred))\nprint(correct / len(y_true))"}
+/>
+
+## 5. Interactive Exercise
+
+Hitung jumlah prediksi yang benar dari lima sampel berikut.
+
+<PythonPlayground
+  initialCode={"actual = [1, 0, 1, 1, 0]\npredicted = [1, 0, 0, 1, 0]\n# Cetak jumlah prediksi yang benar"}
+  expectedOutput={"4"}
+  hint={"Gunakan sum(a == b for a, b in zip(actual, predicted))."}
+  solution={"actual = [1, 0, 1, 1, 0]\npredicted = [1, 0, 0, 1, 0]\nprint(sum(a == b for a, b in zip(actual, predicted)))"}
+/>
+
+## 6. Quick Quiz
+
+<QuizCard
+  question={"Mengapa scaler dimasukkan ke dalam Pipeline saat CV?"}
+  correctAnswer={"A"}
+  options={[
+    {id: "A", text: "Agar scaler hanya di-fit pada train setiap fold", explanation: "Benar. Ini membantu mencegah data leakage."},
+    {id: "B", text: "Agar test set digunakan saat training", explanation: "Test set harus disimpan untuk evaluasi akhir."},
+    {id: "C", text: "Agar tidak perlu melakukan evaluasi", explanation: "Evaluasi tetap wajib dilakukan."},
+  ]}
+/>
+
+## 7. Tantangan Lanjutan
+
+Coba ganti Logistic Regression dengan Decision Tree, bandingkan hasil CV, lalu jelaskan apakah scaling masih diperlukan untuk pohon keputusan. Sertakan confusion matrix dan diskusi kesalahan prediksi.
+
+## Summary
+
+Kamu telah melihat alur end-to-end supervised learning dari dataset hingga evaluasi pada test set.

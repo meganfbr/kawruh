@@ -1,0 +1,117 @@
+---
+title: Clustering Evaluation
+sidebar_label: Clustering Evaluation
+description: Silhouette score, inertia, Davies-Bouldin, dan pemilihan jumlah cluster.
+---
+
+import PythonPlayground from '@site/src/components/PythonPlayground';
+import QuizCard from '@site/src/components/QuizCard';
+
+# Clustering Evaluation
+
+**Level:** Beginner–Intermediate | **Course:** Machine Learning
+
+
+Clustering merupakan metode unsupervised; sering kali kita tidak punya label *ground truth*. Karena itu, evaluasi dapat memakai ukuran internal seperti **silhouette score**, inertia, dan Davies–Bouldin index. Tidak ada satu metrik yang selalu paling baik untuk semua bentuk data.
+
+## Tujuan Pembelajaran
+
+- Memahami perbedaan metrik internal dan eksternal.
+- Menafsirkan silhouette score dan inertia dengan benar.
+- Memilih jumlah cluster dengan memperhatikan tujuan dan bentuk data.
+
+## 1. Visualisasi Silhouette Score
+
+![Silhouette score berbagai jumlah cluster pada data simulasi](/img/machine-learning/clustering-evaluation.png)
+
+*Gambar: silhouette score untuk k=2 sampai 7 pada dataset simulasi yang memiliki tiga pusat. Grafik tidak membuktikan jumlah cluster optimal untuk dataset lain.*
+
+Silhouette score membandingkan seberapa dekat sampel terhadap cluster sendiri dengan cluster tetangga terdekat. Nilai rata-rata sering berada dalam rentang **-1 sampai 1**: makin mendekati 1 biasanya menunjukkan pemisahan lebih baik; mendekati 0 bisa berarti cluster tumpang tindih. Skor ini umumnya membutuhkan setidaknya 2 cluster dan kurang dari jumlah sampel label yang berbeda.
+
+## 2. Metrik yang Sering Dipakai
+
+| Metrik | Interpretasi dasar | Perhatian |
+| --- | --- | --- |
+| Silhouette Score | Lebih tinggi umumnya lebih baik | Cenderung menyukai cluster kompak dan terpisah |
+| Inertia (K-Means) | Lebih kecil untuk k tertentu | Turun saat k naik; jangan memilih k hanya dari minimum |
+| Davies–Bouldin Index | Lebih rendah umumnya lebih baik | Sensitif terhadap bentuk/pemisahan cluster |
+| Adjusted Rand Index | Kesesuaian dengan label referensi | Membutuhkan label ground truth |
+
+## 3. Menghitung Inertia Sederhana
+
+Untuk contoh satu dimensi, jumlah kuadrat jarak titik ke centroid menggambarkan ide inertia.
+
+<PythonPlayground
+  initialCode={"data = [1, 2, 3]\ncentroid = sum(data) / len(data)\ninertia = sum((x - centroid) ** 2 for x in data)\nprint(inertia)"}
+/>
+
+## 4. Praktik scikit-learn (Colab/Jupyter)
+
+```python
+from sklearn.datasets import make_blobs
+from sklearn.cluster import KMeans
+from sklearn.metrics import silhouette_score, davies_bouldin_score
+from sklearn.preprocessing import StandardScaler
+
+X, _ = make_blobs(n_samples=150, centers=3, random_state=42)
+X = StandardScaler().fit_transform(X)
+for k in range(2, 6):
+    model = KMeans(n_clusters=k, random_state=42, n_init=10)
+    labels = model.fit_predict(X)
+    print(k, round(silhouette_score(X, labels), 3),
+          round(davies_bouldin_score(X, labels), 3))
+```
+
+Coba bandingkan beberapa `k`, lalu visualisasikan hasilnya. Periksa juga apakah kelompok yang terbentuk masuk akal untuk masalah yang sedang diteliti.
+
+## 5. Common Mistakes
+
+- Memakai accuracy biasa terhadap nomor label cluster. ID cluster bersifat arbitrer; label `0` belum tentu cocok dengan kelas `0`.
+- Menganggap silhouette tertinggi selalu berarti model terbaik bagi kebutuhan bisnis.
+- Membandingkan inertia dua dataset atau skala yang berbeda secara langsung.
+- Menghitung silhouette saat semua sampel masuk satu cluster saja.
+
+## 6. Latihan Interaktif
+
+Diberikan data `[2, 4, 6]`, hitung jumlah kuadrat selisih terhadap mean. Cetak hasilnya.
+
+<PythonPlayground
+  initialCode={"data = [2, 4, 6]\n\n# Hitung total kuadrat jarak ke mean"}
+  expectedOutput={"8.0"}
+  hint={"Gunakan mean lalu sum((x - mean)**2 for x in data)."}
+  solution={"data = [2, 4, 6]\nmean = sum(data) / len(data)\nprint(sum((x - mean) ** 2 for x in data))"}
+/>
+
+## 7. Quick Quiz
+
+<QuizCard
+  question={"Mengapa accuracy biasa tidak tepat langsung digunakan pada nomor cluster?"}
+  correctAnswer={"B"}
+  options={[
+  {
+    "id": "A",
+    "text": "Clustering selalu hanya memiliki satu cluster",
+    "explanation": "Jumlah cluster dapat lebih dari satu."
+  },
+  {
+    "id": "B",
+    "text": "Nomor cluster arbitrer dan tidak langsung setara label kelas",
+    "explanation": "Benar. Identitas nomor cluster bisa tertukar tanpa mengubah struktur kelompok."
+  },
+  {
+    "id": "C",
+    "text": "Accuracy hanya digunakan untuk regresi",
+    "explanation": "Accuracy umum dipakai dalam klasifikasi."
+  },
+  {
+    "id": "D",
+    "text": "Silhouette memerlukan label kelas asli",
+    "explanation": "Silhouette adalah metrik internal yang tidak memerlukan ground truth."
+  }
+]}
+/>
+
+## 8. Ringkasan
+
+Gunakan evaluasi yang sesuai dengan bentuk data dan tujuan. Kombinasikan metrik internal, visualisasi, stabilitas, serta interpretasi substantif sebelum menyimpulkan kualitas clustering.
+

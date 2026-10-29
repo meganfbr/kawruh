@@ -1,0 +1,80 @@
+---
+title: Loss Functions
+sidebar_label: Loss Functions
+description: Materi Loss Functions Kawruh, dari konsep sampai latihan interaktif.
+---
+
+import PythonPlayground from '@site/src/components/PythonPlayground';
+import QuizCard from '@site/src/components/QuizCard';
+
+# Loss Functions
+
+**Level:** Beginner | **Prasyarat:** Python Variables, Functions, dan konsep dasar Machine Learning.
+
+Pada materi ini kamu akan mempelajari prinsip **loss functions** dengan ilustrasi, contoh sederhana, dan latihan. Kita memisahkan simulasi Python murni dari kode deep learning menggunakan library khusus.
+
+## Tujuan Pembelajaran
+
+Setelah belajar, kamu dapat menjelaskan konsep utama, membaca contoh perhitungannya, dan mengenali kesalahan yang sering terjadi.
+
+## 1. Visual Intuition
+
+![Ilustrasi Loss Functions](/img/deep-learning/loss-functions.png)
+
+*MSE dan contoh binary cross-entropy memiliki bentuk penalti yang berbeda.*
+
+## 2. Apa Itu Loss?
+
+Loss function mengukur seberapa jauh prediksi model dari target selama pelatihan. Optimizer berusaha mengurangi loss pada data training; metrik evaluasi seperti accuracy atau F1 tetap perlu dilaporkan terpisah.
+
+## 3. MSE untuk Regresi
+
+Mean Squared Error adalah rerata kuadrat selisih prediksi dan target. `MSE = sum((y_true - y_pred)**2) / n`. Karena dikuadratkan, kesalahan besar mendapat penalti lebih tinggi.
+
+## 4. MAE untuk Regresi
+
+Mean Absolute Error menghitung rerata selisih absolut. Lebih mudah ditafsirkan dalam satuan yang sama dengan target dan sering lebih tahan terhadap outlier dibanding MSE.
+
+## 5. Cross-Entropy untuk Klasifikasi
+
+Untuk kasus biner: `- [y log(p) + (1-y) log(1-p)]`. Dalam praktik, gunakan implementasi numerik stabil seperti `BCEWithLogitsLoss` di PyTorch saat model mengeluarkan logits, alih-alih menghitung log manual tanpa clipping.
+
+## 6. Loss vs Metric
+
+**Loss** dipakai dalam optimisasi gradien. **Metric** dipakai untuk mengomunikasikan kualitas pada data validasi/test. Nilai loss yang kecil tidak menjamin distribusi kelas atau performa setiap kelas sudah baik.
+
+## 7. Common Mistakes
+
+Jangan menghitung cross-entropy dengan probabilitas tepat 0 tanpa perlindungan numerik. Jangan memilih loss klasifikasi untuk target regresi kontinu.
+
+## Latihan Interaktif
+
+Hitung MSE tiga data di atas lalu cetak hingga empat angka desimal.
+
+<PythonPlayground
+  initialCode={"target = [2, 4, 6]\nprediksi = [3, 4, 5]\n\n# Hitung Mean Squared Error\n"}
+  expectedOutput={"0.6667"}
+  hint={"Jumlahkan kuadrat selisih tiap pasang, bagi dengan len(target). Gunakan format :.4f."}
+  solution={"target = [2, 4, 6]\nprediksi = [3, 4, 5]\nmse = sum((a-b)**2 for a,b in zip(target,prediksi)) / len(target)\nprint(f\"{mse:.4f}\")"}
+/>
+
+## Quick Quiz
+
+<QuizCard
+  question={"Loss apa yang umum untuk regresi numerik?"}
+  correctAnswer="A"
+  options={[
+    {"id": "A", "text": "MSE", "explanation": "Benar! MSE sering digunakan untuk regresi."},
+    {"id": "B", "text": "Binary cross-entropy untuk semua kasus", "explanation": "BCE ditujukan pada klasifikasi biner."},
+    {"id": "C", "text": "Accuracy", "explanation": "Accuracy merupakan metrik klasifikasi."},
+    {"id": "D", "text": "Silhouette score", "explanation": "Silhouette digunakan untuk menilai clustering."}
+  ]}
+/>
+
+## Ringkasan
+
+- Loss Functions merupakan bagian penting dari alur training neural network.
+- Pahami perhitungan dan intuisi, bukan hanya menghafal istilah.
+- Gunakan Google Colab atau Jupyter untuk eksperimen TensorFlow/PyTorch skala lebih besar.
+
+**Langkah berikutnya:** lanjutkan ke materi berikutnya melalui navigasi Kawruh.

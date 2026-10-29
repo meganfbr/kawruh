@@ -1,0 +1,91 @@
+---
+title: Cross Validation
+sidebar_label: Cross Validation
+description: Memahami K-Fold, stratification, dan pencegahan data leakage.
+---
+
+import PythonPlayground from '@site/src/components/PythonPlayground';
+import QuizCard from '@site/src/components/QuizCard';
+
+# Cross Validation
+
+**Level:** Intermediate | **Prasyarat:** Python, pandas, dasar Machine Learning
+
+## Learning Objectives
+
+Setelah materi ini, kamu bisa menjelaskan alasan cross validation, perbedaan dengan test set, cara memakai `cross_val_score`, dan bahaya data leakage.
+
+## 1. Mengapa Satu Pembagian Data Tidak Selalu Cukup?
+
+Skor model dapat berubah tergantung sampel yang masuk ke train dan validation. **K-Fold Cross Validation** membagi data pengembangan menjadi K bagian (fold), lalu melatih K kali: satu fold untuk validasi dan sisanya untuk pelatihan.
+
+![Ilustrasi pembagian fold](/img/machine-learning/cross-validation-folds.png)
+
+*Gambar: setiap baris merupakan satu putaran; fold validasi berganti, sedangkan fold lain menjadi data latih.*
+
+## 2. Bagaimana Menghitung Rata-Ratanya?
+
+Misalnya skor validasi lima fold adalah `0.80`, `0.84`, `0.78`, `0.86`, dan `0.82`. Skor rata-ratanya dihitung dari seluruh fold.
+
+<PythonPlayground
+  initialCode={"scores = [0.80, 0.84, 0.78, 0.86, 0.82]\nprint(round(sum(scores) / len(scores), 2))"}
+/>
+
+## 3. Contoh scikit-learn di Google Colab
+
+Kode berikut memerlukan `scikit-learn`. Jalankan di Colab/Jupyter, bukan di Playground browser Kawruh.
+
+```python
+from sklearn.datasets import load_iris
+from sklearn.model_selection import StratifiedKFold, cross_val_score
+from sklearn.pipeline import make_pipeline
+from sklearn.preprocessing import StandardScaler
+from sklearn.linear_model import LogisticRegression
+
+X, y = load_iris(return_X_y=True)
+model = make_pipeline(StandardScaler(), LogisticRegression(max_iter=1000))
+cv = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)
+scores = cross_val_score(model, X, y, cv=cv, scoring='accuracy')
+print('Skor per fold:', scores)
+print('Rata-rata:', scores.mean())
+```
+
+**Mengapa Pipeline?** `StandardScaler` akan *fit* menggunakan data train pada setiap fold, bukan mempelajari statistik dari seluruh data sebelum validasi.
+
+## 4. Cross Validation Bukan Pengganti Test Set
+
+Gunakan *test set* yang terpisah hanya untuk evaluasi akhir. Pemilihan model, parameter, dan preprocessing dilakukan menggunakan train/validation atau cross validation. Untuk data berdasarkan waktu gunakan `TimeSeriesSplit`, dan untuk beberapa sampel dari subjek yang sama pertimbangkan `GroupKFold` agar tidak terjadi kebocoran antarsubjek.
+
+## 5. Common Mistakes
+
+- Melakukan scaling di seluruh data sebelum membuat fold.
+- Memilih hyperparameter berdasarkan hasil test set.
+- Menggunakan K-Fold acak pada data deret waktu.
+- Menganggap rata-rata cross validation menjamin kinerja pada data baru.
+
+## 6. Interactive Exercise
+
+Hitung rata-rata skor dari tiga fold dan tampilkan dengan dua angka desimal.
+
+<PythonPlayground
+  initialCode={"scores = [0.75, 0.90, 0.81]\n# Hitung dan tampilkan rata-rata"}
+  expectedOutput={"0.82"}
+  hint={"Gunakan sum(scores) / len(scores), lalu round(..., 2)."}
+  solution={"scores = [0.75, 0.90, 0.81]\nprint(round(sum(scores) / len(scores), 2))"}
+/>
+
+## 7. Quick Quiz
+
+<QuizCard
+  question={"Kapan test set sebaiknya dipakai?"}
+  correctAnswer={"B"}
+  options={[
+    {id: "A", text: "Setiap kali mencoba parameter", explanation: "Ini membuat model terpilih terlalu cocok dengan test set."},
+    {id: "B", text: "Hanya untuk evaluasi akhir", explanation: "Benar. Gunakan validation atau cross validation selama pengembangan."},
+    {id: "C", text: "Untuk melakukan scaling semua data", explanation: "Scaling harus dipelajari dari data training saja."},
+  ]}
+/>
+
+## Summary
+
+Cross validation membantu memperkirakan variasi kinerja model. Tetap lindungi test set dan tempatkan preprocessing di dalam pipeline.

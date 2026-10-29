@@ -1,0 +1,80 @@
+---
+title: Activation Functions
+sidebar_label: Activation Functions
+description: Materi Activation Functions Kawruh, dari konsep sampai latihan interaktif.
+---
+
+import PythonPlayground from '@site/src/components/PythonPlayground';
+import QuizCard from '@site/src/components/QuizCard';
+
+# Activation Functions
+
+**Level:** Beginner | **Prasyarat:** Python Variables, Functions, dan konsep dasar Machine Learning.
+
+Pada materi ini kamu akan mempelajari prinsip **activation functions** dengan ilustrasi, contoh sederhana, dan latihan. Kita memisahkan simulasi Python murni dari kode deep learning menggunakan library khusus.
+
+## Tujuan Pembelajaran
+
+Setelah belajar, kamu dapat menjelaskan konsep utama, membaca contoh perhitungannya, dan mengenali kesalahan yang sering terjadi.
+
+## 1. Visual Intuition
+
+![Ilustrasi Activation Functions](/img/deep-learning/activation-functions.png)
+
+*Kurva Sigmoid, Tanh, dan ReLU menunjukkan bentuk non-linear yang berbeda.*
+
+## 2. Mengapa Membutuhkan Aktivasi?
+
+Tanpa aktivasi non-linear di antara layer, komposisi transformasi linear tetap merupakan transformasi linear. Fungsi aktivasi memperkenalkan kemampuan untuk mempelajari pola non-linear.
+
+## 3. Sigmoid
+
+Sigmoid memetakan input ke interval (0,1), sehingga sering digunakan di output untuk klasifikasi biner. Pada nilai ekstrem, turunannya kecil dan dapat menyebabkan vanishing gradient.
+
+## 4. Tanh
+
+Tanh mengubah nilai ke (-1,1) dan berpusat di nol. Tanh juga dapat mengalami saturasi di nilai ekstrem.
+
+## 5. ReLU
+
+`ReLU(x) = max(0, x)` umum digunakan pada hidden layer karena sederhana dan efisien. Sebagian neuron dapat menjadi tidak aktif permanen pada kondisi tertentu (*dying ReLU*).
+
+## 6. Memilih Fungsi Aktivasi
+
+Pemilihan aktivasi output tergantung task: linear untuk banyak task regresi, sigmoid untuk klasifikasi biner, softmax untuk klasifikasi multi-kelas yang eksklusif. Hubungkan aktivasi output dengan loss yang sesuai.
+
+## 7. Common Mistakes
+
+Jangan selalu menaruh sigmoid di hidden layer. Jangan menganggap nilai sigmoid otomatis merupakan probabilitas yang terkalibrasi dengan baik.
+
+## Latihan Interaktif
+
+Lakukan ReLU untuk setiap angka dalam list dan tampilkan hasil berupa list.
+
+<PythonPlayground
+  initialCode={"nilai = [-2, 0, 3]\n\n# Tampilkan hasil ReLU dari setiap nilai\n"}
+  expectedOutput={"[0, 0, 3]"}
+  hint={"Gunakan max(0, x) di dalam list comprehension."}
+  solution={"nilai = [-2, 0, 3]\nhasil = [max(0, x) for x in nilai]\nprint(hasil)"}
+/>
+
+## Quick Quiz
+
+<QuizCard
+  question={"Apa yang dilakukan ReLU untuk input negatif?"}
+  correctAnswer="A"
+  options={[
+    {"id": "A", "text": "Menjadi nol", "explanation": "Benar! ReLU bernilai 0 untuk input negatif."},
+    {"id": "B", "text": "Menjadi satu", "explanation": "ReLU tidak selalu mengembalikan 1."},
+    {"id": "C", "text": "Menjadi nilai absolut", "explanation": "Itu bukan definisi ReLU."},
+    {"id": "D", "text": "Menghasilkan teks", "explanation": "ReLU menghasilkan angka."}
+  ]}
+/>
+
+## Ringkasan
+
+- Activation Functions merupakan bagian penting dari alur training neural network.
+- Pahami perhitungan dan intuisi, bukan hanya menghafal istilah.
+- Gunakan Google Colab atau Jupyter untuk eksperimen TensorFlow/PyTorch skala lebih besar.
+
+**Langkah berikutnya:** lanjutkan ke materi berikutnya melalui navigasi Kawruh.

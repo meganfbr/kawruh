@@ -1,0 +1,106 @@
+---
+title: Model Validation And Evaluation
+sidebar_label: Model Validation And Evaluation
+description: Menjelaskan train validation test dan evaluasi Keras.
+---
+
+import PythonPlayground from '@site/src/components/PythonPlayground';
+import QuizCard from '@site/src/components/QuizCard';
+
+# Model Validation And Evaluation
+
+**Level:** Beginner–Intermediate | **Prasyarat:** Python, NumPy dasar, dan Deep Learning Fundamentals.
+
+Validation digunakan untuk memantau performa selama pengembangan model, sedangkan test digunakan untuk evaluasi akhir pada data yang belum dipakai memilih konfigurasi.
+
+## Tujuan Pembelajaran
+
+- Menjelaskan peran train, validation, dan test.
+- Menggunakan `evaluate()` dan `predict()`.
+- Membaca hasil akurasi tanpa mengabaikan data leakage.
+
+## 1. Visualisasi Pemisahan Data
+
+![Train Validation Test](/img/deep-learning/validation-split.png)
+
+*Ilustrasi peran tiga subset; proporsinya bisa berbeda tergantung dataset.*
+
+## 2. Validasi dalam Keras
+
+Gunakan `validation_data=(X_val, y_val)` untuk mengukur metrik setiap epoch tanpa memperbarui bobot menggunakan contoh validation tersebut.
+
+```python
+history = model.fit(
+    X_train, y_train,
+    validation_data=(X_val, y_val),
+    epochs=15,
+)
+```
+
+Snippet di atas melanjutkan notebook yang sudah memiliki model dan data train/val. Untuk tutorial mandiri lengkap, gunakan [Mini Project Fashion MNIST](./fashion-mnist-mini-project).
+
+## 3. Mengukur Hasil Akhir
+
+```python
+results = model.evaluate(X_test, y_test, return_dict=True, verbose=0)
+print(results)
+probabilities = model.predict(X_test[:5], verbose=0)
+```
+
+Pastikan kode dieksekusi setelah `model.compile` dan `model.fit` serta variabel `X_test`, `y_test` tersedia.
+
+## 4. Hal yang Harus Dihindari
+
+- Melihat hasil test berkali-kali untuk mengubah hyperparameter; test menjadi ikut memengaruhi keputusan.
+- Menormalisasi dataset memakai statistik seluruh data sebelum split jika normalisasi bergantung pada statistik dataset.
+- Membandingkan hanya accuracy pada dataset yang sangat tidak seimbang.
+
+## 5. Playground — Rasio Split
+
+<PythonPlayground
+  initialCode={"total = 1000\ntrain = 700\nval = 150\ntest = 150\nprint(train + val + test == total)"}
+/>
+
+## 6. Latihan Interaktif
+
+Dari 200 data, 140 train dan 30 validation. Cetak jumlah test.
+
+<PythonPlayground
+  initialCode={"total = 200\ntrain = 140\nvalidation = 30\n# Hitung jumlah test\n"}
+  expectedOutput={"30"}
+  hint={"Kurangi train dan validation dari total."}
+  solution={"total = 200\ntrain = 140\nvalidation = 30\nprint(total - train - validation)"}
+/>
+
+## 7. Quick Quiz
+
+<QuizCard
+  question={"Subset mana yang idealnya dipakai hanya untuk evaluasi akhir setelah pemilihan model?"}
+  correctAnswer="D"
+  options={[
+  {
+    "id": "A",
+    "text": "Train",
+    "explanation": "Train memperbarui bobot."
+  },
+  {
+    "id": "B",
+    "text": "Validation",
+    "explanation": "Validation membantu memilih konfigurasi."
+  },
+  {
+    "id": "C",
+    "text": "Train + Validation",
+    "explanation": "Keduanya terlibat dalam pengembangan."
+  },
+  {
+    "id": "D",
+    "text": "Test",
+    "explanation": "Benar. Test sebaiknya dijaga untuk evaluasi akhir."
+  }
+]}
+/>
+
+## Ringkasan
+
+Validasi adalah alat untuk pengembangan model; test untuk pemeriksaan akhir. **Berikutnya: Regularization dan Early Stopping.**

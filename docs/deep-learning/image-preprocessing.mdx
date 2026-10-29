@@ -1,0 +1,99 @@
+---
+title: Image Preprocessing
+sidebar_label: Image Preprocessing
+sidebar_position: 15
+description: Materi interaktif Image Preprocessing untuk pembelajar Deep Learning Kawruh.
+---
+
+import PythonPlayground from '@site/src/components/PythonPlayground';
+import QuizCard from '@site/src/components/QuizCard';
+
+# Image Preprocessing
+
+**Level:** Beginner–Intermediate | **Prasyarat:** Python, NumPy, dan dasar neural network.
+
+## Tujuan Belajar
+
+Memahami resizing, color channels, normalisasi, label, dan risiko *data leakage* pada dataset citra.
+
+## 1. Mengapa preprocessing penting?
+
+Model membutuhkan format tensor yang konsisten. Jika resolusi, rentang piksel, atau encoding label tidak sesuai, training bisa gagal atau hasil tidak dapat diandalkan.
+
+| Langkah | Fungsi | Catatan |
+| --- | --- | --- |
+| Resize | Menyeragamkan ukuran | Bisa mengubah aspek rasio |
+| RGB/grayscale | Menentukan jumlah kanal | RGB: 3, grayscale: 1 |
+| Normalisasi | Menyesuaikan skala piksel | Sesuaikan dengan arsitektur pretrained |
+| Split | Memisahkan train, validation, test | Hindari duplikat lintas split |
+| Label mapping | Menetapkan ID kelas | Mapping harus konsisten |
+
+## 2. Contoh preprocessing dengan TensorFlow (Colab)
+
+```python
+import tensorflow as tf
+
+image = tf.io.read_file('contoh.jpg')
+image = tf.image.decode_jpeg(image, channels=3)
+image = tf.image.resize(image, [224, 224])
+image = tf.cast(image, tf.float32) / 255.0
+print(image.shape)
+```
+
+Ganti `contoh.jpg` dengan path gambar yang tersedia di runtime. **Jangan otomatis membagi 255** jika model pretrained memiliki fungsi preprocessing khusus atau mengharapkan skala berbeda.
+
+## 3. Menghindari data leakage
+
+- Lakukan pembagian data sebelum membuat augmentasi.
+- Gambar duplikat atau hampir sama tidak boleh tersebar ke train dan test apabila mengukur generalisasi ke gambar independen.
+- Jika gambar berasal dari pasien atau objek sama, pertimbangkan group split berdasarkan identitas sumber.
+
+## 4. Try It Yourself — normalisasi satu piksel
+
+<PythonPlayground
+  initialCode={"pixel = 128\nnormalized = pixel / 255.0\nprint(round(normalized, 4))"}
+/>
+
+## 5. Latihan
+
+Ubah piksel bernilai 255 ke skala 0–1 dan tampilkan hasilnya.
+
+<PythonPlayground
+  initialCode={"pixel = 255\n# Normalisasi pixel di sini"}
+  expectedOutput={"1.0"}
+  hint={"Bagi nilai piksel dengan 255.0."}
+  solution={"pixel = 255\nprint(pixel / 255.0)"}
+/>
+
+## 6. Quick Quiz
+
+<QuizCard
+  question={"Kapan augmentasi gambar sebaiknya diterapkan untuk training?"}
+  correctAnswer={"B"}
+  options={[
+  {
+    "id": "A",
+    "text": "Sebelum split ke semua gambar",
+    "explanation": "Dapat membuat gambar turunan bocor ke subset evaluasi."
+  },
+  {
+    "id": "B",
+    "text": "Hanya pada data training setelah pemisahan",
+    "explanation": "Benar: augmentasi training tidak boleh mencemari validasi/test."
+  },
+  {
+    "id": "C",
+    "text": "Pada test agar skor lebih tinggi",
+    "explanation": "Augmentasi test standar berbeda dari training augmentation dan tidak untuk menaikkan skor secara artifisial."
+  },
+  {
+    "id": "D",
+    "text": "Setelah evaluasi final",
+    "explanation": "Augmentasi diperlukan ketika menyiapkan training."
+  }
+]}
+/>
+
+## Ringkasan
+
+Preprocessing mencakup lebih dari resize: konsistensi label, skala input, dan independensi split sangat menentukan kualitas evaluasi.

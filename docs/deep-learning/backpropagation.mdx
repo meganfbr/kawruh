@@ -1,0 +1,76 @@
+---
+title: Backpropagation
+sidebar_label: Backpropagation
+description: Materi Backpropagation Kawruh, dari konsep sampai latihan interaktif.
+---
+
+import PythonPlayground from '@site/src/components/PythonPlayground';
+import QuizCard from '@site/src/components/QuizCard';
+
+# Backpropagation
+
+**Level:** Intermediate | **Prasyarat:** Python Variables, Functions, dan konsep dasar Machine Learning.
+
+Pada materi ini kamu akan mempelajari prinsip **backpropagation** dengan ilustrasi, contoh sederhana, dan latihan. Kita memisahkan simulasi Python murni dari kode deep learning menggunakan library khusus.
+
+## Tujuan Pembelajaran
+
+Setelah belajar, kamu dapat menjelaskan konsep utama, membaca contoh perhitungannya, dan mengenali kesalahan yang sering terjadi.
+
+## 1. Visual Intuition
+
+![Ilustrasi Backpropagation](/img/deep-learning/backpropagation-flow.png)
+
+*Arah panah forward pass dan backward pass dibedakan untuk menekankan perannya.*
+
+## 2. Apa Itu Backpropagation?
+
+Backpropagation menghitung **gradien loss terhadap parameter** menggunakan *chain rule* (aturan rantai) dari kalkulus. Gradien ini dipakai optimizer untuk memperbarui weight dan bias.
+
+## 3. Forward dan Backward Pass
+
+**Forward pass:** hitung output lalu loss. **Backward pass:** hitung turunan loss, dari layer terakhir menuju layer awal. **Optimizer step:** gunakan gradien untuk memperbarui parameter.
+
+## 4. Intuisi Chain Rule
+
+Jika `z = wx` dan `L = (z - target)^2`, maka `dL/dw = 2*(z-target)*x`. Ini contoh satu parameter yang sangat sederhana; library deep learning menerapkan automatic differentiation untuk graf komputasi yang lebih rumit.
+
+## 5. Contoh Pembaruan Gradient Descent
+
+`w_baru = w_lama - learning_rate * gradien`. Jika gradien positif, weight akan bergerak ke arah nilai lebih kecil untuk langkah kecil; jika negatif, weight akan meningkat.
+
+## 6. Common Mistakes
+
+Backpropagation menghitung gradien; **optimizer** yang melakukan pembaruan parameter. Jangan menyamakan keduanya. Learning rate terlalu besar bisa menyebabkan divergensi.
+
+## Latihan Interaktif
+
+Lakukan satu langkah gradient descent pada model linear `prediksi = w*x` dan loss `(prediksi-target)^2`.
+
+<PythonPlayground
+  initialCode={"x = 2.0\ntarget = 6.0\nw = 2.0\nlearning_rate = 0.1\n\n# Hitung gradien MSE tunggal dan update w\n# Cetak w baru dengan dua desimal\n"}
+  expectedOutput={"2.80"}
+  hint={"Turunan loss terhadap w adalah 2*(w*x-target)*x. Lalu kurangi w dengan learning_rate * gradien."}
+  solution={"x = 2.0\ntarget = 6.0\nw = 2.0\nlearning_rate = 0.1\ngradien = 2 * (w*x-target) * x\nw = w - learning_rate * gradien\nprint(f\"{w:.2f}\")"}
+/>
+
+## Quick Quiz
+
+<QuizCard
+  question={"Apa tugas utama backpropagation?"}
+  correctAnswer="B"
+  options={[
+    {"id": "A", "text": "Menyimpan dataset", "explanation": "Penyimpanan dataset bukan peran backpropagation."},
+    {"id": "B", "text": "Menghitung gradien loss terhadap parameter", "explanation": "Benar! Backpropagation menghitung gradien."},
+    {"id": "C", "text": "Menghapus neuron", "explanation": "Backpropagation tidak menghapus neuron."},
+    {"id": "D", "text": "Memilih ukuran gambar", "explanation": "Ukuran gambar dipilih saat desain eksperimen."}
+  ]}
+/>
+
+## Ringkasan
+
+- Backpropagation merupakan bagian penting dari alur training neural network.
+- Pahami perhitungan dan intuisi, bukan hanya menghafal istilah.
+- Gunakan Google Colab atau Jupyter untuk eksperimen TensorFlow/PyTorch skala lebih besar.
+
+**Langkah berikutnya:** lanjutkan ke materi berikutnya melalui navigasi Kawruh.

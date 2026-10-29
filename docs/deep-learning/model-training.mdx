@@ -1,0 +1,129 @@
+---
+title: Model Training With Keras
+sidebar_label: Model Training With Keras
+description: Memahami epoch, batch, fit, dan history.
+---
+
+import PythonPlayground from '@site/src/components/PythonPlayground';
+import QuizCard from '@site/src/components/QuizCard';
+
+# Model Training With Keras
+
+**Level:** Beginner–Intermediate | **Prasyarat:** Python, NumPy dasar, dan Deep Learning Fundamentals.
+
+Training adalah proses model memperbarui bobot menggunakan data train untuk mengecilkan loss. Pada Keras, fungsi utama yang dipakai adalah `model.fit()`.
+
+## Tujuan Pembelajaran
+
+- Mengenali epoch, batch size, dan langkah training.
+- Membaca `History` dari `fit()`.
+- Memvisualisasikan kurva loss tanpa salah mengartikan hasil simulasi.
+
+## 1. Visualisasi Training History
+
+![Training history ilustratif](/img/deep-learning/training-history.png)
+
+*Kurva dibuat dari data ilustratif. Kurva training eksperimen nyata harus berasal dari objek `history`.*
+
+## 2. Epoch vs Batch Size
+
+- **Epoch**: satu putaran pembelajaran pada seluruh dataset training.
+- **Batch size**: jumlah sampel yang diproses dalam satu batch.
+- **Step**: satu proses update bobot pada batch (umumnya).
+
+Jika 100 sampel, batch size 32, dan `drop_remainder=False`, ada `ceil(100/32) = 4` batch tiap epoch.
+
+## 3. Training Model di Colab
+
+Gunakan data sintetis agar tidak membutuhkan unduhan dataset eksternal.
+
+```python
+import numpy as np
+import tensorflow as tf
+
+tf.keras.utils.set_random_seed(42)
+rng = np.random.default_rng(42)
+X = rng.normal(size=(480, 4)).astype('float32')
+y = (X[:, 0] > 0).astype('float32')
+
+model = tf.keras.Sequential([
+    tf.keras.Input(shape=(4,)),
+    tf.keras.layers.Dense(16, activation='relu'),
+    tf.keras.layers.Dense(1, activation='sigmoid'),
+])
+model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
+
+history = model.fit(
+    X[:360], y[:360], validation_data=(X[360:420], y[360:420]),
+    epochs=12, batch_size=32, verbose=1,
+)
+print(history.history.keys())
+```
+
+## 4. Plot Loss dari History
+
+```python
+import matplotlib.pyplot as plt
+plt.plot(history.history['loss'], label='Train loss')
+plt.plot(history.history['val_loss'], label='Validation loss')
+plt.xlabel('Epoch')
+plt.ylabel('Loss')
+plt.legend()
+plt.show()
+```
+
+## 5. Playground — Menghitung Jumlah Batch
+
+<PythonPlayground
+  initialCode={"jumlah_data = 100\nbatch_size = 32\njumlah_batch = (jumlah_data + batch_size - 1) // batch_size\nprint(jumlah_batch)"}
+/>
+
+## 6. Common Mistakes
+
+- Memakai data test sebagai data validasi setiap epoch lalu tetap menganggapnya test yang belum pernah digunakan.
+- Menganggap epoch lebih banyak selalu meningkatkan performa generalisasi.
+- Mengira grafik simulasi adalah bukti eksperimen model.
+
+## 7. Latihan Interaktif
+
+Hitung jumlah batch untuk 103 sampel dan batch size 20.
+
+<PythonPlayground
+  initialCode={"jumlah_data = 103\nbatch_size = 20\n# Hitung jumlah batch dibulatkan ke atas\n"}
+  expectedOutput={"6"}
+  hint={"Gunakan pembagian bulat dengan pola (n+b-1)//b."}
+  solution={"jumlah_data = 103\nbatch_size = 20\nprint((jumlah_data + batch_size - 1) // batch_size)"}
+/>
+
+## 8. Quick Quiz
+
+<QuizCard
+  question={"Jika ada 100 sampel dengan batch size 32, ada berapa batch per epoch secara default?"}
+  correctAnswer="B"
+  options={[
+  {
+    "id": "A",
+    "text": "3",
+    "explanation": "Masih ada sisa empat sampel."
+  },
+  {
+    "id": "B",
+    "text": "4",
+    "explanation": "Benar: tiga batch penuh dan satu batch terakhir."
+  },
+  {
+    "id": "C",
+    "text": "32",
+    "explanation": "Itu ukuran batch."
+  },
+  {
+    "id": "D",
+    "text": "100",
+    "explanation": "Itu jumlah sampel."
+  }
+]}
+/>
+
+## Ringkasan
+
+Training mengubah bobot melalui iterasi. `History` membantu melihat apakah pelatihan berjalan baik. **Berikutnya: Validation dan evaluasi model.**

@@ -1,0 +1,107 @@
+---
+title: Transfer Learning
+sidebar_label: Transfer Learning
+sidebar_position: 17
+description: Materi interaktif Transfer Learning untuk pembelajar Deep Learning Kawruh.
+---
+
+import PythonPlayground from '@site/src/components/PythonPlayground';
+import QuizCard from '@site/src/components/QuizCard';
+
+# Transfer Learning
+
+**Level:** Beginner–Intermediate | **Prasyarat:** Python, NumPy, dan dasar neural network.
+
+## Tujuan Belajar
+
+Memahami *pretrained encoder*, *feature extraction*, *fine-tuning*, dan penggunaan preprocessing sesuai model.
+
+## 1. Mengapa transfer learning?
+
+Model CNN yang sudah dilatih pada dataset besar dapat menjadi titik awal belajar pada dataset baru. Pada fase awal, bobot dasar dibekukan (*freeze*), sedangkan classifier baru dilatih. Setelah stabil, sebagian layer dapat di-*unfreeze* dan dilatih ulang dengan learning rate kecil.
+
+![Transfer learning](/img/deep-learning/transfer-learning-workflow.png)
+
+*Gambar 1. Encoder pretrained dihubungkan ke classifier yang sesuai jumlah kelas target.*
+
+## 2. Contoh MobileNetV2 (Colab)
+
+```python
+import tensorflow as tf
+
+base = tf.keras.applications.MobileNetV2(
+    include_top=False,
+    weights='imagenet',
+    input_shape=(160, 160, 3),
+)
+base.trainable = False
+
+inputs = tf.keras.Input(shape=(160, 160, 3))
+x = tf.keras.applications.mobilenet_v2.preprocess_input(inputs)
+x = base(x, training=False)
+x = tf.keras.layers.GlobalAveragePooling2D()(x)
+outputs = tf.keras.layers.Dense(3, activation='softmax')(x)
+model = tf.keras.Model(inputs, outputs)
+model.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=['accuracy'])
+```
+
+**Catatan:** di contoh ini model menerima gambar RGB pada rentang piksel yang diharapkan oleh `preprocess_input` MobileNetV2; jangan menambahkan normalisasi 0–1 terpisah sebelum langkah itu tanpa memeriksa kontraknya. Jumlah output `3` hanya contoh untuk dataset tiga kelas.
+
+## 3. Feature extraction vs fine-tuning
+
+| Fase | Backbone | Tujuan |
+| --- | --- | --- |
+| Feature extraction | Frozen | Melatih classifier baru |
+| Fine-tuning | Sebagian layer dilatih | Adaptasi fitur tingkat tinggi |
+
+Saat membuka layer untuk fine-tuning, **compile ulang model** agar optimizer mengetahui parameter trainable terbaru. BatchNormalization perlu perhatian khusus agar statistiknya tidak berubah tidak sengaja.
+
+## 4. Playground — menghitung parameter classifier
+
+<PythonPlayground
+  initialCode={"feature_dim = 1280\njumlah_kelas = 3\nparameter_dense = feature_dim * jumlah_kelas + jumlah_kelas\nprint(parameter_dense)"}
+/>
+
+## 5. Latihan
+
+Hitung jumlah parameter Dense dari 512 fitur ke 4 kelas, termasuk bias.
+
+<PythonPlayground
+  initialCode={"feature_dim = 512\nclasses = 4\n# Hitung parameter dense"}
+  expectedOutput={"2052"}
+  hint={"Bobot = 512 × 4, bias = 4."}
+  solution={"feature_dim = 512\nclasses = 4\nprint(feature_dim * classes + classes)"}
+/>
+
+## 6. Quick Quiz
+
+<QuizCard
+  question={"Apa tujuan umum membekukan backbone pada tahap pertama transfer learning?"}
+  correctAnswer={"B"}
+  options={[
+  {
+    "id": "A",
+    "text": "Menghapus bobot pretrained",
+    "explanation": "Bukan menghapus bobot."
+  },
+  {
+    "id": "B",
+    "text": "Menjaga fitur pretrained saat classifier baru belajar",
+    "explanation": "Benar, ini mengurangi jumlah parameter yang diperbarui di tahap awal."
+  },
+  {
+    "id": "C",
+    "text": "Memastikan akurasi 100%",
+    "explanation": "Akurasi selalu bergantung pada data."
+  },
+  {
+    "id": "D",
+    "text": "Menghindari preprocessing",
+    "explanation": "Preprocessing tetap diperlukan."
+  }
+]}
+/>
+
+## Ringkasan
+
+Transfer learning membantu memanfaatkan fitur pretrained. Pilih preprocessing, classifier, dan strategi fine-tuning sesuai tugas dan datanya.

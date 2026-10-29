@@ -1,17 +1,27 @@
-# Kawruh Mission 09 — Visual Edition
+# Kawruh — Mission 14: Computer Vision & CNN
 
-Paket ini memperbarui **lima** file MDX Mission 09 yang ada pada arsip `Kawruh_Mission09_Supervised_Learning.zip` sebelumnya. Materi, latihan, QuizCard, dan ID tidak diganti; masing-masing halaman memperoleh satu visual konsep dan penjelasan.
+## Pemasangan
 
-## Instalasi
+1. Backup `G:\Kawruh\sidebars.ts` dan perubahan lokal sebelum replace.
+2. Copy 6 file `docs/deep-learning/*.mdx` ke `G:\Kawruh\docs\deep-learning\`.
+3. Copy 6 PNG `static/img/deep-learning/*.png` ke `G:\Kawruh\static\img\deep-learning\`.
+4. Copy `sidebars.ts` ke root Kawruh **hanya jika sidebar sejak Mission 13 belum diubah**. ID lama dipertahankan.
+5. Jalankan `npm run build`, lalu `npm start`. Cek `/docs/deep-learning/cnn-introduction`.
 
-1. Backup file MDX aktif dalam `G:\Kawruh\docs\machine-learning\`. Jika kamu pernah mengedit isi Mission 09 sesudah menyalin ZIP aslinya, **jangan overwrite langsung**: bandingkan isi terlebih dahulu.
-2. Salin lima file `docs/machine-learning/*.mdx` dari paket ini ke `G:\Kawruh\docs\machine-learning\`.
-3. Salin lima file PNG dari `static/img/machine-learning/` ke `G:\Kawruh\static\img\machine-learning\`.
-4. `sidebars.ts` tidak perlu diganti.
-5. Jalankan `npm run build`, kemudian `npm start` dan cek kelima halaman, gambar, Playground, dan QuizCard.
+## Konten
+
+- CNN Introduction (`cnn-introduction.mdx`)
+- Convolution And Pooling (`convolution-pooling.mdx`)
+- Image Preprocessing (`image-preprocessing.mdx`)
+- Image Augmentation (`image-augmentation.mdx`)
+- Transfer Learning (`transfer-learning.mdx`)
+- Image Classification Mini Project (`image-classification-mini-project.mdx`)
 
 ## Catatan
 
-- Visual dibuat dari data/aturan sintetis untuk tujuan pedagogis; **bukan hasil training model** dalam cuplikan kode.
-- Gambar PNG memakai path `/img/machine-learning/...`. Jika situs memakai `baseUrl` non-root saat deploy (contohnya GitHub Pages), gunakan URL gambar melalui `useBaseUrl` atau impor aset agar sesuai dengan konfigurasi deploy.
-- Paket ini tidak menggantikan perubahan kustom pada file lokal yang tidak ada dalam ZIP Mission 09 asal.
+- Contoh TensorFlow dan scikit-learn ditujukan untuk Google Colab/Jupyter, bukan PythonPlayground browser.
+- PythonPlayground untuk kalkulasi Python standar, QuizCard untuk evaluasi pilihan ganda.
+- PNG adalah ilustrasi sintetis; bukan hasil training Fashion MNIST.
+- Gambar contoh augmented tidak boleh diasumsikan aman untuk setiap dataset.
+- Dokumen menggunakan props JavaScript yang dikodekan dalam string satu baris sehingga menghindari error Acorn karena literal multiline.
+- Jalankan build dan cek interaksi langsung pada project lokal.

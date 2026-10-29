@@ -1,0 +1,103 @@
+---
+title: Clustering Mini Project
+sidebar_label: Clustering Mini Project
+description: Mini project clustering sintetis menggunakan K-Means dan Silhouette Score.
+---
+
+import PythonPlayground from '@site/src/components/PythonPlayground';
+import QuizCard from '@site/src/components/QuizCard';
+
+# Clustering Mini Project
+
+**Level:** Intermediate | **Prasyarat:** Python, pandas, dasar Machine Learning
+
+## Project Brief
+
+**Tujuan:** mengelompokkan dataset sintetis dua dimensi tanpa label pada proses clustering, lalu menilai hasil menggunakan Silhouette Score.
+
+**Tools:** Colab/Jupyter dan scikit-learn. Dataset dibuat langsung melalui `make_blobs` sehingga tidak memerlukan unduhan.
+
+## 1. Workflow Project
+
+1. Buat data numerik sintetis.
+2. Standardisasi fitur.
+3. Uji nilai `k` antara 2 sampai 6.
+4. Bandingkan silhouette score.
+5. Pilih `k` terbaik berdasarkan skor, kemudian visualisasikan cluster.
+
+## 2. Notebook Lengkap — Colab/Jupyter
+
+```python
+import matplotlib.pyplot as plt
+from sklearn.datasets import make_blobs
+from sklearn.preprocessing import StandardScaler
+from sklearn.cluster import KMeans
+from sklearn.metrics import silhouette_score
+
+X, _ = make_blobs(n_samples=240, centers=3, cluster_std=0.75, random_state=42)
+X_scaled = StandardScaler().fit_transform(X)
+results = {}
+for k in range(2, 7):
+    model = KMeans(n_clusters=k, random_state=42, n_init=10)
+    labels = model.fit_predict(X_scaled)
+    results[k] = silhouette_score(X_scaled, labels)
+
+best_k = max(results, key=results.get)
+final_model = KMeans(n_clusters=best_k, random_state=42, n_init=10)
+labels = final_model.fit_predict(X_scaled)
+print('Silhouette by k:', results)
+print('Selected k:', best_k)
+
+plt.scatter(X_scaled[:, 0], X_scaled[:, 1], c=labels, cmap='viridis', s=24)
+plt.scatter(final_model.cluster_centers_[:, 0], final_model.cluster_centers_[:, 1],
+            marker='X', s=200, c='red', label='Centroid')
+plt.title('K-Means on Synthetic Dataset')
+plt.legend()
+plt.show()
+```
+
+**Catatan:** Memilih `k` berdasarkan Silhouette Score pada data yang sama merupakan eksplorasi, bukan bukti performa out-of-sample. Skor dan jumlah cluster optimal harus dilaporkan setelah kode dijalankan.
+
+## 3. Apa yang Harus Dianalisis?
+
+- Apakah cluster terpisah dengan jelas?
+- Apakah ukuran cluster sangat berbeda?
+- Apakah hasil berubah saat `random_state` diganti?
+- Bagaimana jika jumlah cluster dipaksakan lebih besar?
+
+## 4. Intuisi Jarak (Playground)
+
+<PythonPlayground
+  initialCode={"point_a = (1, 2)\npoint_b = (4, 6)\ndistance = ((point_a[0]-point_b[0])**2 + (point_a[1]-point_b[1])**2)**0.5\nprint(distance)"}
+/>
+
+## 5. Interactive Exercise
+
+Hitung jarak Euclidean antara `(0, 0)` dan `(6, 8)`; tampilkan hasilnya.
+
+<PythonPlayground
+  initialCode={"a = (0, 0)\nb = (6, 8)\n# Cetak jarak Euclidean"}
+  expectedOutput={"10.0"}
+  hint={"Gunakan akar kuadrat jumlah selisih kuadrat koordinat."}
+  solution={"a = (0, 0)\nb = (6, 8)\nprint(((a[0]-b[0])**2 + (a[1]-b[1])**2)**0.5)"}
+/>
+
+## 6. Quick Quiz
+
+<QuizCard
+  question={"Apa yang diukur Silhouette Score?"}
+  correctAnswer={"A"}
+  options={[
+    {id: "A", text: "Tingkat pemisahan dan kekompakan cluster", explanation: "Benar. Silhouette membandingkan kedekatan intra-cluster dengan cluster terdekat lainnya."},
+    {id: "B", text: "Akurasi label ground truth", explanation: "Silhouette adalah metrik internal yang tidak membutuhkan label ground truth."},
+    {id: "C", text: "Jumlah epoch training", explanation: "K-Means bukan jaringan saraf berbasis epoch."},
+  ]}
+/>
+
+## 7. Tantangan Lanjutan
+
+Coba ubah `cluster_std`, ulangi eksperimen, lalu jelaskan kapan Silhouette Score menjadi lebih sulit ditafsirkan. Bandingkan juga dengan DBSCAN untuk bentuk cluster non-bulat.
+
+## Summary
+
+Kamu sudah mempraktikkan K-Means, pemilihan jumlah cluster, visualisasi centroid, dan interpretasi metrik internal clustering.

@@ -1,0 +1,108 @@
+---
+title: K-Means Clustering
+sidebar_label: K-Means Clustering
+description: Belajar centroid, pemilihan k, scaling, dan penggunaan K-Means di scikit-learn.
+---
+
+import PythonPlayground from '@site/src/components/PythonPlayground';
+import QuizCard from '@site/src/components/QuizCard';
+
+# K-Means Clustering
+
+**Level:** Beginner–Intermediate | **Course:** Machine Learning
+
+
+**K-Means** adalah algoritma *unsupervised learning* yang membagi sampel menjadi `k` kelompok berdasarkan kedekatan dengan pusat kelompok (*centroid*). Dataset tidak membutuhkan label kelas sebagai target.
+
+## Tujuan Pembelajaran
+
+- Membedakan fitur, label, cluster, dan centroid.
+- Memahami langkah assignment dan update pada K-Means.
+- Melatih model dan mengenali keterbatasan K-Means.
+
+## 1. Intuisi Visual
+
+![Titik dataset dengan tiga cluster dan pusat kelompok](/img/machine-learning/kmeans-clusters.png)
+
+*Gambar: tiga cluster dan centroid (tanda X), dibuat dari data simulasi, bukan hasil pengujian dataset nyata.*
+
+K-Means mengulang dua tahap: (1) setiap titik ditetapkan ke centroid terdekat; (2) setiap centroid berpindah ke rata-rata titik yang ditugaskan kepadanya. Proses berhenti ketika perubahan kecil atau jumlah iterasi maksimum tercapai. Nomor cluster seperti `0` atau `1` **bukan** nama kelas sebenarnya.
+
+## 2. Menghitung Jarak Secara Sederhana
+
+Dengan satu fitur, jarak absolut dapat memperkenalkan konsep kedekatan. Pada data banyak dimensi, K-Means standar menggunakan jarak Euclidean melalui minimisasi *within-cluster sum of squares* (inertia).
+
+<PythonPlayground
+  initialCode={"centroid_a = 2\ncentroid_b = 9\nnilai = 4\n\njarak_a = abs(nilai - centroid_a)\njarak_b = abs(nilai - centroid_b)\nprint(\"A\" if jarak_a < jarak_b else \"B\")"}
+/>
+
+## 3. Implementasi scikit-learn (Colab/Jupyter)
+
+Kode berikut membutuhkan paket `scikit-learn` dan `numpy`, jadi jalankan di Google Colab atau Jupyter bila runtime Kawruh belum menginstalnya.
+
+```python
+from sklearn.datasets import make_blobs
+from sklearn.preprocessing import StandardScaler
+from sklearn.cluster import KMeans
+
+X, _ = make_blobs(n_samples=150, centers=3, random_state=42)
+X_scaled = StandardScaler().fit_transform(X)
+model = KMeans(n_clusters=3, random_state=42, n_init=10)
+labels = model.fit_predict(X_scaled)
+print("Label pertama:", labels[:10])
+print("Inertia:", round(model.inertia_, 2))
+```
+
+`n_clusters=3` menentukan jumlah kelompok. `random_state` membantu reproduksibilitas. `n_init=10` menjalankan beberapa inisialisasi dan memilih hasil terbaik menurut inertia. Scaling penting karena fitur dengan rentang besar dapat mendominasi jarak.
+
+## 4. Kapan K-Means Tidak Cocok?
+
+- Jumlah kelompok belum dapat diperkirakan dengan baik.
+- Kelompok berbentuk memanjang, melengkung, atau berbeda kepadatan.
+- Terdapat banyak outlier yang dapat menggeser centroid.
+- Fitur kategorikal mentah digunakan tanpa representasi yang tepat.
+
+## 5. Latihan Interaktif
+
+Tentukan centroid terdekat untuk nilai `7` dari dua centroid `2` dan `9`. Tampilkan hanya huruf `B` jika lebih dekat ke B.
+
+<PythonPlayground
+  initialCode={"nilai = 7\ncentroid_a = 2\ncentroid_b = 9\n\n# Tulis logika jarak dan print hasilnya"}
+  expectedOutput={"B"}
+  hint={"Bandingkan abs(nilai - centroid_a) dengan abs(nilai - centroid_b)."}
+  solution={"nilai = 7\ncentroid_a = 2\ncentroid_b = 9\nprint(\"A\" if abs(nilai - centroid_a) < abs(nilai - centroid_b) else \"B\")"}
+/>
+
+## 6. Quick Quiz
+
+<QuizCard
+  question={"Apa fungsi centroid pada K-Means?"}
+  correctAnswer={"B"}
+  options={[
+  {
+    "id": "A",
+    "text": "Nama label kelas asli",
+    "explanation": "Label asli tidak diketahui dalam clustering."
+  },
+  {
+    "id": "B",
+    "text": "Pusat kelompok yang digunakan untuk assignment",
+    "explanation": "Tepat. Centroid mewakili pusat cluster dan diperbarui dari anggota cluster."
+  },
+  {
+    "id": "C",
+    "text": "Nilai akurasi model",
+    "explanation": "Akurasi memerlukan label referensi dan bukan centroid."
+  },
+  {
+    "id": "D",
+    "text": "Jumlah seluruh fitur",
+    "explanation": "Jumlah fitur adalah dimensi data, bukan centroid."
+  }
+]}
+/>
+
+## 7. Ringkasan
+
+K-Means cocok untuk kelompok yang relatif kompak dan dapat dibedakan berdasarkan jarak. Berikutnya pelajari pendekatan hierarkis yang menggambarkan penggabungan kelompok secara bertingkat.
+

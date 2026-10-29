@@ -1,0 +1,76 @@
+---
+title: Perceptron
+sidebar_label: Perceptron
+description: Materi Perceptron Kawruh, dari konsep sampai latihan interaktif.
+---
+
+import PythonPlayground from '@site/src/components/PythonPlayground';
+import QuizCard from '@site/src/components/QuizCard';
+
+# Perceptron
+
+**Level:** Beginner | **Prasyarat:** Python Variables, Functions, dan konsep dasar Machine Learning.
+
+Pada materi ini kamu akan mempelajari prinsip **perceptron** dengan ilustrasi, contoh sederhana, dan latihan. Kita memisahkan simulasi Python murni dari kode deep learning menggunakan library khusus.
+
+## Tujuan Pembelajaran
+
+Setelah belajar, kamu dapat menjelaskan konsep utama, membaca contoh perhitungannya, dan mengenali kesalahan yang sering terjadi.
+
+## 1. Visual Intuition
+
+![Ilustrasi Perceptron](/img/deep-learning/perceptron-diagram.png)
+
+*Dua input dengan bobot dan bias menghasilkan skor sebelum fungsi step.*
+
+## 2. Apa itu Perceptron?
+
+Perceptron adalah model neuron dasar untuk keputusan biner. Input dikalikan weight lalu dijumlah dengan bias. Nilai ini masuk fungsi aktivasi langkah (*step function*).
+
+## 3. Rumus
+
+Rumus skor: `z = w1*x1 + w2*x2 + b`. Aktivasi langkah mengembalikan 1 jika `z >= 0`, dan 0 jika lebih kecil dari 0. Ini hanya salah satu konvensi threshold.
+
+## 4. Hitung Manual
+
+Jika `x1=1`, `x2=0`, `w1=0.8`, `w2=-0.4`, dan `b=-0.3`, maka `z=0.5`, sehingga output 1.
+
+## 5. Keterbatasan
+
+Perceptron satu layer tidak dapat merepresentasikan masalah XOR secara tepat bila hanya menggunakan batas keputusan linear pada input aslinya. Jaringan multi-layer dengan aktivasi non-linear dapat mengatasinya.
+
+## 6. Common Mistakes
+
+Jangan menyamakan perceptron sederhana dengan seluruh arsitektur Deep Learning. Hasil 0 atau 1 bukan probabilitas yang terkalibrasi.
+
+## Latihan Interaktif
+
+Buat sebuah perceptron sederhana dan tampilkan prediksi biner untuk data yang diberikan.
+
+<PythonPlayground
+  initialCode={"x1 = 1\nx2 = 0\nw1 = 0.8\nw2 = -0.4\nb = -0.3\n\n# Hitung z, lalu keluarkan 0 atau 1\n"}
+  expectedOutput={"1"}
+  hint={"Setelah menghitung z, gunakan 1 if z >= 0 else 0."}
+  solution={"x1 = 1\nx2 = 0\nw1 = 0.8\nw2 = -0.4\nb = -0.3\nz = x1*w1 + x2*w2 + b\nprint(1 if z >= 0 else 0)"}
+/>
+
+## Quick Quiz
+
+<QuizCard
+  question={"Apa keterbatasan perceptron satu layer?"}
+  correctAnswer="C"
+  options={[
+    {"id": "A", "text": "Tidak dapat menjumlah angka", "explanation": "Perceptron bisa menjumlah input berbobot."},
+    {"id": "B", "text": "Hanya menerima teks", "explanation": "Perceptron biasanya memakai fitur numerik."},
+    {"id": "C", "text": "Tidak dapat menyelesaikan XOR dengan batas linear", "explanation": "Benar! XOR tidak dapat dipisahkan secara linear."},
+    {"id": "D", "text": "Tidak punya bobot", "explanation": "Perceptron menggunakan bobot."}
+  ]}
+/>
+
+## Ringkasan
+
+- Perceptron merupakan bagian penting dari alur training neural network.
+- Pahami perhitungan dan intuisi, bukan hanya menghafal istilah.
+- Gunakan Google Colab atau Jupyter untuk eksperimen TensorFlow/PyTorch skala lebih besar.
+
+**Langkah berikutnya:** lanjutkan ke materi berikutnya melalui navigasi Kawruh.

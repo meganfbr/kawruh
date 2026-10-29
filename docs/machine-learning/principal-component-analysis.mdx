@@ -1,0 +1,114 @@
+---
+title: Principal Component Analysis
+sidebar_label: Principal Component Analysis
+description: Reduksi dimensi dengan PCA, scaling dan explained variance.
+---
+
+import PythonPlayground from '@site/src/components/PythonPlayground';
+import QuizCard from '@site/src/components/QuizCard';
+
+# Principal Component Analysis
+
+**Level:** Beginner–Intermediate | **Course:** Machine Learning
+
+
+**Principal Component Analysis (PCA)** adalah metode reduksi dimensi yang merangkum variasi data ke arah baru yang disebut *principal components*. PCA merupakan transformasi linear, **bukan** algoritma clustering.
+
+## Tujuan Pembelajaran
+
+- Menjelaskan tujuan reduksi dimensi.
+- Memahami principal component dan explained variance.
+- Menerapkan PCA setelah scaling dan menghindari kebocoran data.
+
+## 1. Intuisi Visual
+
+![Proyeksi PCA dua dimensi dari data simulasi tiga fitur](/img/machine-learning/pca-projection.png)
+
+*Gambar: proyeksi tiga fitur menjadi dua komponen utama. Persentase pada sumbu menunjukkan proporsi variasi yang dijelaskan pada data simulasi.*
+
+Sumbu baru dipilih agar komponen pertama menangkap variasi terbesar dan komponen berikutnya menangkap variasi terbesar yang tersisa dalam arah tegak lurus.
+
+## 2. Mengapa Reduksi Dimensi?
+
+- Memudahkan visualisasi data dengan banyak fitur.
+- Mengurangi redundansi jika fitur-fitur sangat berkorelasi.
+- Menyederhanakan sebagian pipeline, tetapi tidak selalu meningkatkan performa model.
+
+PCA sensitif terhadap skala: fitur dengan rentang angka lebih besar berpotensi mendominasi. Standardisasi sering membantu ketika satuan fitur berbeda.
+
+## 3. Contoh Intuisi (Python Murni)
+
+<PythonPlayground
+  initialCode={"tinggi = [150, 160, 170]\nrata_rata = sum(tinggi) / len(tinggi)\nterpusat = [x - rata_rata for x in tinggi]\nprint(terpusat)"}
+/>
+
+Pemusatan terhadap mean adalah salah satu langkah dalam PCA. Contoh di atas **bukan** implementasi PCA lengkap.
+
+## 4. Praktik PCA scikit-learn (Colab/Jupyter)
+
+```python
+from sklearn.datasets import load_iris
+from sklearn.preprocessing import StandardScaler
+from sklearn.decomposition import PCA
+
+X = load_iris().data
+X_scaled = StandardScaler().fit_transform(X)
+pca = PCA(n_components=2)
+X_2d = pca.fit_transform(X_scaled)
+print("Bentuk awal:", X.shape)
+print("Bentuk setelah PCA:", X_2d.shape)
+print("Explained variance:", pca.explained_variance_ratio_)
+```
+
+Untuk eksperimen dengan train/test, *fit* scaler dan PCA hanya pada training set, kemudian gunakan `transform()` untuk validation/test. Cara mudah adalah menggunakan `Pipeline` scikit-learn.
+
+## 5. Common Mistakes
+
+- Menganggap PC1 selalu fitur asli yang paling penting; komponen adalah kombinasi linear dari fitur.
+- Menganggap PCA selalu meningkatkan model; coba bandingkan dengan baseline tanpa PCA.
+- Melakukan PCA pada seluruh dataset sebelum split untuk evaluasi prediktif.
+
+## 6. Latihan Interaktif
+
+Hitung selisih tiap nilai dari rata-rata untuk `[2, 4, 6]`. Cetak list hasilnya.
+
+<PythonPlayground
+  initialCode={"data = [2, 4, 6]\n\n# Hitung rata-rata dan data terpusat"}
+  expectedOutput={"[-2.0, 0.0, 2.0]"}
+  hint={"Cari mean = sum(data)/len(data), lalu kurangi setiap elemen."}
+  solution={"data = [2, 4, 6]\nmean = sum(data) / len(data)\nprint([x - mean for x in data])"}
+/>
+
+## 7. Quick Quiz
+
+<QuizCard
+  question={"Pernyataan mana yang benar tentang PCA?"}
+  correctAnswer={"B"}
+  options={[
+  {
+    "id": "A",
+    "text": "PCA selalu menghasilkan label cluster",
+    "explanation": "PCA tidak menghasilkan label kelompok."
+  },
+  {
+    "id": "B",
+    "text": "PCA membuat kombinasi fitur untuk menjelaskan variasi data",
+    "explanation": "Benar. PCA membentuk komponen yang menangkap variasi."
+  },
+  {
+    "id": "C",
+    "text": "PCA hanya dapat digunakan untuk data satu fitur",
+    "explanation": "PCA relevan untuk banyak fitur."
+  },
+  {
+    "id": "D",
+    "text": "PCA sama dengan Random Forest",
+    "explanation": "Keduanya metode berbeda dengan tujuan berbeda."
+  }
+]}
+/>
+
+## 8. Ringkasan
+
+PCA merangkum dimensi dan membantu visualisasi data. Selanjutnya, kita evaluasi kualitas cluster tanpa langsung mengasumsikan nomor cluster adalah label kelas yang benar.
+

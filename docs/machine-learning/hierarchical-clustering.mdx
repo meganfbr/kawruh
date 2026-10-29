@@ -1,0 +1,115 @@
+---
+title: Hierarchical Clustering
+sidebar_label: Hierarchical Clustering
+description: Memahami agglomerative clustering, linkage, dan dendrogram.
+---
+
+import PythonPlayground from '@site/src/components/PythonPlayground';
+import QuizCard from '@site/src/components/QuizCard';
+
+# Hierarchical Clustering
+
+**Level:** Beginner–Intermediate | **Course:** Machine Learning
+
+
+Hierarchical Clustering membangun **struktur pengelompokan bertingkat**. Pendekatan *agglomerative* memulai dari satu cluster per sampel, kemudian menggabungkan cluster terdekat secara bertahap.
+
+## Tujuan Pembelajaran
+
+- Membaca dendrogram dan titik penggabungan.
+- Membedakan linkage single, complete, average, dan Ward.
+- Mengerti kapan jumlah cluster dipilih.
+
+## 1. Intuisi Visual: Dendrogram
+
+![Dendrogram penggabungan cluster secara bertingkat](/img/machine-learning/hierarchical-dendrogram.png)
+
+*Gambar: dendrogram 22 sampel data simulasi. Ketinggian penggabungan menunjukkan jarak/linkage distance, bukan akurasi.*
+
+Daun di bagian bawah menunjukkan sampel. Garis cabang menyatukan beberapa kelompok. Memotong dendrogram pada tinggi tertentu dapat menghasilkan sejumlah cluster; jumlahnya bergantung pada posisi pemotongan.
+
+## 2. Memahami Penggabungan
+
+Kita bisa memahami gagasan hierarki dengan data satu dimensi. Titik yang dekat cenderung dikelompokkan lebih dahulu, tetapi hasil final juga dipengaruhi metode linkage.
+
+<PythonPlayground
+  initialCode={"nilai = [1, 2, 8, 9]\nselisih = [abs(nilai[i + 1] - nilai[i]) for i in range(len(nilai) - 1)]\nprint(selisih)"}
+/>
+
+Contoh tersebut memperlihatkan selisih antarnilai berurutan, **bukan** implementasi clustering hierarkis lengkap.
+
+## 3. Metode Linkage
+
+| Metode | Prinsip umum |
+| --- | --- |
+| Single | Jarak minimum antaranggota dua cluster |
+| Complete | Jarak maksimum antaranggota dua cluster |
+| Average | Rata-rata jarak antaranggota dua cluster |
+| Ward | Meminimalkan kenaikan variasi dalam cluster saat digabung |
+
+## 4. Praktik scikit-learn (Colab/Jupyter)
+
+```python
+from sklearn.datasets import make_blobs
+from sklearn.preprocessing import StandardScaler
+from sklearn.cluster import AgglomerativeClustering
+
+X, _ = make_blobs(n_samples=120, centers=3, random_state=42)
+X_scaled = StandardScaler().fit_transform(X)
+model = AgglomerativeClustering(n_clusters=3, linkage="ward")
+labels = model.fit_predict(X_scaled)
+print("Jumlah label unik:", len(set(labels)))
+```
+
+Model `AgglomerativeClustering` tidak otomatis menampilkan dendrogram. Untuk diagram, kamu bisa memakai `scipy.cluster.hierarchy` pada data berukuran wajar.
+
+## 5. Common Mistakes
+
+- Mengira dendrogram selalu menunjukkan *ground truth*; sebenarnya hasilnya dipengaruhi metrik dan linkage.
+- Membandingkan tinggi penggabungan tanpa memahami metode yang dipakai.
+- Menjalankan clustering hierarkis pada data sangat besar tanpa mempertimbangkan biaya komputasi.
+
+## 6. Latihan Interaktif
+
+Hitung selisih absolut antara nilai `3` dan `10`, lalu cetak hasilnya.
+
+<PythonPlayground
+  initialCode={"a = 3\nb = 10\n\n# Cetak jarak kedua angka"}
+  expectedOutput={"7"}
+  hint={"Gunakan abs(a - b)."}
+  solution={"a = 3\nb = 10\nprint(abs(a - b))"}
+/>
+
+## 7. Quick Quiz
+
+<QuizCard
+  question={"Apa yang direpresentasikan oleh dendrogram?"}
+  correctAnswer={"B"}
+  options={[
+  {
+    "id": "A",
+    "text": "Grafik loss setiap epoch",
+    "explanation": "Dendrogram tidak menunjukkan riwayat training."
+  },
+  {
+    "id": "B",
+    "text": "Urutan penggabungan cluster secara hierarkis",
+    "explanation": "Benar. Cabang menunjukkan hierarki penggabungan kelompok."
+  },
+  {
+    "id": "C",
+    "text": "Confusion matrix",
+    "explanation": "Confusion matrix dipakai untuk membandingkan kelas aktual dan prediksi."
+  },
+  {
+    "id": "D",
+    "text": "Distribusi normal",
+    "explanation": "Dendrogram bukan grafik distribusi."
+  }
+]}
+/>
+
+## 8. Ringkasan
+
+Metode hierarkis membantu memahami hubungan antarkelompok. Langkah berikutnya adalah DBSCAN, yang dapat menemukan cluster berdasarkan kepadatan tanpa harus menentukan jumlah cluster sejak awal.
+

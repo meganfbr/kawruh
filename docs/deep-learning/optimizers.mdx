@@ -1,0 +1,80 @@
+---
+title: Optimizers
+sidebar_label: Optimizers
+description: Materi Optimizers Kawruh, dari konsep sampai latihan interaktif.
+---
+
+import PythonPlayground from '@site/src/components/PythonPlayground';
+import QuizCard from '@site/src/components/QuizCard';
+
+# Optimizers
+
+**Level:** Intermediate | **Prasyarat:** Python Variables, Functions, dan konsep dasar Machine Learning.
+
+Pada materi ini kamu akan mempelajari prinsip **optimizers** dengan ilustrasi, contoh sederhana, dan latihan. Kita memisahkan simulasi Python murni dari kode deep learning menggunakan library khusus.
+
+## Tujuan Pembelajaran
+
+Setelah belajar, kamu dapat menjelaskan konsep utama, membaca contoh perhitungannya, dan mengenali kesalahan yang sering terjadi.
+
+## 1. Visual Intuition
+
+![Ilustrasi Optimizers](/img/deep-learning/optimizer-gradient-descent.png)
+
+*Titik menunjukkan langkah ilustratif parameter menuju minimum sebuah fungsi loss sederhana.*
+
+## 2. Apa Itu Optimizer?
+
+Optimizer menggunakan gradien untuk memperbarui parameter model supaya loss training berkurang. Perbaikan pada data training perlu terus diperiksa dengan data validasi.
+
+## 3. Gradient Descent dan SGD
+
+Pembaruan dasar adalah `w = w - lr * gradient`. *Stochastic Gradient Descent* pada praktik deep learning biasanya menerapkan pembaruan berdasarkan mini-batch. Learning rate menentukan ukuran langkah.
+
+## 4. Momentum
+
+Momentum menggabungkan informasi gradien sebelumnya untuk membantu pergerakan parameter, mengurangi osilasi pada beberapa permukaan loss.
+
+## 5. Adam
+
+Adam menggunakan estimasi momen pertama dan kedua gradien untuk menentukan skala update tiap parameter. Adam sering menjadi baseline kuat, tetapi tidak selalu unggul dari SGD untuk semua task.
+
+## 6. Learning Rate Scheduler
+
+Scheduler mengubah learning rate selama training, misalnya menguranginya setelah performa validasi tidak meningkat. Pilih kebijakan berdasarkan setup eksperimen dan hindari memantau test set untuk tuning.
+
+## 7. Common Mistakes
+
+Jangan berasumsi optimizer yang lebih kompleks pasti menghasilkan test score lebih baik. Evaluasi fairness memerlukan split, arsitektur, epoch, dan prosedur pemilihan model yang konsisten.
+
+## Latihan Interaktif
+
+Hitung satu langkah update parameter dengan aturan gradient descent.
+
+<PythonPlayground
+  initialCode={"w = 3.0\ngradien = 4.0\nlearning_rate = 0.2\n\n# Terapkan satu langkah update SGD\n# Cetak w baru dengan satu desimal\n"}
+  expectedOutput={"2.2"}
+  hint={"Gunakan w = w - learning_rate * gradien."}
+  solution={"w = 3.0\ngradien = 4.0\nlearning_rate = 0.2\nw = w - learning_rate * gradien\nprint(f\"{w:.1f}\")"}
+/>
+
+## Quick Quiz
+
+<QuizCard
+  question={"Apa fungsi learning rate?"}
+  correctAnswer="B"
+  options={[
+    {"id": "A", "text": "Jumlah fitur", "explanation": "Jumlah fitur tidak ditentukan learning rate."},
+    {"id": "B", "text": "Besar langkah update parameter", "explanation": "Benar! Learning rate mengatur besar langkah update parameter."},
+    {"id": "C", "text": "Jumlah label kelas", "explanation": "Jumlah kelas berasal dari task."},
+    {"id": "D", "text": "Format dataset", "explanation": "Format dataset terpisah dari optimizer."}
+  ]}
+/>
+
+## Ringkasan
+
+- Optimizers merupakan bagian penting dari alur training neural network.
+- Pahami perhitungan dan intuisi, bukan hanya menghafal istilah.
+- Gunakan Google Colab atau Jupyter untuk eksperimen TensorFlow/PyTorch skala lebih besar.
+
+**Langkah berikutnya:** lanjutkan ke materi berikutnya melalui navigasi Kawruh.

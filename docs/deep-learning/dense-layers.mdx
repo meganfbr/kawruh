@@ -1,0 +1,103 @@
+---
+title: Dense Layers And Sequential Models
+sidebar_label: Dense Layers And Sequential Models
+description: Memahami Dense Layer dan model Sequential.
+---
+
+import PythonPlayground from '@site/src/components/PythonPlayground';
+import QuizCard from '@site/src/components/QuizCard';
+
+# Dense Layers And Sequential Models
+
+**Level:** Beginner–Intermediate | **Prasyarat:** Python, NumPy dasar, dan Deep Learning Fundamentals.
+
+Dense (*fully connected layer*) menghubungkan setiap neuron pada layer sebelumnya ke setiap neuron pada layer berikutnya. Nilainya dihitung dari bobot, bias, dan fungsi aktivasi.
+
+## Tujuan Pembelajaran
+
+- Menjelaskan input shape, units, dan activation.
+- Menghitung jumlah parameter Dense Layer.
+- Membedakan Dense output klasifikasi biner dan multi-kelas.
+
+## 1. Visual Intuition
+
+![Dense Layer](/img/deep-learning/dense-layer.png)
+
+*Tiap garis merepresentasikan koneksi berbobot; gambar hanya ilustrasi.*
+
+## 2. Rumus Sederhana
+
+Satu neuron menghitung `z = w1*x1 + w2*x2 + ... + b`. Layer Dense memiliki **jumlah parameter** `(jumlah_input + 1) * jumlah_neuron`, karena setiap neuron memiliki bobot untuk setiap input dan satu bias.
+
+Contoh: empat input ke lima neuron = `(4 + 1) * 5 = 25` parameter.
+
+## 3. Membangun Dense di Colab
+
+```python
+import tensorflow as tf
+
+model = tf.keras.Sequential([
+    tf.keras.Input(shape=(4,)),
+    tf.keras.layers.Dense(5, activation='relu'),
+    tf.keras.layers.Dense(2, activation='softmax'),
+])
+model.summary()
+```
+
+`Dense(2, activation='softmax')` memberikan dua skor probabilitas kelas. Untuk label integer 0/1, konfigurasi yang cocok ialah `sparse_categorical_crossentropy`, sedangkan one-hot label menggunakan `categorical_crossentropy`. Alternatif klasifikasi biner ialah satu neuron sigmoid dan `binary_crossentropy`.
+
+## 4. Menghitung Parameter tanpa Library
+
+<PythonPlayground
+  initialCode={"jumlah_input = 4\nunits = 5\nparameter = (jumlah_input + 1) * units\nprint(parameter)"}
+/>
+
+## 5. Common Mistakes
+
+- Mengira `units=5` berarti model hanya menerima lima sampel.
+- Melupakan bias saat menghitung parameter.
+- Memakai activation softmax dua neuron tetapi loss tidak sesuai format label.
+
+## 6. Latihan Interaktif
+
+Layer Dense memiliki delapan input dan tiga neuron. Berapa parameternya?
+
+<PythonPlayground
+  initialCode={"input_features = 8\nunits = 3\n# Hitung dan cetak jumlah parameter\n"}
+  expectedOutput={"27"}
+  hint={"Rumusnya (input_features + 1) * units."}
+  solution={"input_features = 8\nunits = 3\nprint((input_features + 1) * units)"}
+/>
+
+## 7. Quick Quiz
+
+<QuizCard
+  question={"Dense Layer dengan 4 input dan 5 neuron memiliki berapa parameter?"}
+  correctAnswer="C"
+  options={[
+  {
+    "id": "A",
+    "text": "20",
+    "explanation": "Belum menghitung bias."
+  },
+  {
+    "id": "B",
+    "text": "21",
+    "explanation": "Hitung bias setiap neuron."
+  },
+  {
+    "id": "C",
+    "text": "25",
+    "explanation": "Benar: (4+1)*5."
+  },
+  {
+    "id": "D",
+    "text": "9",
+    "explanation": "Jumlah input dan output saja tidak cukup."
+  }
+]}
+/>
+
+## Ringkasan
+
+Dense Layer mengubah fitur menjadi representasi baru melalui bobot, bias, dan aktivasi. **Berikutnya: Training Model.**

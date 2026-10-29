@@ -1,0 +1,98 @@
+---
+title: Hyperparameter Tuning
+sidebar_label: Hyperparameter Tuning
+description: Grid Search, Randomized Search, dan pemilihan parameter model.
+---
+
+import PythonPlayground from '@site/src/components/PythonPlayground';
+import QuizCard from '@site/src/components/QuizCard';
+
+# Hyperparameter Tuning
+
+**Level:** Intermediate | **Prasyarat:** Python, pandas, dasar Machine Learning
+
+## Learning Objectives
+
+Memahami hyperparameter, membedakan Grid Search dengan Randomized Search, membaca hasil validasi, dan menghindari overfitting pada pemilihan parameter.
+
+## 1. Parameter vs Hyperparameter
+
+**Parameter model** dipelajari saat training, misalnya koefisien regresi. **Hyperparameter** diatur sebelum training, misalnya `max_depth` pada Decision Tree dan jumlah pohon `n_estimators` pada Random Forest.
+
+![Kurva hyperparameter tuning](/img/machine-learning/hyperparameter-tuning.png)
+
+*Ilustrasi hipotetis: semakin kompleks pohon, akurasi train bisa naik terus meski akurasi validasi justru turun.*
+
+## 2. Grid Search dan Randomized Search
+
+| Metode | Cara mencari | Kelebihan |
+| --- | --- | --- |
+| Grid Search | Menguji semua kombinasi pada grid | Menyeluruh untuk ruang kecil |
+| Randomized Search | Mengambil sejumlah sampel konfigurasi | Efisien untuk ruang besar |
+
+## 3. Contoh GridSearchCV (Colab/Jupyter)
+
+```python
+from sklearn.datasets import load_iris
+from sklearn.model_selection import train_test_split, GridSearchCV, StratifiedKFold
+from sklearn.tree import DecisionTreeClassifier
+
+X, y = load_iris(return_X_y=True)
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, stratify=y, random_state=42
+)
+search = GridSearchCV(
+    DecisionTreeClassifier(random_state=42),
+    param_grid={'max_depth': [2, 3, 4, 5], 'min_samples_leaf': [1, 2, 4]},
+    cv=StratifiedKFold(n_splits=5, shuffle=True, random_state=42),
+    scoring='accuracy', n_jobs=-1
+)
+search.fit(X_train, y_train)
+print('Best parameters:', search.best_params_)
+print('CV score:', search.best_score_)
+print('Test score:', search.score(X_test, y_test))
+```
+
+Perhatikan: `GridSearchCV` hanya menggunakan data train saat memilih kombinasi. Test set dievaluasi sekali setelah pemilihan selesai.
+
+## 4. Intuisi Pemilihan Nilai Terbaik
+
+Misalkan skor validasi per `max_depth` berikut. Cari indeks skor terbesar.
+
+<PythonPlayground
+  initialCode={"depths = [2, 3, 4, 5]\nval_scores = [0.74, 0.81, 0.79, 0.75]\nbest_index = val_scores.index(max(val_scores))\nprint(\"Best depth:\", depths[best_index])"}
+/>
+
+## 5. Common Mistakes
+
+- Memilih berdasarkan skor training tertinggi.
+- Mencoba terlalu banyak konfigurasi sambil terus mengintip hasil test.
+- Menganggap skor terbaik di satu dataset pasti terbaik di semua dataset.
+- Mengabaikan waktu komputasi dan reproducibility (`random_state`).
+
+## 6. Interactive Exercise
+
+Tampilkan angka `4` sebagai `max_depth` terbaik berdasarkan skor validasi.
+
+<PythonPlayground
+  initialCode={"depths = [2, 3, 4, 5]\nscores = [0.65, 0.77, 0.85, 0.79]\n# Cetak kedalaman dengan skor paling tinggi"}
+  expectedOutput={"4"}
+  hint={"Cari posisi nilai max(scores), lalu ambil depths pada posisi tersebut."}
+  solution={"depths = [2, 3, 4, 5]\nscores = [0.65, 0.77, 0.85, 0.79]\nprint(depths[scores.index(max(scores))])"}
+/>
+
+## 7. Quick Quiz
+
+<QuizCard
+  question={"Apa tujuan utama hyperparameter tuning?"}
+  correctAnswer={"B"}
+  options={[
+    {id: "A", text: "Menaikkan skor training set saja", explanation: "Target sebenarnya adalah generalisasi pada data baru."},
+    {id: "B", text: "Memilih konfigurasi menggunakan performa validasi", explanation: "Benar. Hyperparameter dipilih dari validasi, bukan test akhir."},
+    {id: "C", text: "Menghilangkan kebutuhan test set", explanation: "Test set tetap penting untuk pengukuran akhir."},
+  ]}
+/>
+
+## Summary
+
+Gunakan pemilihan hyperparameter berbasis validasi dan catat konfigurasi serta metriknya agar eksperimen bisa diulang.

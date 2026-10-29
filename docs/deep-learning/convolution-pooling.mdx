@@ -1,0 +1,112 @@
+---
+title: Convolution And Pooling
+sidebar_label: Convolution And Pooling
+sidebar_position: 14
+description: Materi interaktif Convolution And Pooling untuk pembelajar Deep Learning Kawruh.
+---
+
+import PythonPlayground from '@site/src/components/PythonPlayground';
+import QuizCard from '@site/src/components/QuizCard';
+
+# Convolution And Pooling
+
+**Level:** Beginner–Intermediate | **Prasyarat:** Python, NumPy, dan dasar neural network.
+
+## Tujuan Belajar
+
+Memahami kernel, stride, padding, feature map, dan pooling tanpa langsung tenggelam dalam rumus yang kompleks.
+
+## 1. Cara kerja convolution
+
+Kernel adalah matriks bobot kecil yang digeser di atas input. Pada setiap posisi, nilai input dan bobot kernel dikalikan, lalu dijumlahkan untuk membentuk satu nilai pada *feature map*. Dalam implementasi deep learning, operasi yang biasa disebut convolution umumnya adalah **cross-correlation**, dan bobot kernel dipelajari saat training.
+
+![Feature map convolution](/img/deep-learning/convolution-feature-map.png)
+
+*Gambar 1. Contoh ilustratif konvolusi menggunakan kernel vertikal, tanpa padding.*
+
+## 2. Output shape, stride, dan padding
+
+Untuk satu dimensi spasial, tanpa dilasi, ukuran output adalah:
+
+\[O = \left\lfloor\frac{N+2P-K}{S}\right\rfloor+1\]
+
+Keterangan: `N` ukuran input, `P` padding, `K` kernel size, dan `S` stride. Rumus yang sama berlaku terpisah untuk tinggi dan lebar.
+
+Contoh: gambar 32 × 32, kernel 3, padding 0, stride 1 → output 30 × 30.
+
+<PythonPlayground
+  initialCode={"n = 32\nk = 3\np = 0\ns = 1\noutput = (n + 2*p - k) // s + 1\nprint(output)"}
+/>
+
+## 3. Max Pooling dan Average Pooling
+
+Max pooling memilih nilai terbesar dalam sebuah jendela. Average pooling menghitung rata-ratanya. Keduanya meringkas feature map tanpa mempelajari bobot kernel pooling seperti convolution.
+
+![Max pooling example](/img/deep-learning/max-pooling.png)
+
+*Gambar 2. Max pooling 2 × 2, stride 2, dengan blok tidak saling tumpang tindih.*
+
+## 4. Kode TensorFlow/Keras (Colab)
+
+```python
+import tensorflow as tf
+
+x = tf.random.uniform((1, 32, 32, 3))
+conv = tf.keras.layers.Conv2D(8, 3, padding="same", activation="relu")
+pool = tf.keras.layers.MaxPooling2D(pool_size=2)
+print('Input:', x.shape)
+print('Feature map:', conv(x).shape)
+print('Pooling:', pool(conv(x)).shape)
+```
+
+Saat `padding="same"`, stride 1 biasanya mempertahankan dimensi spasial input.
+
+## 5. Kesalahan yang sering terjadi
+
+- Menyamakan jumlah *filter* dengan ukuran kernel: `Conv2D(32, 3)` artinya **32 filter** ukuran 3 × 3.
+- Lupa memperhatikan dimensi kanal input.
+- Mengira pooling meningkatkan resolusi gambar; umumnya pooling mengurangi resolusi.
+
+## 6. Latihan
+
+Berapa ukuran output dimensi spasial untuk input 28, kernel 5, stride 1, padding 0?
+
+<PythonPlayground
+  initialCode={"n = 28\nk = 5\ns = 1\np = 0\n# Hitung ukuran output\n"}
+  expectedOutput={"24"}
+  hint={"Gunakan (n + 2*p - k) // s + 1."}
+  solution={"n=28\nk=5\ns=1\np=0\nprint((n + 2*p - k)//s + 1)"}
+/>
+
+## 7. Quick Quiz
+
+<QuizCard
+  question={"Apa perbedaan utama Conv2D(32, 3) dan MaxPooling2D(2)?"}
+  correctAnswer={"B"}
+  options={[
+  {
+    "id": "A",
+    "text": "Keduanya mempelajari 32 bobot",
+    "explanation": "Pooling tidak mengatur 32 filter terlatih."
+  },
+  {
+    "id": "B",
+    "text": "Conv2D mempelajari filter, pooling meringkas fitur",
+    "explanation": "Benar. Convolution mempelajari parameter; pooling memilih/meringkas nilai."
+  },
+  {
+    "id": "C",
+    "text": "Pooling selalu meningkatkan resolusi",
+    "explanation": "Umumnya pooling justru mengurangi dimensi spasial."
+  },
+  {
+    "id": "D",
+    "text": "Conv2D tidak memiliki parameter",
+    "explanation": "Conv2D memiliki bobot trainable."
+  }
+]}
+/>
+
+## Ringkasan
+
+Convolution mengekstraksi pola lokal, sementara pooling merangkum fitur. Selanjutnya, pahami cara menyiapkan input gambar yang konsisten.

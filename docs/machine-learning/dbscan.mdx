@@ -1,0 +1,107 @@
+---
+title: DBSCAN
+sidebar_label: DBSCAN
+description: Clustering berbasis densitas: eps, min_samples, dan outlier.
+---
+
+import PythonPlayground from '@site/src/components/PythonPlayground';
+import QuizCard from '@site/src/components/QuizCard';
+
+# DBSCAN
+
+**Level:** Beginner–Intermediate | **Course:** Machine Learning
+
+
+**DBSCAN** (*Density-Based Spatial Clustering of Applications with Noise*) membentuk kelompok berdasarkan kepadatan titik. Algoritma ini dapat menemukan pola berbentuk melengkung dan memberi label `-1` untuk sampel yang tidak masuk cluster.
+
+## Tujuan Pembelajaran
+
+- Mengerti konsep tetangga, core point, border point, dan noise.
+- Menguji pengaruh `eps` dan `min_samples`.
+- Membandingkan DBSCAN dengan K-Means.
+
+## 1. Intuisi Visual
+
+![DBSCAN menunjukkan kelompok melengkung dan titik noise](/img/machine-learning/dbscan-density.png)
+
+*Gambar: hasil DBSCAN pada dataset simulasi dua bulan sabit dengan tambahan titik acak; tanda silang menandai noise.*
+
+`eps` adalah radius lingkungan yang digunakan dalam perhitungan ketetanggaan. `min_samples` adalah jumlah minimum sampel (termasuk titik itu sendiri dalam implementasi scikit-learn) agar suatu sampel dianggap *core point*.
+
+## 2. Memahami Density dengan Python
+
+<PythonPlayground
+  initialCode={"titik = [1.0, 1.1, 1.3, 5.0]\npusat = 1.0\neps = 0.35\ntetangga = [x for x in titik if abs(x - pusat) <= eps]\nprint(len(tetangga))"}
+/>
+
+Ini hanya perhitungan tetangga satu dimensi agar konsep mudah dipahami; algoritma DBSCAN aslinya melakukan pencarian ketetanggaan pada seluruh sampel.
+
+## 3. Praktik DBSCAN dengan scikit-learn (Colab/Jupyter)
+
+```python
+from sklearn.datasets import make_moons
+from sklearn.preprocessing import StandardScaler
+from sklearn.cluster import DBSCAN
+
+X, _ = make_moons(n_samples=300, noise=0.06, random_state=42)
+X_scaled = StandardScaler().fit_transform(X)
+model = DBSCAN(eps=0.3, min_samples=5)
+labels = model.fit_predict(X_scaled)
+print("Cluster tanpa noise:", len(set(labels) - {-1}))
+print("Jumlah noise:", (labels == -1).sum())
+```
+
+`eps` bergantung pada skala fitur. Coba beberapa nilai dan periksa jumlah cluster serta sampel noise.
+
+## 4. Kelebihan dan Keterbatasan
+
+| Kelebihan | Keterbatasan |
+| --- | --- |
+| Tidak meminta jumlah cluster di awal | Sensitif terhadap `eps` dan `min_samples` |
+| Dapat menemukan bentuk cluster tidak bulat | Sulit pada kelompok dengan kepadatan sangat berbeda |
+| Memberi penanda noise | Jarak kurang informatif pada dimensi sangat tinggi |
+
+## 5. Latihan Interaktif
+
+Untuk `titik = [1.0, 1.2, 1.5, 4.0]`, hitung banyak nilai yang berada dalam jarak paling jauh `0.5` dari `pusat = 1.0`. Cetak jumlahnya.
+
+<PythonPlayground
+  initialCode={"titik = [1.0, 1.2, 1.5, 4.0]\npusat = 1.0\neps = 0.5\n\n# Hitung jumlah tetangga"}
+  expectedOutput={"3"}
+  hint={"Gunakan abs(x - pusat) <= eps dalam list comprehension."}
+  solution={"titik = [1.0, 1.2, 1.5, 4.0]\npusat = 1.0\neps = 0.5\nprint(sum(abs(x - pusat) <= eps for x in titik))"}
+/>
+
+## 6. Quick Quiz
+
+<QuizCard
+  question={"Apa arti label -1 dalam hasil DBSCAN scikit-learn?"}
+  correctAnswer={"B"}
+  options={[
+  {
+    "id": "A",
+    "text": "Cluster pertama",
+    "explanation": "Cluster pertama biasanya diberi label 0."
+  },
+  {
+    "id": "B",
+    "text": "Sampel noise yang tidak dimasukkan ke cluster",
+    "explanation": "Benar. DBSCAN memberi label -1 pada noise."
+  },
+  {
+    "id": "C",
+    "text": "Kualitas model buruk",
+    "explanation": "Nilai -1 tidak otomatis menandakan kualitas buruk."
+  },
+  {
+    "id": "D",
+    "text": "Centroid tambahan",
+    "explanation": "DBSCAN tidak menggunakan centroid K-Means."
+  }
+]}
+/>
+
+## 7. Ringkasan
+
+DBSCAN cocok untuk bentuk cluster kompleks dan dapat mengidentifikasi noise. Untuk visualisasi data berdimensi banyak sebelum clustering, kenali PCA pada materi berikutnya.
+

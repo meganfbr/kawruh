@@ -1,0 +1,82 @@
+---
+title: Introduction to Neural Networks
+sidebar_label: Introduction to Neural Networks
+description: Materi Introduction to Neural Networks Kawruh, dari konsep sampai latihan interaktif.
+---
+
+import PythonPlayground from '@site/src/components/PythonPlayground';
+import QuizCard from '@site/src/components/QuizCard';
+
+# Introduction to Neural Networks
+
+**Level:** Beginner | **Prasyarat:** Python Variables, Functions, dan konsep dasar Machine Learning.
+
+Pada materi ini kamu akan mempelajari prinsip **introduction to neural networks** dengan ilustrasi, contoh sederhana, dan latihan. Kita memisahkan simulasi Python murni dari kode deep learning menggunakan library khusus.
+
+## Tujuan Pembelajaran
+
+Setelah belajar, kamu dapat menjelaskan konsep utama, membaca contoh perhitungannya, dan mengenali kesalahan yang sering terjadi.
+
+## 1. Visual Intuition
+
+![Ilustrasi Introduction to Neural Networks](/img/deep-learning/neural-network-overview.png)
+
+*Ilustrasi alur maju jaringan sederhana; ukuran layer tidak menunjukkan jumlah neuron sebenarnya.*
+
+## 2. Apa itu Neural Network?
+
+Neural network (jaringan saraf tiruan) adalah model yang mempelajari hubungan antara input dan target melalui parameter bernama **weights** (bobot) dan **biases**. Setiap layer mengubah informasi menjadi representasi yang dapat dipakai layer selanjutnya. Istilah *deep* mengacu pada penggunaan beberapa hidden layer.
+
+## 3. Alur Forward Pass
+
+1. Fitur masuk ke **input layer**. 2. Hidden layer melakukan perkalian bobot, penjumlahan bias, dan aktivasi. 3. **Output layer** menghasilkan prediksi. 4. **Loss function** mengukur kesalahan prediksi. Saat training, model memperbarui parameter untuk mengurangi loss.
+
+## 4. Contoh Dua Fitur
+
+Misalnya dua fitur adalah jumlah jam belajar dan kehadiran. Satu neuron sederhana dapat menghitung `z = jam * w1 + kehadiran * w2 + bias`. Nilai `z` kemudian diproses fungsi aktivasi. Nilai bobot contoh di sini ditentukan manual, **bukan hasil training**.
+
+## 5. Istilah Penting
+
+| Istilah | Arti |
+|---|---|
+| Feature | Variabel input model |
+| Weight | Pengaruh relatif suatu fitur |
+| Bias | Nilai tambahan sebelum aktivasi |
+| Epoch | Satu putaran pelatihan melalui data training |
+| Inference | Penggunaan model untuk membuat prediksi |
+
+## 6. Common Mistakes
+
+Neural network tidak selalu lebih unggul dari model sederhana. Performa dipengaruhi data, arsitektur, tuning, dan evaluasi yang adil. Jangan mengukur kualitas final menggunakan data training saja.
+
+## Latihan Interaktif
+
+Hitung jumlah berbobot `z` dari dua fitur dengan rumus di atas, lalu tampilkan satu angka.
+
+<PythonPlayground
+  initialCode={"jam = 4\nkehadiran = 9\nw1 = 0.5\nw2 = 0.2\nbias = -1\n\n# Hitung z dan tampilkan hasilnya\n"}
+  expectedOutput={"2.8"}
+  hint={"Gunakan z = jam * w1 + kehadiran * w2 + bias lalu print(z)."}
+  solution={"jam = 4\nkehadiran = 9\nw1 = 0.5\nw2 = 0.2\nbias = -1\nz = jam*w1 + kehadiran*w2 + bias\nprint(round(z, 1))"}
+/>
+
+## Quick Quiz
+
+<QuizCard
+  question={"Apa fungsi weight pada neuron?"}
+  correctAnswer="B"
+  options={[
+    {"id": "A", "text": "Menyimpan nama file", "explanation": "Weight tidak berkaitan dengan nama file."},
+    {"id": "B", "text": "Mengatur kontribusi input", "explanation": "Benar! Weight mengatur kontribusi nilai fitur terhadap hasil neuron."},
+    {"id": "C", "text": "Menentukan ukuran monitor", "explanation": "Ukuran monitor tidak diatur weight."},
+    {"id": "D", "text": "Menghapus data", "explanation": "Penghapusan data bukan peran weight."}
+  ]}
+/>
+
+## Ringkasan
+
+- Introduction to Neural Networks merupakan bagian penting dari alur training neural network.
+- Pahami perhitungan dan intuisi, bukan hanya menghafal istilah.
+- Gunakan Google Colab atau Jupyter untuk eksperimen TensorFlow/PyTorch skala lebih besar.
+
+**Langkah berikutnya:** lanjutkan ke materi berikutnya melalui navigasi Kawruh.

@@ -1,0 +1,111 @@
+---
+title: CNN Introduction
+sidebar_label: CNN Introduction
+sidebar_position: 13
+description: Materi interaktif CNN Introduction untuk pembelajar Deep Learning Kawruh.
+---
+
+import PythonPlayground from '@site/src/components/PythonPlayground';
+import QuizCard from '@site/src/components/QuizCard';
+
+# CNN Introduction
+
+**Level:** Beginner–Intermediate | **Prasyarat:** Python, NumPy, dan dasar neural network.
+
+## Tujuan Belajar
+
+Setelah materi ini, kamu dapat menjelaskan hubungan **input image**, **feature map**, dan proses prediksi pada *Convolutional Neural Network* (CNN).
+
+## 1. Apa itu CNN?
+
+CNN adalah jaringan saraf yang dirancang untuk memproses data yang memiliki struktur spasial, seperti gambar. Berbeda dari jaringan *Dense* yang langsung menghubungkan semua piksel ke neuron, CNN memakai **filter kecil (kernel)** yang bergerak di atas gambar untuk mempelajari pola lokal seperti tepi dan tekstur.
+
+![Alur CNN](/img/deep-learning/cnn-architecture.png)
+
+*Gambar 1. Alur konseptual CNN: ekstraksi fitur diikuti klasifikasi.*
+
+## 2. Mengenal bentuk citra
+
+Citra RGB berukuran 128 × 128 biasanya direpresentasikan sebagai tensor dengan shape `(128, 128, 3)` (tinggi, lebar, kanal). Saat memproses batch 32 gambar, bentuk input dapat menjadi `(32, 128, 128, 3)` pada format Keras *channels-last*.
+
+| Komponen | Fungsi |
+| --- | --- |
+| Convolution | Belajar pola lokal menggunakan kernel |
+| Activation | Memasukkan non-linearitas (misalnya ReLU) |
+| Pooling | Mengurangi ukuran spasial feature map |
+| GlobalAveragePooling / Flatten | Mengubah fitur menjadi representasi untuk classifier |
+| Dense | Membuat prediksi akhir |
+
+## 3. Contoh arsitektur Keras (Google Colab)
+
+```python
+import tensorflow as tf
+
+model = tf.keras.Sequential([
+    tf.keras.layers.Input(shape=(128, 128, 3)),
+    tf.keras.layers.Conv2D(16, (3, 3), activation="relu"),
+    tf.keras.layers.MaxPooling2D((2, 2)),
+    tf.keras.layers.Conv2D(32, (3, 3), activation="relu"),
+    tf.keras.layers.GlobalAveragePooling2D(),
+    tf.keras.layers.Dense(2, activation="softmax"),
+])
+model.summary()
+```
+
+Ini hanya contoh arsitektur; belum menjalankan training, dan keluaran dua kelas hanya sesuai jika dataset memiliki dua kelas.
+
+## 4. Try It Yourself — bentuk gambar
+
+<PythonPlayground
+  initialCode={"tinggi = 128\nlebar = 128\nkanal = 3\nprint((tinggi, lebar, kanal))\nprint(tinggi * lebar * kanal)"}
+/>
+
+## 5. Common Mistakes
+
+- Menganggap pooling selalu wajib. CNN modern sering memakai alternatif seperti *strided convolution*.
+- Menganggap output `Dense(2, softmax)` otomatis sesuai semua dataset. Banyak kelas harus disesuaikan dengan label.
+- Menyebut CNN pasti lebih baik daripada semua model lain; kinerja bergantung pada data dan tugas.
+
+## 6. Latihan
+
+Hitung total elemen dari gambar RGB berukuran 64 × 64.
+
+<PythonPlayground
+  initialCode={"tinggi = 64\nlebar = 64\nkanal = 3\n# Tampilkan jumlah elemen"}
+  expectedOutput={"12288"}
+  hint={"Kalikan tinggi, lebar, dan kanal."}
+  solution={"tinggi = 64\nlebar = 64\nkanal = 3\nprint(tinggi * lebar * kanal)"}
+/>
+
+## 7. Quick Quiz
+
+<QuizCard
+  question={"Bagian CNN mana yang bertugas mempelajari pola lokal seperti tepi?"}
+  correctAnswer={"B"}
+  options={[
+  {
+    "id": "A",
+    "text": "Dense output",
+    "explanation": "Dense umumnya digunakan untuk prediksi akhir."
+  },
+  {
+    "id": "B",
+    "text": "Convolution",
+    "explanation": "Benar: convolution memakai kernel lokal yang bobotnya dipelajari."
+  },
+  {
+    "id": "C",
+    "text": "Softmax",
+    "explanation": "Softmax mengubah logit menjadi probabilitas kelas."
+  },
+  {
+    "id": "D",
+    "text": "Optimizer",
+    "explanation": "Optimizer memperbarui parameter saat training."
+  }
+]}
+/>
+
+## Ringkasan
+
+CNN mempelajari fitur spasial melalui convolution, lalu menggunakan fitur tersebut untuk membuat prediksi. Selanjutnya pelajari **Convolution And Pooling**.
